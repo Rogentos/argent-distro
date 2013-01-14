@@ -1,0 +1,12 @@
+diff --git a/bus/system.conf.in b/bus/system.conf.in
+index 92f4cc4..1880808 100644
+--- a/bus/system.conf.in
++++ b/bus/system.conf.in
+@@ -80,4 +80,7 @@
+ 
+   <include if_selinux_enabled="yes" selinux_root_relative="yes">contexts/dbus_contexts</include>
+ 
++  <!-- Workaround for buggy application freezing due to using sync calls improperly -->
++  <limit name="reply_timeout">5000</limit>
++
+ </busconfig>
