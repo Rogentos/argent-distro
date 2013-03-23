@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-kernel/openvz-sources/openvz-sources-2.6.32.53.5.ebuild,v 1.1 2012/05/03 17:43:52 pva Exp $
 
+EAPI=5
+
 inherit versionator
 
 OVZ_KV="0$(get_version_component_range 4).$(get_version_component_range 5)"
@@ -22,7 +24,7 @@ KV_MAJOR=$(get_version_component_range 1 ${OKV})
 KV_MINOR=$(get_version_component_range 2 ${OKV})
 KV_PATCH=$(get_version_component_range 3 ${OKV})
 
-KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${OKV}.tar.bz2"
+KERNEL_URI="mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}/linux-${OKV}.tar.xz"
 
 inherit kernel-2
 #detect_version
