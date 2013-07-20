@@ -20,7 +20,7 @@ HOMEPAGE="http://www.pygtk.org/"
 LICENSE="LGPL-2.1"
 SLOT="3"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris ~x86-solaris"
-IUSE="+threads"
+IUSE="debug_grade_1 +threads"
 
 COMMON_DEPEND="
 	~dev-python/pygobject-base-${PV}[threads=]
@@ -73,6 +73,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	python_execute_function -s gnome2_src_install
 	python_clean_installation_image
 	# just keep /usr/$(get_libdir)/*/site-packages/gi/_gi_cairo.so

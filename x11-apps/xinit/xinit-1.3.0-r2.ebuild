@@ -10,7 +10,7 @@ DESCRIPTION="X Window System initializer"
 
 LICENSE="${LICENSE} GPL-2"
 KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86 ~x86-fbsd"
-IUSE="+minimal"
+IUSE="debug_grade_1 +minimal"
 
 RDEPEND="
 	!<x11-base/xorg-server-1.8.0
@@ -38,6 +38,9 @@ pkg_setup() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	xorg-2_src_install
 
 	exeinto /etc/X11

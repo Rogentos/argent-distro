@@ -30,7 +30,7 @@ HOMEPAGE="http://www.gnu.org/software/grub/"
 
 LICENSE="GPL-3"
 SLOT="2"
-IUSE="custom-cflags debug device-mapper doc efiemu mount nls static sdl truetype libzfs"
+IUSE="debug_grade_1 custom-cflags debug device-mapper doc efiemu mount nls static sdl truetype libzfs"
 
 GRUB_PLATFORMS=(
 	# everywhere:
@@ -212,6 +212,9 @@ grub_build_docs() {
 }
 
 grub_src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	default_src_install
 }
 
@@ -317,6 +320,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	local i
 
 	for i in ${GRUB_ENABLED_PLATFORMS}; do

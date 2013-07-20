@@ -15,7 +15,7 @@ SRC_URI="mirror://gnupg/${MY_PN}/${MY_P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~arm ~amd64 ~x86"
-IUSE="gtk qt4 caps static"
+IUSE="debug_grade_1 gtk qt4 caps static"
 
 RDEPEND="
 	app-admin/eselect-pinentry
@@ -50,6 +50,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	default
 	rm -f "${ED}"/usr/bin/pinentry || die
 }

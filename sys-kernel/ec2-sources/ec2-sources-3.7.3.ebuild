@@ -11,7 +11,7 @@ inherit sabayon-kernel
 KEYWORDS="~amd64 ~x86"
 DESCRIPTION="Official Sabayon Linux kernel for Amazon EC2 AMI (S3/EBS)"
 RESTRICT="mirror"
-IUSE="sources_standalone"
+IUSE="debug_grade_1 sources_standalone"
 
 DEPEND="${DEPEND}
 	sources_standalone? ( !=sys-kernel/linux-ec2-${PVR} )

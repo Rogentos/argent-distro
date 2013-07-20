@@ -11,7 +11,7 @@ HOMEPAGE="http://www.sabayon.org"
 SLOT="0"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 DEPEND=""
 RDEPEND="!app-misc/livecd-tools
@@ -43,6 +43,9 @@ src_unpack() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	dosbin x-setup-configuration
 	newinitd x-setup-init.d x-setup
 

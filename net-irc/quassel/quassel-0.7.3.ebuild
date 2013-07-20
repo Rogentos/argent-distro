@@ -22,7 +22,7 @@ KEYWORDS="~amd64 ~x86"
 SLOT="0"
 # monolithic USE flag is not used, but let's have it here to be compatible
 # with Portage ebuild
-IUSE="ayatana crypt dbus debug -kde monolithic -phonon postgres +server +ssl webkit X"
+IUSE="debug_grade_1 ayatana crypt dbus debug -kde monolithic -phonon postgres +server +ssl webkit X"
 
 SERVER_RDEPEND="
 	crypt? (
@@ -79,6 +79,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cmake-utils_src_install
 
 	rm -rf "${ED}"usr/share/apps

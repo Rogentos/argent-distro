@@ -12,7 +12,7 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~sparc-fbsd ~x86-fbsd"
-IUSE="build"
+IUSE="debug_grade_1 build"
 
 PDEPEND="sys-apps/openrc"
 
@@ -154,6 +154,9 @@ pkg_preinst() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# Setup /run directory, this is missing from original baselayout
 	dodir /run
 

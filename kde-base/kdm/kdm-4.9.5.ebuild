@@ -10,7 +10,7 @@ inherit kde4-meta flag-o-matic user
 
 DESCRIPTION="KDE login manager, similar to xdm and gdm"
 KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
-IUSE="+consolekit debug kerberos pam"
+IUSE="debug_grade_1 +consolekit debug kerberos pam"
 
 DEPEND="
 	$(add_kdebase_dep libkworkspace)
@@ -66,6 +66,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	export GENKDMCONF_FLAGS="--no-old --no-backup"
 
 	kde4-meta_src_install

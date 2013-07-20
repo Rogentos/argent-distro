@@ -7,9 +7,12 @@ inherit transmission-2.76
 
 DESCRIPTION="A Fast, Easy and Free BitTorrent client - daemon"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	dobin daemon/transmission-daemon
 	dobin daemon/transmission-remote
 

@@ -12,7 +12,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~arm ~amd64 ~x86"
 # ncurses use flag is fake, used to mimic portage ebuild USE flags
-IUSE="gtk ncurses qt4 caps static"
+IUSE="debug_grade_1 gtk ncurses qt4 caps static"
 
 RDEPEND="
 	~app-crypt/pinentry-base-${PV}

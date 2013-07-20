@@ -21,7 +21,7 @@ LICENSE="PSF-2"
 SLOT="2.7"
 PYTHON_ABI="${SLOT}"
 KEYWORDS="amd64 x86"
-IUSE="ipv6 +threads +wide-unicode"
+IUSE="debug_grade_1 ipv6 +threads +wide-unicode"
 
 RDEPEND="
 	=dev-lang/python-${PVR}[-tk]
@@ -164,6 +164,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	[[ -z "${ED}" ]] && ED="${D%/}${EPREFIX}/"
 
 	emake DESTDIR="${D}" altinstall || die "emake altinstall failed"

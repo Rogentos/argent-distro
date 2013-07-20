@@ -7,7 +7,7 @@ SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="x86 amd64 ppc"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND=">=app-misc/sabayonlive-tools-1.6.0"
 DEPEND=""

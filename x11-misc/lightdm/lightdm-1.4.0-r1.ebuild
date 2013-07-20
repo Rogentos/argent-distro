@@ -10,7 +10,7 @@ HOMEPAGE="http://www.freedesktop.org/wiki/Software/LightDM"
 LICENSE="GPL-3 LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="+gtk +introspection kde qt4 razor"
+IUSE="debug_grade_1 +gtk +introspection kde qt4 razor"
 REQUIRED_USE="|| ( gtk kde razor )"
 
 COMMON_DEPEND="~x11-misc/lightdm-base-${PV}[introspection=]

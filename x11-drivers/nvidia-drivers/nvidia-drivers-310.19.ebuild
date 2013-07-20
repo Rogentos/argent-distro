@@ -22,7 +22,7 @@ SRC_URI="x86? ( ftp://download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_PACKA
 LICENSE="NVIDIA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86 ~amd64-fbsd ~x86-fbsd"
-IUSE="acpi custom-cflags multilib x-multilib kernel_FreeBSD kernel_linux pax_kernel tools X"
+IUSE="debug_grade_1 acpi custom-cflags multilib x-multilib kernel_FreeBSD kernel_linux pax_kernel tools X"
 RESTRICT="strip"
 
 DEPEND="kernel_linux? ( virtual/linux-sources )"
@@ -144,6 +144,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	if use kernel_linux; then
 		linux-mod_src_install
 	elif use kernel_FreeBSD; then

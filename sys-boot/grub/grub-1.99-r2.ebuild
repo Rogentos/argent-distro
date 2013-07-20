@@ -25,7 +25,7 @@ HOMEPAGE="http://www.gnu.org/software/grub/"
 LICENSE="GPL-3"
 SLOT="2"
 [[ ${PV} != "9999" ]] && KEYWORDS="~amd64 ~x86 ~mips ~ppc ~ppc64"
-IUSE="custom-cflags debug +device-mapper nls static sdl +truetype"
+IUSE="debug_grade_1 custom-cflags debug +device-mapper nls static sdl +truetype"
 
 GRUB_PLATFORMS="coreboot efi-32 efi-64 emu ieee1275 multiboot pc yeeloong"
 # everywhere:
@@ -158,6 +158,9 @@ grub_src_compile() {
 }
 
 grub_src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	default_src_install
 }
 
@@ -224,6 +227,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	local i
 
 	for i in ${GRUB_ENABLED_PLATFORMS}; do

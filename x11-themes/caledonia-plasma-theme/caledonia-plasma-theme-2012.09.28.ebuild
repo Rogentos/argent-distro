@@ -13,7 +13,7 @@ SRC_URI="mirror://sourceforge/caledonia/${MY_PN}%20%28Plasma-KDE%20Theme%29/${MY
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="branding"
+IUSE="debug_grade_1 branding"
 
 DEPEND=""
 RDEPEND="${DEPEND}"
@@ -29,6 +29,9 @@ src_prepare() {
 
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	insinto /usr/share/apps/desktoptheme
 	doins -r "${S}"
 }

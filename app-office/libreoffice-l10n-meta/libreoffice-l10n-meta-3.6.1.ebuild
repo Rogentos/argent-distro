@@ -11,7 +11,7 @@ KEYWORDS="~amd64 ~x86"
 SRC_URI=""
 RDEPEND=""
 DEPEND=""
-IUSE=""
+IUSE="debug_grade_1 "
 
 SPELL_DIRS="af bg ca cs cy da de el en eo es et fo fr ga gl he hr hu ia id it \
 ku lt lv mi mk nb nl pl pt ro ru sk sl sv sw tn uk zu"

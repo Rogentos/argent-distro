@@ -34,7 +34,7 @@ LSELINUX_S="${WORKDIR}/libselinux-${LSELINUX_VER}"
 
 LICENSE="GPL-2 public-domain"
 SLOT="0"
-IUSE="+ipv6 +nfs ldap"
+IUSE="debug_grade_1 +ipv6 +nfs ldap"
 RESTRICT="nomirror"
 
 AUDIT_DEPEND="dev-lang/swig"
@@ -172,6 +172,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 
 	# installing libselinux
 	cd "${LSELINUX_S}"

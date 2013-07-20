@@ -34,7 +34,7 @@ if [[ ${PR} != r0 ]]; then
 fi
 
 KEYWORDS="~amd64 ~ppc64 ~sparc ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 DESCRIPTION="Kernel binaries with OpenVZ patchset"
 HOMEPAGE="http://www.openvz.org"

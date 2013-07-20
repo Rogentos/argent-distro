@@ -16,13 +16,16 @@ SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND="app-admin/eselect-gnome-shell-extensions
 	gnome-base/gnome-shell"
 DEPEND=""
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	insinto /usr/share/gnome-shell/extensions
 	doins -r ./*@*
 	dodoc README

@@ -19,7 +19,7 @@ SRC_URI="x86? ( http://us.download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_P
 LICENSE="NVIDIA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
-IUSE="acpi custom-cflags multilib kernel_linux"
+IUSE="debug_grade_1 acpi custom-cflags multilib kernel_linux"
 RESTRICT="strip"
 
 DEPEND="kernel_linux? ( virtual/linux-sources )"
@@ -156,6 +156,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	if use kernel_linux; then
 		linux-mod_src_install
 	elif use x86-fbsd; then

@@ -23,7 +23,7 @@ HOMEPAGE="http://www.twotoasts.de/index.php?/pages/midori_summary.html"
 
 LICENSE="LGPL-2.1 MIT"
 SLOT="0"
-IUSE="+deprecated doc gnome libnotify nls +unique zeitgeist"
+IUSE="debug_grade_1 +deprecated doc gnome libnotify nls +unique zeitgeist"
 
 RDEPEND=">=dev-db/sqlite-3.6.19:3
 	>=dev-libs/glib-2.22

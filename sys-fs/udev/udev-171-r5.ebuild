@@ -38,7 +38,7 @@ HOMEPAGE="http://www.kernel.org/pub/linux/utils/kernel/hotplug/udev/udev.html ht
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="build selinux test debug +rule_generator hwdb acl gudev introspection
+IUSE="debug_grade_1 build selinux test debug +rule_generator hwdb acl gudev introspection
 	keymap floppy edd action_modeswitch extras"
 
 COMMON_DEPEND="selinux? ( sys-libs/libselinux )
@@ -233,6 +233,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	into /
 	emake DESTDIR="${D}" install
 

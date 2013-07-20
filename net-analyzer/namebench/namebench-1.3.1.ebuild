@@ -16,7 +16,7 @@ SRC_URI="http://namebench.googlecode.com/files/${P}-source.tgz"
 LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="X"
+IUSE="debug_grade_1 X"
 
 # python.eclass checks dev-lang/python[tk] dependency during build time
 # adding a dev-lang/python-tk dependency for Sabayon
@@ -42,6 +42,9 @@ src_prepare() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	distutils_src_install --install-data=/usr/share
 
 	dosym ${PN}.py /usr/bin/${PN} || die

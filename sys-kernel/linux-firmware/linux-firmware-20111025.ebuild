@@ -15,7 +15,7 @@ HOMEPAGE="http://www.kernel.org/pub/linux/kernel/people/dwmw2/firmware"
 LICENSE="GPL-1 GPL-2 GPL-3 BSD freedist"
 KEYWORDS="~amd64 ~arm ~x86"
 SLOT="0"
-IUSE="savedconfig"
+IUSE="debug_grade_1 savedconfig"
 
 DEPEND=""
 RDEPEND="!savedconfig? (
@@ -63,6 +63,9 @@ src_prepare() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	save_config ${PN}.conf
 	rm ${PN}.conf || die
 	insinto /lib/firmware/

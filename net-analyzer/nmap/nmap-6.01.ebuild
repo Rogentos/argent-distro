@@ -16,7 +16,7 @@ SRC_URI="http://nmap.org/dist/${MY_P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="gtk lua ncat ndiff nmap-update nping ssl"
+IUSE="debug_grade_1 gtk lua ncat ndiff nmap-update nping ssl"
 
 DEPEND="dev-libs/libpcre
 	net-libs/libpcap
@@ -61,6 +61,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	LC_ALL=C emake DESTDIR="${D}" -j1 STRIP=: nmapdatadir="${EPREFIX}"/usr/share/nmap install
 	if use nmap-update;then
 		LC_ALL=C emake DESTDIR="${D}" -j1 STRIP=: \

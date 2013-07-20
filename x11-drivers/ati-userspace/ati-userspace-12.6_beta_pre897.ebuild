@@ -18,7 +18,7 @@ else
 	SRC_URI="http://www2.ati.com/drivers/legacy/amd-driver-installer-12.6-legacy-x86.x86_64.zip"
 	FOLDER_PREFIX="common/"
 fi
-IUSE="debug multilib static-libs"
+IUSE="debug_grade_1 debug multilib static-libs"
 
 LICENSE="AMD GPL-2 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -207,6 +207,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# We can do two things here, and neither of them is very nice.
 
 	# For direct rendering libGL has to be able to load one or more

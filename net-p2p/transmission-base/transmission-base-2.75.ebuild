@@ -7,13 +7,16 @@ inherit transmission-2.75
 
 DESCRIPTION="A Fast, Easy and Free BitTorrent client - base files"
 KEYWORDS="~amd64 ~x86"
-IUSE="lightweight xfs"
+IUSE="debug_grade_1 lightweight xfs"
 
 DEPEND="xfs? ( sys-fs/xfsprogs )"
 
 DOCS="AUTHORS NEWS"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	default
 	rm "${ED}"/usr/share/${MY_PN}/web/LICENSE || die
 

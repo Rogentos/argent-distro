@@ -14,7 +14,7 @@ SRC_URI="http://www.xsane.org/download/${MY_P}.tar.gz
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="nls"
+IUSE="debug_grade_1 nls"
 
 RDEPEND="media-gfx/sane-backends
 	=media-gfx/xsane-${PV}[-gimp]
@@ -41,6 +41,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# link xsane so it is seen as a plugin in gimp
 	local plugindir
 	if [ -x /usr/bin/gimptool ]; then

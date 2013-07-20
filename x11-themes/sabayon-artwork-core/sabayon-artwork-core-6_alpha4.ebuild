@@ -11,7 +11,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE=""
+IUSE="debug_grade_1 "
 RDEPEND="sys-apps/findutils
 	!<sys-boot/grub-0.97-r22
 "
@@ -19,6 +19,9 @@ RDEPEND="sys-apps/findutils
 S="${WORKDIR}/${PN}"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# Gensplash theme
 	cd ${S}/gensplash
 	dodir /etc/splash/sabayon

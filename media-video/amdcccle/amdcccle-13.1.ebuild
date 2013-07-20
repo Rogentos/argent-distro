@@ -14,7 +14,7 @@ DRIVERS_URI="http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${P
 XVBA_SDK_URI="http://developer.amd.com.php53-23.ord1-1.websitetestlink.com/wordpress/media/2012/10/xvba-sdk-0.74-404001.tar.gz"
 SRC_URI="${DRIVERS_URI} ${XVBA_SDK_URI}"
 FOLDER_PREFIX="common/"
-IUSE=""
+IUSE="debug_grade_1 "
 
 LICENSE="QPL-1.0 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -58,6 +58,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	insinto /usr/share
 	doins -r ${FOLDER_PREFIX}usr/share/ati
 	insinto /usr/share/pixmaps

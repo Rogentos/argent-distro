@@ -11,7 +11,7 @@ inherit sabayon-kernel
 KEYWORDS="~arm"
 DESCRIPTION="Sabayon Efika MX Legacy Linux Kernel sources"
 RESTRICT="mirror"
-IUSE="sources_standalone"
+IUSE="debug_grade_1 sources_standalone"
 
 DEPEND="${DEPEND}
 	sources_standalone? ( !=sys-kernel/linux-efikamx-${PVR} )

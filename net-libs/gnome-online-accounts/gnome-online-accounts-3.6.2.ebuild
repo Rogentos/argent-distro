@@ -12,7 +12,7 @@ HOMEPAGE="https://live.gnome.org/GnomeOnlineAccounts"
 
 LICENSE="LGPL-2"
 SLOT="0"
-IUSE="gnome +introspection kerberos"
+IUSE="debug_grade_1 gnome +introspection kerberos"
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sparc ~x86"
 
 # pango used in goaeditablelabel

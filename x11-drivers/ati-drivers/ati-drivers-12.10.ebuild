@@ -12,7 +12,7 @@ MY_V=( $(get_version_components) )
 #RUN="${WORKDIR}/amd-driver-installer-9.00-x86.x86_64.run"
 SRC_URI="http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${PV}-x86.x86_64.zip"
 FOLDER_PREFIX="common/"
-IUSE="debug multilib x-multilib pax_kernel"
+IUSE="debug_grade_1 debug multilib x-multilib pax_kernel"
 
 LICENSE="AMD GPL-2 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -221,6 +221,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	linux-mod_src_install
 }
 

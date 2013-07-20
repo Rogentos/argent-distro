@@ -7,7 +7,7 @@ inherit eutils transmission-2.75
 
 DESCRIPTION="A Fast, Easy and Free BitTorrent client - Qt4 UI"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND="x11-libs/qt-core:4
 	x11-libs/qt-gui:4[dbus]
@@ -15,6 +15,9 @@ RDEPEND="x11-libs/qt-core:4
 DEPEND="${RDEPEND}"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	pushd qt >/dev/null
 	dodoc README.txt
 

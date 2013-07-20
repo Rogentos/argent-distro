@@ -12,7 +12,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 RDEPEND="x11-themes/sabayon-artwork-core"
 
 S="${WORKDIR}/${PN}"

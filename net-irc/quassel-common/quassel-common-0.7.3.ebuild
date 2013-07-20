@@ -20,7 +20,7 @@ MY_P=${P/-common}
 LICENSE="GPL-3"
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
-IUSE="kde"
+IUSE="debug_grade_1 kde"
 
 RDEPEND="kde? ( >=kde-base/oxygen-icons-${KDE_MINIMAL} )"
 DEPEND="${RDEPEND}
@@ -39,6 +39,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# cmake-utils_src_install
 
 	local mypath

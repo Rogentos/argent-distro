@@ -19,7 +19,7 @@ SRC_URI="http://commondatastorage.googleapis.com/chromium-browser-official/${P}.
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="bindist cups gnome gnome-keyring kerberos pulseaudio selinux tcmalloc"
+IUSE="debug_grade_1 bindist cups gnome gnome-keyring kerberos pulseaudio selinux tcmalloc"
 
 RDEPEND="app-arch/bzip2
 	cups? (
@@ -420,6 +420,9 @@ src_test() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	exeinto "${CHROMIUM_HOME}"
 	doexe out/Release/chrome || die
 

@@ -17,7 +17,7 @@ SRC_URI="http://${PN}.googlecode.com/files/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND="app-cdr/cdrdao
 	app-cdr/dvd+rw-tools
@@ -40,6 +40,9 @@ DEPEND="app-text/txt2tags"
 DOCS="AUTHORS ChangeLog README"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	distutils_src_install
 
 	# punt at least .install.log

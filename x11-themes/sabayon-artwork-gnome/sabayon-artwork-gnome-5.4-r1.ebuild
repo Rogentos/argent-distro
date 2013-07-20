@@ -9,7 +9,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE=""
+IUSE="debug_grade_1 "
 RESTRICT="nomirror"
 # Need to make sure its not going cause a collision
 DEPEDND="!!x11-themes/gnome-colors-themes"
@@ -32,6 +32,9 @@ src_compile() {
 
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	dodir /usr/share/themes
 	dodir /usr/share/gdm/themes
 

@@ -11,7 +11,7 @@ HOMEPAGE="http://www.kde.org/"
 LICENSE="GPL-2"
 
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 # ignored: ca@valencia
 MY_LANGS="ar bg ca cs da de el en_GB es et eu fi fr ga gl 
@@ -22,7 +22,7 @@ DEPEND=""
 RDEPEND="${DEPEND}
 	!kde-base/kde-l10n-meta"
 for MY_LANG in ${MY_LANGS} ; do
-	IUSE="${IUSE} linguas_${MY_LANG}"
+	IUSE="debug_grade_1 ${IUSE} linguas_${MY_LANG}"
 	RDEPEND="${RDEPEND}
 		linguas_${MY_LANG}? ( $(add_kdebase_dep kde-l10n-${MY_LANG}) )"
 done

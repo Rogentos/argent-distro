@@ -12,7 +12,7 @@ MY_V=( $(get_version_components) )
 #RUN="${WORKDIR}/amd-driver-installer-9.00-x86.x86_64.run"
 SRC_URI="http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${PV}-x86.x86_64.zip"
 FOLDER_PREFIX="common/"
-IUSE=""
+IUSE="debug_grade_1 "
 
 LICENSE="QPL-1.0 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -48,6 +48,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	insinto /usr/share
 	doins -r ${FOLDER_PREFIX}usr/share/ati
 	insinto /usr/share/pixmaps

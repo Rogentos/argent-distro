@@ -14,7 +14,7 @@ HOMEPAGE="http://live.gnome.org/Nautilus"
 LICENSE="GPL-2 LGPL-2 FDL-1.1"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux"
-IUSE="doc exif gnome +introspection packagekit +previewer sendto tracker xmp"
+IUSE="debug_grade_1 doc exif gnome +introspection packagekit +previewer sendto tracker xmp"
 
 # Require {glib,gdbus-codegen}-2.30.0 due to GDBus API changes between 2.29.92
 # and 2.30.0

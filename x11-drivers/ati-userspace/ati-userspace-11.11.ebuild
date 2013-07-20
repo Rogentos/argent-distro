@@ -17,7 +17,7 @@ else
 	SRC_URI="https://launchpad.net/ubuntu/natty/+source/fglrx-installer/2:${PV}-0ubuntu1/+files/fglrx-installer_${PV}.orig.tar.gz"
 	FOLDER_PREFIX=""
 fi
-IUSE="debug multilib opencl"
+IUSE="debug_grade_1 debug multilib opencl"
 
 LICENSE="AMD GPL-2 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -195,6 +195,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# We can do two things here, and neither of them is very nice.
 
 	# For direct rendering libGL has to be able to load one or more

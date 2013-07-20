@@ -12,7 +12,7 @@ SRC_URI="http://dbus.freedesktop.org/releases/dbus/${P}.tar.gz"
 LICENSE="|| ( AFL-2.1 GPL-2 )"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~x86-linux"
-IUSE="debug doc selinux static-libs systemd test X"
+IUSE="debug_grade_1 debug doc selinux static-libs systemd test X"
 
 RDEPEND=">=dev-libs/expat-2
 	selinux? (
@@ -150,6 +150,9 @@ src_test() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	newinitd "${FILESDIR}"/dbus.initd dbus
 
 	if use X; then

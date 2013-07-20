@@ -16,7 +16,7 @@ SRC_URI="http://nmap.org/dist/${MY_P/zenmap/nmap}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 DEPEND=">=x11-libs/gtk+-2.6:2
 		>=dev-python/pygtk-2.6
@@ -60,6 +60,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake DESTDIR="${D}" install-zenmap || die
 	doicon "${FILESDIR}/nmap-logo-64.png"
 }

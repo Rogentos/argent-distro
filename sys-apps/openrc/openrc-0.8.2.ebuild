@@ -20,7 +20,7 @@ HOMEPAGE="http://www.gentoo.org/proj/en/base/openrc/"
 
 LICENSE="BSD-2"
 SLOT="0"
-IUSE="debug elibc_glibc ncurses pam selinux unicode kernel_linux kernel_FreeBSD"
+IUSE="debug_grade_1 debug elibc_glibc ncurses pam selinux unicode kernel_linux kernel_FreeBSD"
 
 RDEPEND="virtual/init
 	kernel_FreeBSD? ( sys-process/fuser-bsd )
@@ -107,6 +107,9 @@ set_config_yes_no() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	make_args
 	emake ${MAKE_ARGS} DESTDIR="${D}" install || die
 

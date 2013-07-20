@@ -21,7 +21,7 @@ S="${WORKDIR}/${MY_SVN_P}"
 LICENSE="Subversion"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="berkdb debug +dso nls sasl +webdav-neon webdav-serf"
+IUSE="debug_grade_1 berkdb debug +dso nls sasl +webdav-neon webdav-serf"
 # w/o: apache2 ctypes-python doc extras gnome-keyring java kde perl python ruby
 # vim-syntax
 
@@ -208,6 +208,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake DESTDIR="${D}" install-mods-shared || die
 
 	# Install Apache module configuration.

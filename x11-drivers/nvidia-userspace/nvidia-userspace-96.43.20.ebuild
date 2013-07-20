@@ -19,7 +19,7 @@ SRC_URI="x86? ( ftp://download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_PACKA
 LICENSE="NVIDIA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
-IUSE="multilib kernel_linux"
+IUSE="debug_grade_1 multilib kernel_linux"
 RESTRICT="strip"
 EMULTILIB_PKG="true"
 
@@ -206,6 +206,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	if use kernel_linux; then
 		VIDEOGROUP="$(egetent group video | cut -d ':' -f 3)"
 		if [ -z "$VIDEOGROUP" ]; then

@@ -20,7 +20,7 @@ SRC_URI="https://github.com/linuxmint/Cinnamon/tarball/${MY_PV} -> ${MY_P}.tar.g
 
 LICENSE="GPL-2+"
 SLOT="0"
-IUSE="+bluetooth +networkmanager"
+IUSE="debug_grade_1 +bluetooth +networkmanager"
 KEYWORDS="~amd64 ~x86"
 
 # gnome-desktop-2.91.2 is needed due to header changes, db82a33 in gnome-desktop
@@ -187,6 +187,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	gnome2_src_install
 	python_optimize "${ED}usr/$(get_libdir)/cinnamon-"{settings,menu-editor}
 	# Fix broken shebangs

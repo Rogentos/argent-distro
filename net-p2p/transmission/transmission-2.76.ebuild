@@ -11,7 +11,7 @@ SRC_URI=""
 
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="ayatana gtk lightweight qt4 xfs"
+IUSE="debug_grade_1 ayatana gtk lightweight qt4 xfs"
 
 RDEPEND="
 	~net-p2p/transmission-base-${PV}[lightweight=,xfs=]

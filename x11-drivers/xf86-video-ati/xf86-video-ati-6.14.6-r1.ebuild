@@ -11,7 +11,7 @@ inherit xorg-2
 DESCRIPTION="ATI video driver"
 
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND=">=x11-libs/libdrm-2.4.36[video_cards_radeon]"
 DEPEND="${RDEPEND}"

@@ -12,7 +12,7 @@ HOMEPAGE="http://fileroller.sourceforge.net/"
 
 LICENSE="GPL-2+"
 SLOT="0"
-IUSE=""
+IUSE="debug_grade_1 "
 KEYWORDS="~amd64 ~x86"
 
 RDEPEND="
@@ -47,6 +47,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cd nautilus || die
 	emake DESTDIR="${D}" install
 	find "${D}" -name '*.la' -exec rm -f {} + || die "la file removal failed"

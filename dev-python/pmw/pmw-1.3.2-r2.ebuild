@@ -18,7 +18,7 @@ SRC_URI="mirror://sourceforge/${PN}/${MY_P}.tar.gz"
 LICENSE="BSD"
 SLOT="0"
 KEYWORDS="alpha amd64 ia64 ppc sparc x86 ~amd64-linux ~x86-linux"
-IUSE="doc examples"
+IUSE="debug_grade_1 doc examples"
 
 DEPEND="dev-lang/python-tk"
 RDEPEND=""
@@ -35,6 +35,9 @@ src_prepare() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	distutils_src_install
 
 	local DIR="${PYTHON_MODNAME}/Pmw_1_3"

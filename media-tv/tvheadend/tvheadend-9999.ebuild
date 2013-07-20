@@ -22,7 +22,7 @@ HOMEPAGE="http://www.lonelycoder.com/hts/"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="amd64 ~x86"
-IUSE="avahi xmltv"
+IUSE="debug_grade_1 avahi xmltv"
 
 DEPEND="virtual/linuxtv-dvb-headers"
 
@@ -61,6 +61,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
     emake DESTDIR="${D}" install || die "Install failed!"
 
     dodoc ChangeLog README

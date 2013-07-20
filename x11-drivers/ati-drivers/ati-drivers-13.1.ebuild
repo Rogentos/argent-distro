@@ -14,7 +14,7 @@ DRIVERS_URI="http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${P
 XVBA_SDK_URI="http://developer.amd.com.php53-23.ord1-1.websitetestlink.com/wordpress/media/2012/10/xvba-sdk-0.74-404001.tar.gz"
 SRC_URI="${DRIVERS_URI} ${XVBA_SDK_URI}"
 FOLDER_PREFIX="common/"
-IUSE="debug multilib x-multilib pax_kernel disable-watermark"
+IUSE="debug_grade_1 debug multilib x-multilib pax_kernel disable-watermark"
 
 LICENSE="AMD GPL-2 QPL-1.0"
 KEYWORDS="-* ~amd64 ~x86"
@@ -239,6 +239,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	linux-mod_src_install
 }
 

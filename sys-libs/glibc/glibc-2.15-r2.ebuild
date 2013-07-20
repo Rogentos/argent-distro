@@ -37,7 +37,7 @@ PATCH_VER="21"                                 # Gentoo patchset
 PORTS_VER=${RELEASE_VER}                       # version of glibc ports addon
 NPTL_KERN_VER=${NPTL_KERN_VER:-"2.6.9"}        # min kernel version nptl requires
 
-IUSE="debug gd hardened multilib selinux profile vanilla crosscompile_opts_headers-only"
+IUSE="debug_grade_1 debug gd hardened multilib selinux profile vanilla crosscompile_opts_headers-only"
 [[ -n ${RELEASE_VER} ]] && S=${WORKDIR}/glibc-${RELEASE_VER}${SNAP_VER:+-${SNAP_VER}}
 
 # Here's how the cross-compile logic breaks down ...
@@ -165,7 +165,10 @@ eblit-run() {
 src_unpack()  { eblit-run src_unpack  ; }
 src_compile() { eblit-run src_compile ; }
 src_test()    { eblit-run src_test    ; }
-src_install() { eblit-run src_install ; }
+src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi eblit-run src_install ; }
 
 # FILESDIR might not be available during binpkg install
 for x in setup {pre,post}inst ; do

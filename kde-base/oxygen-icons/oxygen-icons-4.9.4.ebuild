@@ -27,7 +27,7 @@ SRC_URI="${SRC_URI} mirror://sabayon/x11-themes/fdo-icons-sabayon${SLREV}.tar.gz
 
 LICENSE="LGPL-3"
 KEYWORDS="~amd64 ~x86 ~arm ~amd64-linux ~x86-linux"
-IUSE="aqua bindist"
+IUSE="debug_grade_1 aqua bindist"
 
 DEPEND=""
 RDEPEND="${DEPEND}"

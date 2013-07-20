@@ -10,7 +10,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE="gtk ksplash"
+IUSE="debug_grade_1 gtk ksplash"
 RESTRICT="nomirror"
 RDEPEND="~x11-themes/sabayon-artwork-core-${PV}
 	|| ( >=kde-base/kwin-4.4.0 x11-themes/aurorae )
@@ -27,6 +27,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# KDM
 	dodir ${KDEDIR}/share/apps/kdm/themes
 	cd ${S}/kdm

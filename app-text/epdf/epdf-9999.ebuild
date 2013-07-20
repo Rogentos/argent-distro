@@ -7,7 +7,7 @@ inherit enlightenment
 
 DESCRIPTION="PDF viewer with widgets for Evas"
 KEYWORDS="~amd64 ~x86"
-IUSE="cjk poppler static-libs"
+IUSE="debug_grade_1 cjk poppler static-libs"
 
 LICENSE="GPL-2 || ( LGPL-3 )"
 

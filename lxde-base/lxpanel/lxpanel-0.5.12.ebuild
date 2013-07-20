@@ -13,7 +13,7 @@ SRC_URI="mirror://sourceforge/lxde/LXPanel%20%28desktop%20panel%29/LXPanel%20${P
 LICENSE="GPL-2"
 KEYWORDS="~alpha ~amd64 ~arm ~ppc ~x86 ~x86-interix ~amd64-linux ~x86-linux"
 SLOT="0"
-IUSE="+alsa wifi"
+IUSE="debug_grade_1 +alsa wifi"
 RESTRICT="test"  # bug 249598
 
 RDEPEND="x11-libs/gtk+:2

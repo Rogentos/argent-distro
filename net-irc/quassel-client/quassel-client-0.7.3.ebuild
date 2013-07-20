@@ -22,7 +22,7 @@ HOMEPAGE="http://quassel-irc.org/"
 LICENSE="GPL-3"
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
-IUSE="ayatana crypt dbus debug -kde -phonon +ssl webkit X"
+IUSE="debug_grade_1 ayatana crypt dbus debug -kde -phonon +ssl webkit X"
 
 GUI_RDEPEND="
 	>=x11-libs/qt-gui-${QT_MINIMAL}:4
@@ -67,6 +67,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cmake-utils_src_install
 
 	rm -rf "${ED}"usr/share/apps/

@@ -42,7 +42,7 @@ SRC_URI+=" mirror://sabayon/dev-vcs/git/git-1.7.12-optional-cvs.patch.bz2"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="doc"
+IUSE="debug_grade_1 doc"
 
 RDEPEND="~dev-vcs/git-${PV}[-subversion,perl]
 	dev-perl/Error
@@ -199,6 +199,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	git_emake install || die "make install failed"
 
 	rm -r "${ED}"usr/share/gitweb || die

@@ -4,7 +4,7 @@
 
 EAPI="3"
 
-IUSE="doc gtk"
+IUSE="debug_grade_1 doc gtk"
 COMMON_DEPEND="=net-dns/avahi-base-${PVR}[dbus]
 	>=dev-lang/mono-1.1.10
 	gtk? (
@@ -45,6 +45,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cd "${S}"/avahi-sharp || die
 	emake install DESTDIR="${D}" || die
 	if use gtk; then

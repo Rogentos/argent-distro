@@ -18,7 +18,7 @@ else
 	SRC_URI="http://www2.ati.com/drivers/legacy/amd-driver-installer-12.6-legacy-x86.x86_64.zip"
 	FOLDER_PREFIX="common/"
 fi
-IUSE="debug multilib pax_kernel"
+IUSE="debug_grade_1 debug multilib pax_kernel"
 
 LICENSE="AMD GPL-2 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -220,6 +220,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	linux-mod_src_install
 }
 

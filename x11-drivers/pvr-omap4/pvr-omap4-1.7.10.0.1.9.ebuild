@@ -17,7 +17,7 @@ LICENSE="TI"
 SLOT="0"
 KEYWORDS="arm"
 
-IUSE=""
+IUSE="debug_grade_1 "
 DEPEND="sys-libs/sgx-libs
 	<x11-base/xorg-server-1.11
 	x11-libs/libdrm"
@@ -32,6 +32,9 @@ src_prepare() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	exeinto /usr/lib/xorg/modules/drivers
 	doexe "${S}"/usr/lib/xorg/modules/drivers/pvr_drv.so
 }

@@ -6,7 +6,7 @@ EAPI="3"
 
 inherit multilib
 
-IUSE=""
+IUSE="debug_grade_1 "
 COMMON_DEPEND="=net-dns/avahi-base-${PVR}
 	x11-libs/qt-core:4"
 AVAHI_MODULE_DEPEND="${COMMON_DEPEND}"
@@ -36,6 +36,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cd "${S}"/avahi-qt || die
 	emake install DESTDIR="${D}" || die
 

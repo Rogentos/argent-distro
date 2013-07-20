@@ -4,7 +4,7 @@
 
 EAPI="3"
 
-IUSE="python utils dbus"
+IUSE="debug_grade_1 python utils dbus"
 COMMON_DEPEND="=net-dns/avahi-base-${PVR}[dbus=,python=]
 	>=x11-libs/gtk+-2.14.0:2
 	python? ( >=dev-python/pygtk-2 )"
@@ -42,6 +42,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cd "${S}"/avahi-ui || die
 	emake install py_compile=true DESTDIR="${D}" || die
 	if use python; then

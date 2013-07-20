@@ -22,7 +22,7 @@ SRC_URI="${SOL_URI}/${MY_PN}-${PV}.tar.bz2
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="amd64 x86"
-IUSE="extra-cardsets minimal +sound"
+IUSE="debug_grade_1 extra-cardsets minimal +sound"
 
 S=${WORKDIR}/${MY_PN}-${PV}
 
@@ -53,6 +53,9 @@ src_prepare() {
 src_compile() { :; }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	distutils_src_install
 
 	mv -vf "${D}"/usr/bin/pysol.py "${D}${GAMES_DATADIR}"/${PN} || die

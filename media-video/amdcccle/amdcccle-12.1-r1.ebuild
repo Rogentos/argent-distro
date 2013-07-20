@@ -17,7 +17,7 @@ else
 	SRC_URI="https://launchpad.net/ubuntu/natty/+source/fglrx-installer/2:${PV}-0ubuntu1/+files/fglrx-installer_${PV}.orig.tar.gz"
 	FOLDER_PREFIX=""
 fi
-IUSE=""
+IUSE="debug_grade_1 "
 
 LICENSE="QPL-1.0 as-is"
 KEYWORDS="~amd64 ~x86"
@@ -49,6 +49,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	insinto /usr/share
 	doins -r ${FOLDER_PREFIX}usr/share/ati
 	insinto /usr/share/pixmaps

@@ -11,7 +11,7 @@ RESTRICT="nomirror"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 ~arm x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND="media-tv/xbmc
 	>=app-misc/sabayonlive-tools-2.3-r12"

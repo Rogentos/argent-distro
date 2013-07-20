@@ -16,7 +16,7 @@ inherit sabayon-kernel
 
 DESCRIPTION="Full sources for a dom0/domU Linux kernel to run under Xen"
 HOMEPAGE="http://xen.org/"
-IUSE=""
+IUSE="debug_grade_1 "
 
 KEYWORDS="~x86 ~amd64"
 

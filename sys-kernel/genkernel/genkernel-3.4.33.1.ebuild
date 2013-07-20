@@ -56,7 +56,7 @@ HOMEPAGE="http://www.gentoo.org"
 LICENSE="GPL-2"
 SLOT="0"
 RESTRICT=""
-IUSE="crypt cryptsetup ibm selinux"  # Keep 'crypt' in to keep 'use crypt' below working!
+IUSE="debug_grade_1 crypt cryptsetup ibm selinux"  # Keep 'crypt' in to keep 'use crypt' below working!
 
 DEPEND="sys-fs/e2fsprogs
 	selinux? ( sys-libs/libselinux )"
@@ -94,6 +94,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# This block updates genkernel.conf
 	sed \
 		-e "s:VERSION_BUSYBOX:$VERSION_BUSYBOX:" \

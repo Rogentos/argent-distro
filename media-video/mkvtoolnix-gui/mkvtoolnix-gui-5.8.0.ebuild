@@ -13,7 +13,7 @@ SRC_URI="http://www.bunkus.org/videotools/mkvtoolnix/sources/${MY_P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~ppc64 ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
-IUSE="bzip2 debug lzo pch"
+IUSE="debug_grade_1 bzip2 debug lzo pch"
 
 RDEPEND="
 	>=dev-libs/libebml-1.2.2
@@ -90,6 +90,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	DESTDIR="${D}" ./drake -j$(makeopts_jobs) install || die
 
 	dodoc AUTHORS ChangeLog README TODO

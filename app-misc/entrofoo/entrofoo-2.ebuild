@@ -13,7 +13,7 @@ RESTRICT="nomirror"
 LICENSE="GPL-2"
 SLOT="1"
 KEYWORDS="~x86 ~amd64"
-IUSE=""
+IUSE="debug_grade_1 "
 
 RDEPEND=""
 DEPEND=""

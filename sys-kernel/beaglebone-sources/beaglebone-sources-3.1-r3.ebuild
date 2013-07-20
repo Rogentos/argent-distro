@@ -10,7 +10,7 @@ inherit sabayon-kernel
 KEYWORDS="~arm"
 DESCRIPTION="Sabayon BeagleBone OMAP3 Linux Kernel sources"
 RESTRICT="mirror"
-IUSE="sources_standalone"
+IUSE="debug_grade_1 sources_standalone"
 
 DEPEND="${DEPEND}"
 #	sources_standalone? ( !=sys-kernel/linux-beagleboard-${PVR} )

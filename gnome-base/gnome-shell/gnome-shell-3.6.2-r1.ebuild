@@ -14,7 +14,7 @@ HOMEPAGE="http://live.gnome.org/GnomeShell"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
-IUSE="+bluetooth +i18n +networkmanager systemd"
+IUSE="debug_grade_1 +bluetooth +i18n +networkmanager systemd"
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~x86"
 
 # libXfixes-5.0 needed for pointer barriers
@@ -141,6 +141,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	gnome2_src_install
 	python_replicate_script "${ED}/usr/bin/gnome-shell-extension-tool"
 	python_replicate_script "${ED}/usr/bin/gnome-shell-perf-tool"

@@ -13,7 +13,7 @@ SRC_URI="http://awesome.naquadah.org/download/${P}.tar.xz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86 ~x86-fbsd"
-IUSE="dbus doc elibc_FreeBSD gnome"
+IUSE="debug_grade_1 dbus doc elibc_FreeBSD gnome"
 
 COMMON_DEPEND=">=dev-lang/lua-5.1
 	>=dev-libs/libxdg-basedir-1
@@ -107,6 +107,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cmake-utils_src_install
 
 	if use doc ; then

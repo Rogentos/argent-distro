@@ -28,7 +28,7 @@ inherit kernel-2
 detect_version
 
 KEYWORDS="~amd64 ~ppc64 ~sparc ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 DESCRIPTION="Kernel sources with OpenVZ patchset"
 HOMEPAGE="http://www.openvz.org"

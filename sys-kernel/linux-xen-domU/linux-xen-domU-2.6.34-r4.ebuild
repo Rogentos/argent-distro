@@ -19,7 +19,7 @@ inherit sabayon-kernel
 
 DESCRIPTION="Xen domU Linux Kernel binaries suitable for running on Xen and Amazon EC2"
 HOMEPAGE="http://xen.org/"
-IUSE=""
+IUSE="debug_grade_1 "
 
 KEYWORDS="~x86 ~amd64"
 

@@ -15,7 +15,7 @@ SRC_URI="mirror://gnupg/${MY_PN}/${MY_P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~arm ~amd64 ~x86"
-IUSE="caps"
+IUSE="debug_grade_1 caps"
 
 RDEPEND="
 	~app-crypt/pinentry-base-${PV}
@@ -60,6 +60,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cd qt4 && emake DESTDIR="${D}" install
 }
 

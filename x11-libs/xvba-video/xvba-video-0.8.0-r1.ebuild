@@ -20,7 +20,7 @@ SLOT="0"
 # newline is needed for broken ekeyword
 [[ ${PV} = 9999 ]] || \
 KEYWORDS="~amd64 ~x86"
-IUSE="debug opengl"
+IUSE="debug_grade_1 debug opengl"
 
 RDEPEND="
 	>=x11-libs/libva-1.1.0[X,opengl?]
@@ -51,6 +51,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	default
 	prune_libtool_files --all
 }

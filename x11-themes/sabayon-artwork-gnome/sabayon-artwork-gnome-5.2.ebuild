@@ -9,7 +9,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE=""
+IUSE="debug_grade_1 "
 RESTRICT="nomirror"
 RDEPEND="~x11-themes/sabayon-artwork-core-${PV}
 	 x11-themes/gtk-engines
@@ -20,6 +20,9 @@ RDEPEND="~x11-themes/sabayon-artwork-core-${PV}
 S="${WORKDIR}/${PN}"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 
 	dodir /usr/share/themes
 	dodir /usr/share/gdm/themes

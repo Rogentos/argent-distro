@@ -15,7 +15,7 @@ SRC_URI="http://gnome-colors.googlecode.com/files/gnome-colors-${PV}.tar.gz
 LICENSE="GPL-2 public-domain"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="+branding"
+IUSE="debug_grade_1 +branding"
 
 RDEPEND="x11-themes/gnome-icon-theme"
 DEPEND=""
@@ -32,6 +32,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	dodir /usr/share/icons
 	insinto /usr/share/icons
 	doins -r "${WORKDIR}/${PN}" || die "Installing icons failed"

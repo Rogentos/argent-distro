@@ -12,7 +12,7 @@ inherit sabayon-kernel
 KEYWORDS="~amd64 ~x86"
 DESCRIPTION="Official Sabayon Linux Standard kernel sources"
 RESTRICT="mirror"
-IUSE="sources_standalone"
+IUSE="debug_grade_1 sources_standalone"
 
 DEPEND="${DEPEND}
 	sources_standalone? ( !=sys-kernel/linux-sabayon-${PVR} )

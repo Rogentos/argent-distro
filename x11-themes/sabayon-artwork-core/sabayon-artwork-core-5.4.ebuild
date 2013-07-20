@@ -9,7 +9,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE=""
+IUSE="debug_grade_1 "
 RESTRICT="nomirror"
 RDEPEND="!<=x11-themes/sabayonlinux-artwork-4
 	!<x11-themes/sabayon-artwork-4
@@ -20,6 +20,9 @@ RDEPEND="!<=x11-themes/sabayonlinux-artwork-4
 S="${WORKDIR}/${PN}"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# Gensplash theme
 	cd ${S}/gensplash
 	dodir /etc/splash/sabayon

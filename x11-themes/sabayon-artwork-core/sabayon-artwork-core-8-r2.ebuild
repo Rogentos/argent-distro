@@ -11,7 +11,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~arm ~x86 ~amd64"
-IUSE=""
+IUSE="debug_grade_1 "
 RDEPEND="sys-apps/findutils
 	!<sys-boot/grub-0.97-r22
 "
@@ -19,6 +19,9 @@ RDEPEND="sys-apps/findutils
 S="${WORKDIR}/${PN}"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# Fbsplash theme
 	cd ${S}/fbsplash
 	dodir /etc/splash/sabayon

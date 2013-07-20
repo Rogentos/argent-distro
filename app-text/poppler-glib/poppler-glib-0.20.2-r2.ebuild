@@ -13,7 +13,7 @@ SRC_URI="http://poppler.freedesktop.org/poppler-${PV}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~amd64-linux ~ia64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
-IUSE="+cairo +introspection doc"
+IUSE="debug_grade_1 +cairo +introspection doc"
 S="${WORKDIR}/poppler-${PV}"
 
 COMMON_DEPEND="dev-libs/glib:2
@@ -56,6 +56,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	( cd "${S}"/glib && base_src_install ) || die "cannot run base_src_install"
 
 	# install pkg-config data

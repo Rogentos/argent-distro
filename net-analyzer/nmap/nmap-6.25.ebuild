@@ -19,7 +19,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 
-IUSE="gtk ipv6 +lua ncat ndiff nls nmap-update nping ssl"
+IUSE="debug_grade_1 gtk ipv6 +lua ncat ndiff nls nmap-update nping ssl"
 
 # not used in split nmap ebuild, but retained for compatibility with Portage
 NMAP_LINGUAS="de es fr hr hu id it ja pl pt_BR pt_PT ro ru sk zh"
@@ -117,6 +117,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	LC_ALL=C emake -j1 \
 		DESTDIR="${D}" \
 		STRIP=: \

@@ -14,7 +14,7 @@ HOMEPAGE="http://live.gnome.org/GnomeShell"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="+bluetooth +networkmanager systemd"
+IUSE="debug_grade_1 +bluetooth +networkmanager systemd"
 KEYWORDS="~amd64 ~arm ~x86"
 
 # gnome-desktop-2.91.2 is needed due to header changes, db82a33 in gnome-desktop
@@ -153,6 +153,9 @@ src_prepare() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	gnome2_src_install
 	python_convert_shebangs 2 "${ED}/usr/bin/gnome-shell-extension-tool"
 

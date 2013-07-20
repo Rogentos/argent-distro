@@ -14,7 +14,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~sh ~x86"
 
-IUSE="accessibility audit +consolekit +fallback fprint +gnome-shell gnome-keyring +introspection ipv6 ldap plymouth selinux smartcard systemd tcpd test xinerama +xklavier"
+IUSE="debug_grade_1 accessibility audit +consolekit +fallback fprint +gnome-shell gnome-keyring +introspection ipv6 ldap plymouth selinux smartcard systemd tcpd test xinerama +xklavier"
 
 # NOTE: x11-base/xorg-server dep is for X_SERVER_PATH etc, bug #295686
 # nspr used by smartcard extension
@@ -190,6 +190,9 @@ src_prepare() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	gnome2_src_install
 
 	# Install the systemd unit file

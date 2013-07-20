@@ -18,7 +18,7 @@ http://www.kernel.org/pub/linux/kernel/projects/rt/${RT_PATCH}
 http://www.kernel.org/pub/linux/kernel/projects/rt/older/${RT_PATCH}"
 
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 src_unpack(){
 	kernel-2_src_unpack

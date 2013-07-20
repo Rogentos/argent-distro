@@ -10,7 +10,7 @@ PYTHON_USE_WITH="gdbm"
 PYTHON_USE_WITH_OPT="python"
 
 DBUS_DEPEND=">=sys-apps/dbus-0.30"
-IUSE="autoipd bookmarks dbus doc gdbm howl-compat introspection ipv6
+IUSE="debug_grade_1 autoipd bookmarks dbus doc gdbm howl-compat introspection ipv6
 	mdnsresponder-compat python test"
 COMMON_DEPEND=">=dev-libs/libdaemon-0.14
 	dev-libs/expat
@@ -112,6 +112,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake install py_compile=true DESTDIR="${D}" || die "make install failed"
 	use bookmarks || rm -f "${D}"/usr/bin/avahi-bookmarks
 

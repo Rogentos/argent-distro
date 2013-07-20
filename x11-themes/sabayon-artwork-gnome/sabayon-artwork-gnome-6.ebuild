@@ -12,7 +12,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${PN}-6_beta3.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 RDEPEND="~x11-themes/sabayon-artwork-core-6
 	x11-themes/equinox-themes
 	x11-themes/elementary-icon-theme[monochrome,branding]"
@@ -20,6 +20,9 @@ RDEPEND="~x11-themes/sabayon-artwork-core-6
 S="${WORKDIR}/${PN}"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	dodir /usr/share/themes
 	dodir /usr/share/gdm/themes
 

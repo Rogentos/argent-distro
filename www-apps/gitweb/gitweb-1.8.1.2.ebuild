@@ -32,7 +32,7 @@ fi
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="highlight"
+IUSE="debug_grade_1 highlight"
 
 # Common to both DEPEND and RDEPEND
 CDEPEND="
@@ -119,6 +119,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	#if use perl && use cgi ; then
 	# dosym /usr/share/gitweb /usr/share/${PN}/gitweb
 

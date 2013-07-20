@@ -34,7 +34,7 @@ inherit sabayon-kernel
 MY_PN="vserver-patches"
 
 KEYWORDS="~amd64 ~hppa ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 
 DESCRIPTION="Full sources including Gentoo and Linux-VServer patchsets for the ${KV_MAJOR}.${KV_MINOR} kernel tree."
 HOMEPAGE="http://www.gentoo.org/proj/en/vps/"

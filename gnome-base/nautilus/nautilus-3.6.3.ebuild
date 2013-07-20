@@ -14,7 +14,7 @@ HOMEPAGE="http://live.gnome.org/Nautilus"
 LICENSE="GPL-2+ LGPL-2+ FDL-1.1"
 SLOT="0"
 # profiling?
-IUSE="debug exif gnome +introspection packagekit +previewer sendto tracker xmp"
+IUSE="debug_grade_1 debug exif gnome +introspection packagekit +previewer sendto tracker xmp"
 KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sh ~x86 ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux"
 
 # FIXME: tests fails under Xvfb, but pass when building manually

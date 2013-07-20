@@ -10,7 +10,7 @@ inherit xorg-2
 DESCRIPTION="ATI video driver"
 
 KEYWORDS="~alpha amd64 ~ia64 ~ppc ~ppc64 ~sparc x86"
-IUSE="glamor udev"
+IUSE="debug_grade_1 glamor udev"
 
 RDEPEND=">=x11-libs/libdrm-2.4.36[video_cards_radeon]
 	glamor? ( x11-libs/glamor )

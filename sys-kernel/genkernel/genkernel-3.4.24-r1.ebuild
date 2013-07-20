@@ -59,7 +59,7 @@ HOMEPAGE="http://www.gentoo.org"
 LICENSE="GPL-2"
 SLOT="0"
 RESTRICT=""
-IUSE="ibm selinux"
+IUSE="debug_grade_1 ibm selinux"
 
 DEPEND="sys-fs/e2fsprogs
 	selinux? ( sys-libs/libselinux )"
@@ -90,6 +90,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# This block updates genkernel.conf
 	sed \
 		-e "s:VERSION_BUSYBOX:$VERSION_BUSYBOX:" \

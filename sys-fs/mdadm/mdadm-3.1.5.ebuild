@@ -11,7 +11,7 @@ SRC_URI="mirror://kernel/linux/utils/raid/mdadm/${P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86"
-IUSE="static"
+IUSE="debug_grade_1 static"
 
 DEPEND=""
 RDEPEND=">=sys-apps/util-linux-2.16"
@@ -53,6 +53,9 @@ src_test() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake DESTDIR="${D}" install || die
 	into /
 	dosbin mdassemble || die

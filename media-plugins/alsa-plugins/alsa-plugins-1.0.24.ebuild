@@ -15,7 +15,7 @@ SRC_URI="mirror://alsaproject/plugins/${MY_P}.tar.bz2"
 LICENSE="GPL-2 LGPL-2.1"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~ppc ~ppc64 ~sh ~sparc ~x86"
-IUSE="debug ffmpeg jack libsamplerate pulseaudio speex"
+IUSE="debug_grade_1 debug ffmpeg jack libsamplerate pulseaudio speex"
 
 RDEPEND=">=media-libs/alsa-lib-${PV}[alsa_pcm_plugins_ioplug]
 	ffmpeg? ( virtual/ffmpeg
@@ -72,6 +72,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake DESTDIR="${D}" install
 
 	cd "${S}/doc"

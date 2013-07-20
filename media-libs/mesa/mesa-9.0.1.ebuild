@@ -45,7 +45,7 @@ for card in ${VIDEO_CARDS}; do
 	IUSE_VIDEO_CARDS+=" video_cards_${card}"
 done
 
-IUSE="${IUSE_VIDEO_CARDS}
+IUSE="debug_grade_1 ${IUSE_VIDEO_CARDS}
 	bindist +classic debug +egl g3dvl +gallium gbm gles1 gles2 +llvm +nptl
 	openvg osmesa pax_kernel pic r600-llvm-compiler selinux +shared-glapi vdpau
 	wayland xvmc xa xorg kernel_FreeBSD"
@@ -274,6 +274,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	base_src_install
 
 	find "${ED}" -name '*.la' -exec rm -f {} + || die

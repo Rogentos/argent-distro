@@ -19,7 +19,7 @@ fi
 
 LICENSE="BSD-2"
 SLOT="0"
-IUSE="debug elibc_glibc ncurses pam newnet prefix selinux static-libs unicode
+IUSE="debug_grade_1 debug elibc_glibc ncurses pam newnet prefix selinux static-libs unicode
 	kernel_linux kernel_FreeBSD"
 
 RDEPEND="virtual/init
@@ -104,6 +104,9 @@ set_config_yes_no() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake ${MAKE_ARGS} DESTDIR="${D}" install
 
 	# move the shared libs back to /usr so ldscript can install

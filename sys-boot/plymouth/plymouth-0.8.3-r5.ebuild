@@ -16,7 +16,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~x86"
 
 IUSE_VIDEO_CARDS="video_cards_intel video_cards_nouveau video_cards_radeon"
-IUSE="${IUSE_VIDEO_CARDS} gdm +openrc +pango static-libs"
+IUSE="debug_grade_1 ${IUSE_VIDEO_CARDS} gdm +openrc +pango static-libs"
 
 COMMON_DEPEND=">=media-libs/libpng-1.2.16
 	>=x11-libs/gtk+-2.12:2
@@ -59,6 +59,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	autotools-utils_src_install
 
 	if use static-libs; then

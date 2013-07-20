@@ -9,7 +9,7 @@ LICENSE="AS-IS"
 SLOT="0"
 KEYWORDS="amd64 x86"
 
-IUSE=""
+IUSE="debug_grade_1 "
 DEPEND=">=sys-apps/hotplug-20040923
 	>=net-wireless/b43-fwcutter-011"
 S="${WORKDIR}/broadcom-wl-${PV}"
@@ -23,6 +23,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	FWDIR="${D}/lib/firmware"
 	dodir /lib/firmware
 	cd ${S}/driver || die "failed to cd into driver directory"

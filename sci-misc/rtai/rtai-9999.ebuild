@@ -16,7 +16,7 @@ ECVS_USERNAME="anonymous"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug +fpu +testsuite doc compat +static-inline extern-inline +diag-tsc-sync +master-tsc-cpu +tune-tsc-sync sched-lock-isr +rtc-freq long-timed-lists +sched-8254-latency +sched-apic-latency +sched-lxrt-numslots +lxrt-use-linux-syscall  align-priority +cal-freq-fact +bits +fifos +netrpc netrpc-rtnet +shm +sem rt-poll rt-poll-on-stack +msg +mbx +tbx +tasklets +mq +math math-c99 +malloc malloc-tlsf +malloc-vmalloc +malloc-heap-size +kstack-heap-size task-switch-signal trace +usi +watchdog leds comedi-lxrt comedi-lock cplusplus +rtdm +rtdm-fd-max +rtdm-shirq +rtdm-select +serial +16550a rtailab ktasks-sched-lxrt"
+IUSE="debug_grade_1 debug +fpu +testsuite doc compat +static-inline extern-inline +diag-tsc-sync +master-tsc-cpu +tune-tsc-sync sched-lock-isr +rtc-freq long-timed-lists +sched-8254-latency +sched-apic-latency +sched-lxrt-numslots +lxrt-use-linux-syscall  align-priority +cal-freq-fact +bits +fifos +netrpc netrpc-rtnet +shm +sem rt-poll rt-poll-on-stack +msg +mbx +tbx +tasklets +mq +math math-c99 +malloc malloc-tlsf +malloc-vmalloc +malloc-heap-size +kstack-heap-size task-switch-signal trace +usi +watchdog leds comedi-lxrt comedi-lock cplusplus +rtdm +rtdm-fd-max +rtdm-shirq +rtdm-select +serial +16550a rtailab ktasks-sched-lxrt"
 
 RDEPEND="sys-kernel/rtai-sources
 "

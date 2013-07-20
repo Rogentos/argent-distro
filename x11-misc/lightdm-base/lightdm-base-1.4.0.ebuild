@@ -16,7 +16,7 @@ SRC_URI="http://launchpad.net/${REAL_PN}/${TRUNK_VERSION}/${PV}/+download/${REAL
 LICENSE="GPL-3 LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="+introspection"
+IUSE="debug_grade_1 +introspection"
 S="${WORKDIR}/${REAL_P}"
 
 COMMON_DEPEND=">=dev-libs/glib-2.32.3:2
@@ -72,6 +72,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	default
 
 	insinto /etc/${REAL_PN}

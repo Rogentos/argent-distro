@@ -19,7 +19,7 @@ JPEGSRC="libs/jpeg-${V_JPEG}"
 FT2SRC="libs/freetype-${V_FT}"
 
 RESTRICT="test"
-IUSE="hardened +png +truetype +mng gpm fbcondecor"
+IUSE="debug_grade_1 hardened +png +truetype +mng gpm fbcondecor"
 
 DESCRIPTION="Framebuffer splash utilities."
 HOMEPAGE="http://fbsplash.berlios.de"
@@ -139,6 +139,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	local LIB=$(get_libdir)
 
 	# Sabayon: tweak /etc/conf.d/splash settings

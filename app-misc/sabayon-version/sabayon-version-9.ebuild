@@ -12,7 +12,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 
-IUSE=""
+IUSE="debug_grade_1 "
 DEPEND=""
 # Listing default packages for the current release
 RDEPEND="app-admin/eselect-python

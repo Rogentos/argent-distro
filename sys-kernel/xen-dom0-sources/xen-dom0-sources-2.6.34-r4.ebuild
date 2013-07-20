@@ -18,7 +18,7 @@ inherit sabayon-kernel
 
 DESCRIPTION="Xen dom0 Linux Kernel sources suitable for running on Xen and Amazon EC2"
 HOMEPAGE="http://xen.org/"
-IUSE=""
+IUSE="debug_grade_1 "
 
 KEYWORDS="~x86 ~amd64"
 

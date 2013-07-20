@@ -16,7 +16,7 @@ SRC_URI="${SRC_URI}
 
 LICENSE="GPL-2+"
 SLOT="0"
-IUSE="accessibility audit +consolekit +fallback fprint +gnome-shell +introspection ipv6 ldap plymouth selinux smartcard systemd tcpd test xinerama"
+IUSE="debug_grade_1 accessibility audit +consolekit +fallback fprint +gnome-shell +introspection ipv6 ldap plymouth selinux smartcard systemd tcpd test xinerama"
 KEYWORDS="~alpha ~amd64 ~ia64 ~ppc ~ppc64 ~sh ~x86"
 
 # NOTE: x11-base/xorg-server dep is for X_SERVER_PATH etc, bug #295686
@@ -192,6 +192,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	gnome2_src_install
 
 	# our x11's scripts point to /usr/bin/gdm

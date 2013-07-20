@@ -13,7 +13,7 @@ SRC_URI="${P}.tar.gz"
 LICENSE="truecrypt-3.0"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="X"
+IUSE="debug_grade_1 X"
 RESTRICT="bindist fetch mirror"
 
 RDEPEND="|| ( >=sys-fs/lvm2-2.02.45 sys-fs/device-mapper )
@@ -85,6 +85,9 @@ src_test() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	dobin Main/truecrypt
 	dodoc Readme.txt "Release/Setup Files/TrueCrypt User Guide.pdf"
 	insinto "/$(get_libdir)/rcscripts/addons"

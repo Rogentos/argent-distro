@@ -16,7 +16,7 @@ HOMEPAGE="http://www.gentoo.org"
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE=""
+IUSE="debug_grade_1 "
 
 if [ "${PV}" != "9999" ]; then
 	SRC_URI="mirror://gentoo/${P}.tar.bz2"

@@ -11,7 +11,7 @@ SRC_URI="mirror://sabayon/${CATEGORY}/${PN}/${P}.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE="+ksplash"
+IUSE="debug_grade_1 +ksplash"
 RDEPEND=""
 
 S="${WORKDIR}/${PN}"
@@ -25,6 +25,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# KDM
 	dodir ${KDEDIR}/share/apps/kdm/themes
 	cd ${S}/kdm

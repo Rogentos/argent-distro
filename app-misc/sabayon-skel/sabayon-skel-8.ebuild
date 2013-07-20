@@ -13,7 +13,7 @@ RESTRICT="nomirror"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE=""
+IUSE="debug_grade_1 "
 RDEPEND="!<=app-misc/sabayonlinux-skel-3.5-r6"
 
 src_install () {

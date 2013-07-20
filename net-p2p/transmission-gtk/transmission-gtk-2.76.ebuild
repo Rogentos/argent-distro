@@ -7,7 +7,7 @@ inherit eutils transmission-2.76
 
 DESCRIPTION="A Fast, Easy and Free BitTorrent client - Gtk+ UI"
 KEYWORDS="~amd64 ~x86"
-IUSE="ayatana"
+IUSE="debug_grade_1 ayatana"
 
 RDEPEND="
 	>=dev-libs/dbus-glib-0.100
@@ -18,6 +18,9 @@ RDEPEND="
 "
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# avoid file conflicts with transmission-base
 	# this way gives the corrent layout of /usr/share/icon/... icon files
 	emake DESTDIR="${T}" install

@@ -13,7 +13,7 @@ HOMEPAGE="http://fileroller.sourceforge.net/"
 
 LICENSE="GPL-2+ CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
-IUSE="nautilus packagekit"
+IUSE="debug_grade_1 nautilus packagekit"
 KEYWORDS="~amd64 ~x86"
 
 # gdk-pixbuf used extensively in the source

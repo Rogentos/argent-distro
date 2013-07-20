@@ -10,13 +10,16 @@ inherit sabayon-kernel
 KEYWORDS="~amd64 ~x86"
 DESCRIPTION="Official Sabayon Linux Standard kernel sources"
 RESTRICT="mirror"
-IUSE="sources_standalone"
+IUSE="debug_grade_1 sources_standalone"
 
 DEPEND="${DEPEND}
 	sources_standalone? ( !=sys-kernel/linux-sabayon-${PVR} )
 	!sources_standalone? ( =sys-kernel/linux-sabayon-${PVR} )"
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	# Drop this workaround on the next bump
 	local base_path="${S}/sabayon/config"
 	for config in "${base_path}"/*x86.config; do

@@ -22,7 +22,7 @@ MY_PN=${PN/-core}
 LICENSE="GPL-3"
 KEYWORDS="~amd64 ~x86"
 SLOT="0"
-IUSE="crypt dbus +ssl postgres"
+IUSE="debug_grade_1 crypt dbus +ssl postgres"
 
 SERVER_RDEPEND="
 	crypt? (
@@ -76,6 +76,9 @@ src_configure() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	cmake-utils_src_install
 
 	rm -rf "${ED}"usr/share/apps/quassel/

@@ -23,7 +23,7 @@ LICENSE="Subversion"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 
-IUSE="debug doc nls"
+IUSE="debug_grade_1 debug doc nls"
 
 COMMON_DEPEND="~dev-vcs/subversion-${PV}"
 RDEPEND="
@@ -130,6 +130,9 @@ src_compile() {
 }
 
 src_install() {
+     if use debug_grade_1 ; then
+   set -ex
+       fi
 	emake DESTDIR="${D}" install-javahl || die "Installation of Subversion JavaHL library failed"
 	java-pkg_regso "${ED}"usr/$(get_libdir)/libsvnjavahl*$(get_libname)
 	java-pkg_jarinto /usr/share/"${MY_SVN_PN}"/lib
