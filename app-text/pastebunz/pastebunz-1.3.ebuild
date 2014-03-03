@@ -13,7 +13,7 @@ SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~arm ~alpha ~amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc-fbsd ~sparc ~x86 ~x86-fbsd"
-IUSE="debug_grade_1 "
+IUSE=""
 
 DEPEND=""
 RDEPEND="${DEPEND}"
@@ -26,8 +26,5 @@ src_unpack() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	dobin ${PN} || die
 }

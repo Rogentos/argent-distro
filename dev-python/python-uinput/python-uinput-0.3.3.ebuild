@@ -10,7 +10,7 @@ SRC_URI="http://pypi.python.org/packages/source/p/python-uinput/${P}.tar.gz"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~alpha amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc ~x86"
-IUSE="debug_grade_1 "
+IUSE=""
 
 RDEPEND="dev-libs/libsuinput"
 DEPEND="${RDEPEND}"

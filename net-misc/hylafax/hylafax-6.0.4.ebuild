@@ -14,7 +14,7 @@ SLOT="0"
 LICENSE="hylafax"
 KEYWORDS="amd64 hppa ppc sparc x86"
 
-IUSE="debug_grade_1 jbig pam mgetty html"
+IUSE="jbig pam mgetty html"
 
 DEPEND=">=sys-libs/zlib-1.1.4
 	app-text/ghostscript-gpl
@@ -113,9 +113,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	dodir /usr/{bin,sbin} /usr/$(get_libdir)/fax /usr/share/man
 	dodir /var/spool /var/spool/recvq
 	fowners uucp:uucp /var/spool/fax

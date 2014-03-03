@@ -2,36 +2,31 @@
 # Distributed under the terms of the GNU General Public License v2
 # $
 
-# @ECLASS-VARIABLE: K_SABPATCHES_VER
-# @DESCRIPTION:
-# The version of the sabayon patches tarball(s) to apply.
-# A value of "5" would apply 2.6.12-5 to my-sources-2.6.12.ebuild
-
 # @ECLASS-VARIABLE: K_SABKERNEL_NAME
 # @DESCRIPTION:
 # The kernel name used by the ebuild, it should be the ending ${PN} part
 # for example, of linux-sabayon it is "${PN/${PN/-*}-}" (sabayon)
 K_SABKERNEL_NAME="${K_SABKERNEL_NAME:-${PN/${PN/-*}-}}"
 
-# @ECLASS-VARIABLE: K_SABKERNEL_URI_CONFIG
-# @DESCRIPTION:
-# Set this either to "no" or "yes" depending on the location of the
-# kernel config files.  If they are inside FILESDIR (old location)
-# leave this option set to "no", otherwise set this to "yes"
-K_SABKERNEL_URI_CONFIG="${K_SABKERNEL_URI_CONFIG:-no}"
-
 # @ECLASS-VARIABLE: K_SABKERNEL_SELF_TARBALL_NAME
 # @DESCRIPTION:
 # If the main kernel sources tarball is generated in-house and available
 # on the "sabayon" mirror, set this variable to the extension name (see example
 # below). This will disable ALL the extra/local patches (since they have to
-# be applied inside the tarball). Moreover, K_SABKERNEL_URI_CONFIG,
-# K_SABPATCHES_VER, K_SABKERNEL_NAME, K_KERNEL_PATCH_VER will be ignored.
+# be applied inside the tarball). Moreover, K_SABKERNEL_NAME,
+# K_KERNEL_PATCH_VER will be ignored.
 # Example:
 #   K_SABKERNEL_SELF_TARBALL_NAME="sabayon"
 #   This would generate:
-#   SRC_URI="mirror://sabayon/sys-kernel/linux-${PV}+sabayon.tar.bz2"
+#   SRC_URI="mirror://sabayon/sys-kernel/linux-${PV}+sabayon.tar.${K_TARBALL_EXT}"
 K_SABKERNEL_SELF_TARBALL_NAME="${K_SABKERNEL_SELF_TARBALL_NAME:-}"
+
+# @ECLASS-VARIABLE: K_SABKERNEL_PATCH_UPSTREAM_TARBALL
+# @DESCRIPTION:
+# If set to 1, the ebuild will fetch the upstream kernel tarball and
+# apply the Sabayon patch against it. This strategy avoids the need of
+# creating complete kernel source tarballs. The default value is 0.
+K_SABKERNEL_PATCH_UPSTREAM_TARBALL="${K_SABKERNEL_PATCH_UPSTREAM_TARBALL:-0}"
 
 # @ECLASS-VARIABLE: K_SABKERNEL_FORCE_SUBLEVEL
 # @DESCRIPTION:
@@ -56,7 +51,7 @@ K_KERNEL_SOURCES_PKG="${K_KERNEL_SOURCES_PKG:-${CATEGORY}/${PN/*-}-sources-${PVR
 # @ECLASS-VARIABLE: K_KERNEL_PATCH_VER
 # @DESCRIPTION:
 # If set to "3" for example, it applies the upstream kernel
-# patch corresponding to patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}.3.bz2
+# patch corresponding to patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}.3.${K_TARBALL_EXT}
 # @TODO: deprecate and remove once 2.6.x kernels are retired
 K_KERNEL_PATCH_VER="${K_KERNEL_PATCH_VER:-}"
 
@@ -89,6 +84,26 @@ K_KERNEL_SLOT_USEPVR="${K_KERNEL_SLOT_USEPVR:-0}"
 # In the example above, this makes the SLOT variable contain only "3.7".
 # The sublevel version can be forced using K_SABKERNEL_FORCE_SUBLEVEL
 K_KERNEL_NEW_VERSIONING="${K_KERNEL_NEW_VERSIONING:-0}"
+
+# @ECLASS-VARIABLE: K_KERNEL_IMAGE_NAME
+# @DESCRIPTION:
+# Set this to a custom kernel image make target if the default does not
+# fit your needs. This value if set, is passed to genkernel through the
+# --kernel-target= flag.
+K_KERNEL_IMAGE_NAME="${K_KERNEL_IMAGE_NAME:-}"
+
+# @ECLASS-VARIABLE: K_KERNEL_LTS
+# @DESCRIPTION:
+# Set this to 1 to mark the kernel as Long Term Stable. "virtual/linux-binary-lts"
+# shall be appended to ${PROVIDE}.
+K_KERNEL_LTS="${K_KERNEL_LTS:-}"
+
+# @ECLASS-VARIABLE: K_KERNEL_IMAGE_PATH
+# @DESCRIPTION:
+# Set this to a custom relative kernel image path to override the default
+# one. This value if set, is passed to genkernel through the
+# --kernel-binary= flag.
+K_KERNEL_IMAGE_PATH="${K_KERNEL_IMAGE_PATH:-}"
 
 # @ECLASS-VARIABLE: K_SABKERNEL_FIRMWARE
 # @DESCRIPTION:
@@ -140,18 +155,29 @@ K_MKIMAGE_RAMDISK_ADDRESS="${K_MKIMAGE_RAMDISK_ADDRESS:-}"
 # [ARM ONLY] Provide the ramdisk entry point address to be used with mkimage
 K_MKIMAGE_RAMDISK_ENTRYPOINT="${K_MKIMAGE_RAMDISK_ENTRYPOINT:-}"
 
+# @ECLASS-VARIABLE: K_MKIMAGE_WRAP_INITRAMFS
+# @DESCRIPTION:
+# [ARM ONLY] Execute mkimage against the generated initramfs Default is yes ("1").
+K_MKIMAGE_WRAP_INITRAMFS="${K_MKIMAGE_WRAP_INITRAMFS:-1}"
+
+# @ECLASS-VARIABLE: K_MKIMAGE_KERNEL_ADDRESS
+# @DESCRIPTION:
+# [ARM ONLY] Provide the kernel load address to be used with mkimage
+K_MKIMAGE_KERNEL_ADDRESS="${K_MKIMAGE_KERNEL_ADDRESS:-}"
+
 KERN_INITRAMFS_SEARCH_NAME="${KERN_INITRAMFS_SEARCH_NAME:-initramfs-genkernel*${K_SABKERNEL_NAME}}"
 
 # Disable deblobbing feature
 K_DEBLOB_AVAILABLE=0
 ETYPE="sources"
+K_TARBALL_EXT="${K_TARBALL_EXT:-xz}"
 
 inherit versionator
 if [ "${K_KERNEL_NEW_VERSIONING}" = "1" ]; then
 	CKV="$(get_version_component_range 1-2)"
 fi
 
-inherit eutils kernel-2 sabayon-artwork mount-boot linux-info
+inherit eutils multilib kernel-2 sabayon-artwork mount-boot linux-info
 
 # from kernel-2 eclass
 detect_version
@@ -166,21 +192,22 @@ if [ -n "${K_SABKERNEL_LONGTERM}" ]; then
 fi
 
 ## kernel-2 eclass settings
-if [ -n "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
-	SRC_URI="mirror://sabayon/${CATEGORY}/linux-${PVR}+${K_SABKERNEL_SELF_TARBALL_NAME}.tar.bz2"
-elif [ -n "${K_SABPATCHES_VER}" ]; then
-	UNIPATCH_STRICTORDER="yes"
-	K_SABPATCHES_PKG="${PV}-${K_SABPATCHES_VER}.tar.bz2"
-	UNIPATCH_LIST="${DISTFILES}/${K_SABPATCHES_PKG}"
+if [ "${K_SABKERNEL_PATCH_UPSTREAM_TARBALL}" = "1" ]; then
+	_patch_name="$(get_version_component_range 1-2)-${K_SABKERNEL_SELF_TARBALL_NAME}-${PVR}.patch.xz"
 	SRC_URI="${KERNEL_URI}
-		mirror://sabayon/${CATEGORY}/linux-sabayon-patches/${K_SABPATCHES_PKG}"
+		mirror://sabayon/${CATEGORY}/${_patch_name}
+	"
+	UNIPATCH_LIST="${UNIPATCH_LIST} ${DISTDIR}/${_patch_name}"
+	unset _patch_name
+elif [ -n "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
+	SRC_URI="mirror://sabayon/${CATEGORY}/linux-${PVR}+${K_SABKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
 else
 	SRC_URI="${KERNEL_URI}"
 fi
 
 if [ -z "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
 	if [ -n "${K_KERNEL_PATCH_VER}" ]; then
-		K_PATCH_NAME="patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}.${K_KERNEL_PATCH_VER}.bz2"
+		K_PATCH_NAME="patch-${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}.${K_KERNEL_PATCH_VER}.${K_TARBALL_EXT}"
 		SRC_URI="${SRC_URI}
 			mirror://kernel/linux/kernel/v${KV_MAJOR}.${KV_MINOR}${K_LONGTERM_URL_STR}/${K_PATCH_NAME}"
 		UNIPATCH_LIST="${DISTDIR}/${K_PATCH_NAME}
@@ -188,7 +215,7 @@ if [ -z "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
 	fi
 fi
 if [ -n "${K_KERNEL_PATCH_HOTFIXES}" ]; then
-	UNIPATCH_LIST="${K_KERNEL_PATCH_HOTFIXES} ${UNIPATCH_LIST}"
+	UNIPATCH_LIST="${UNIPATCH_LIST} ${K_KERNEL_PATCH_HOTFIXES}"
 fi
 
 _get_real_kv_full() {
@@ -247,33 +274,56 @@ _is_kernel_binary() {
 	fi
 }
 
+_is_kernel_lts() {
+	local _ver="$(get_version_component_range 1-2)"
+	[ "${_ver}" = "3.0" ] && return 0
+	[ "${_ver}" = "3.2" ] && return 0
+	[ "${_ver}" = "3.4" ] && return 0
+	[ "${_ver}" = "3.10" ] && return 0
+	return 1
+}
+
 # provide extra virtual pkg
 if _is_kernel_binary; then
 	PROVIDE="virtual/linux-binary"
+# LTS support
+	if [ "${K_KERNEL_LTS}" = "1" ] || _is_kernel_lts; then
+		PROVIDE+=" virtual/linux-binary-lts"
+	fi
 fi
 
 if [ -n "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
-	HOMEPAGE="http://gitweb.sabayon.org/?p=linux/kernel/sabayon.git;a=summary"
+	HOMEPAGE="https://github.com/Sabayon/kernel"
 else
 	HOMEPAGE="http://www.sabayon.org"
-fi
-
-# set SRC_URI
-if [ -z "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
-	if [ "${K_SABKERNEL_URI_CONFIG}" = "yes" ]; then
-		tmp_K_SABKERNEL_CONFIG_FILE="${K_SABKERNEL_CONFIG_FILE:-${K_SABKERNEL_NAME}-${PVR}-__ARCH__.config}"
-		# ARM not supported, if put in SRC_URI it tries to fetch it
-		SRC_URI="${SRC_URI}
-			amd64? ( mirror://sabayon/${CATEGORY}/linux-sabayon-patches/config/${tmp_K_SABKERNEL_CONFIG_FILE/__ARCH__/amd64} )
-			x86? ( mirror://sabayon/${CATEGORY}/linux-sabayon-patches/config/${tmp_K_SABKERNEL_CONFIG_FILE/__ARCH__/x86} )"
-		# K_SABKERNEL_CONFIG_FILE will be set in _set_config_file_vars
-		unset tmp_K_SABKERNEL_CONFIG_FILE
-	fi
 fi
 
 # Returns success if _set_config_file_vars was called.
 _is_config_file_set() {
 	[[ ${_config_file_set} = 1 ]]
+}
+
+# Returns the arm kernel config file extension for the current subarch
+_get_arm_subarch() {
+	local target="${CTARGET:-${CHOST}}"
+	local arm_arch=${target%%-*}
+	if [[ ${arm_arch} == armv7? ]]; then
+		echo "armv7"
+	elif [[ ${arm_arch} == armv6? ]]; then
+		echo "armv6"
+	elif [[ ${arm_arch} == armv5? ]]; then
+		echo "armv5"
+	fi
+}
+
+_get_arch() {
+	if use arm; then
+		_get_arm_subarch
+	elif use amd64; then
+		echo "amd64"
+	elif use x86; then
+		echo "x86"
+	fi
 }
 
 _set_config_file_vars() {
@@ -287,30 +337,11 @@ _set_config_file_vars() {
 			pvr+="-${PR}"
 		fi
 	fi
-	if [ -z "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
-		if [ "${K_SABKERNEL_URI_CONFIG}" = "yes" ]; then
-			K_SABKERNEL_CONFIG_FILE="${K_SABKERNEL_CONFIG_FILE:-${K_SABKERNEL_NAME}-${pvr}-__ARCH__.config}"
-			use amd64 && K_SABKERNEL_CONFIG_FILE=${K_SABKERNEL_CONFIG_FILE/__ARCH__/amd64}
-			use x86 && K_SABKERNEL_CONFIG_FILE=${K_SABKERNEL_CONFIG_FILE/__ARCH__/x86}
-		else
-			use arm && K_SABKERNEL_CONFIG_FILE="${K_SABKERNEL_CONFIG_FILE:-${K_SABKERNEL_NAME}-${pvr}-arm.config}"
-			use amd64 && K_SABKERNEL_CONFIG_FILE="${K_SABKERNEL_CONFIG_FILE:-${K_SABKERNEL_NAME}-${pvr}-amd64.config}"
-			use x86 && K_SABKERNEL_CONFIG_FILE="${K_SABKERNEL_CONFIG_FILE:-${K_SABKERNEL_NAME}-${pvr}-x86.config}"
-		fi
-	else
-		K_SABKERNEL_CONFIG_FILE="${K_SABKERNEL_CONFIG_FILE:-${K_SABKERNEL_NAME}-${pvr}-__ARCH__.config}"
-		K_SABKERNEL_ALT_CONFIG_FILE="${K_SABKERNEL_ALT_CONFIG_FILE:-${K_SABKERNEL_NAME}-${pv}-__ARCH__.config}"
-		if use amd64; then
-			K_SABKERNEL_CONFIG_FILE=${K_SABKERNEL_CONFIG_FILE/__ARCH__/amd64}
-			K_SABKERNEL_ALT_CONFIG_FILE=${K_SABKERNEL_ALT_CONFIG_FILE/__ARCH__/amd64}
-		elif use x86; then
-			K_SABKERNEL_CONFIG_FILE=${K_SABKERNEL_CONFIG_FILE/__ARCH__/x86}
-			K_SABKERNEL_ALT_CONFIG_FILE=${K_SABKERNEL_ALT_CONFIG_FILE/__ARCH__/x86}
-		elif use arm; then
-			K_SABKERNEL_CONFIG_FILE=${K_SABKERNEL_CONFIG_FILE/__ARCH__/arm}
-			K_SABKERNEL_ALT_CONFIG_FILE=${K_SABKERNEL_ALT_CONFIG_FILE/__ARCH__/arm}
-		fi
-	fi
+
+	K_SABKERNEL_CONFIG_FILES=()
+	K_SABKERNEL_CONFIG_FILES+=( "${K_SABKERNEL_NAME}-${pvr}-$(_get_arch).config" )
+	K_SABKERNEL_CONFIG_FILES+=( "${K_SABKERNEL_NAME}-${pv}-$(_get_arch).config" )
+	K_SABKERNEL_CONFIG_FILES+=( "${K_SABKERNEL_NAME}-$(_get_arch).config" )
 
 	_config_file_set=1
 }
@@ -320,7 +351,7 @@ if [ -n "${K_ONLY_SOURCES}" ] || [ -n "${K_FIRMWARE_PACKAGE}" ]; then
 	DEPEND="sys-apps/sed"
 	RDEPEND="${RDEPEND}"
 else
-	IUSE="dmraid dracut iscsi luks lvm mdadm splash"
+	IUSE="dmraid dracut iscsi luks lvm mdadm plymouth splash"
 	if [ -n "${K_SABKERNEL_ZFS}" ]; then
 		IUSE="${IUSE} zfs"
 	fi
@@ -328,10 +359,17 @@ else
 		sys-apps/sed
 		sys-devel/autoconf
 		sys-devel/make
-		>=sys-kernel/genkernel-3.4.16-r1
+		|| ( >=sys-kernel/genkernel-next-5 >=sys-kernel/genkernel-3.4.45-r2 )
 		arm? ( dev-embedded/u-boot-tools )
+		amd64? ( sys-apps/v86d )
+		x86? ( sys-apps/v86d )
 		splash? ( x11-themes/sabayon-artwork-core )
-		dracut? ( sys-kernel/dracut )"
+		lvm? ( sys-fs/lvm2 sys-block/thin-provisioning-tools )
+		plymouth? (
+			|| ( >=sys-kernel/genkernel-next-5 >=sys-kernel/genkernel-5 )
+			sys-boot/plymouth
+		)
+		dracut? ( sys-apps/v86d sys-kernel/dracut )"
 	RDEPEND="sys-apps/sed
 		sys-kernel/linux-firmware"
 	if [ -n "${K_REQUIRED_LINUX_FIRMWARE_VER}" ]; then
@@ -375,7 +413,7 @@ sabayon-kernel_pkg_setup() {
 
 sabayon-kernel_src_unpack() {
 	local okv="${OKV}"
-	if [ -n "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
+	if [ -n "${K_SABKERNEL_SELF_TARBALL_NAME}" ] && [ "${K_SABKERNEL_PATCH_UPSTREAM_TARBALL}" != "1" ]; then
 		OKV="${PVR}+${K_SABKERNEL_SELF_TARBALL_NAME}"
 	fi
 	if [ "${K_KERNEL_NEW_VERSIONING}" = "1" ]; then
@@ -432,23 +470,22 @@ _kernel_copy_config() {
 	_is_config_file_set \
 		|| die "Kernel configuration file not set. Was sabayon-kernel_src_prepare() called?"
 
+	local base_path="${DISTDIR}"
 	if [ -n "${K_SABKERNEL_SELF_TARBALL_NAME}" ]; then
-		local base_path="${S}/sabayon/config"
-		if [ -f "${base_path}/${K_SABKERNEL_ALT_CONFIG_FILE}" ]; then
-			# new path, without revision
-			cp "${base_path}/${K_SABKERNEL_ALT_CONFIG_FILE}" "${1}" || die "cannot copy kernel config 1"
-		else
-			# PVR path (old)
-			cp "${base_path}/${K_SABKERNEL_CONFIG_FILE}" "${1}" || die "cannot copy kernel config 2"
-		fi
-	else
-		if [ "${K_SABKERNEL_URI_CONFIG}" = "no" ]; then
-			# Legacy stuff, not supporting K_KERNEL_NEW_VERSIONING
-			cp "${FILESDIR}/${PF/-r0/}-${ARCH}.config" "${1}" || die "cannot copy kernel config 3"
-		else
-			cp "${DISTDIR}/${K_SABKERNEL_CONFIG_FILE}" "${1}" || die "cannot copy kernel config 4"
-		fi
+		base_path="${S}/sabayon/config"
 	fi
+
+	local found= cfg=
+	for cfg in "${K_SABKERNEL_CONFIG_FILES[@]}"; do
+		cfg="${base_path}/${cfg}"
+		if [ -f "${cfg}" ]; then
+			cp "${cfg}" "${1}" || die "cannot copy kernel config ${cfg} -> ${1}"
+			elog "Using kernel config: ${cfg}"
+			found=1
+			break
+		fi
+	done
+	[[ -z "${found}" ]] && die "cannot find kernel configs among: ${K_SABKERNEL_CONFIG_FILES[*]}"
 }
 
 _kernel_src_compile() {
@@ -477,16 +514,17 @@ _kernel_src_compile() {
 	mkdir "${S}"/temp
 
 	cd "${S}" || die
-	GKARGS="--no-save-config --disklabel"
-	use dracut && GKARGS="${GKARGS} --dracut"
-	use splash && GKARGS="${GKARGS} --splash=sabayon"
-	use dmraid && GKARGS="${GKARGS} --dmraid"
-	use iscsi && GKARGS="${GKARGS} --iscsi"
-	use mdadm && GKARGS="${GKARGS} --mdadm"
-	use luks && GKARGS="${GKARGS} --luks"
-	use lvm && GKARGS="${GKARGS} --lvm"
+	local GKARGS=()
+	GKARGS+=( "--no-save-config" "--e2fsprogs" "--udev" )
+	use splash && GKARGS+=( "--splash=sabayon" )
+	use plymouth && GKARGS+=( "--plymouth" "--plymouth-theme=${PLYMOUTH_THEME}" )
+	use dmraid && GKARGS+=( "--dmraid" )
+	use iscsi && GKARGS+=( "--iscsi" )
+	use mdadm && GKARGS+=( "--mdadm" )
+	use luks && GKARGS+=( "--luks" )
+	use lvm && GKARGS+=( "--lvm" )
 	if [ -n "${K_SABKERNEL_ZFS}" ]; then
-		use zfs && GKARGS="${GKARGS} --zfs"
+		use zfs && GKARGS+=( "--zfs" )
 	fi
 
 	export DEFAULT_KERNEL_SOURCE="${S}"
@@ -499,36 +537,39 @@ _kernel_src_compile() {
 	done
 	[ -z "${mkopts}" ] && mkopts="-j3"
 
-	OLDARCH="${ARCH}"
-	env_setup_xmakeopts
-	[ -n "${xmakeopts}" ] && eval "${xmakeopts}"
-	if [ -n "${CROSS_COMPILE}" ] && [ "${CBUILD:-${CHOST}}" != "${CTARGET}" ]; then
-		einfo "Enabling cross-emerge for ${CROSS_COMPILE}, arch: ${KARCH}"
-		GKARGS="${GKARGS} --arch-override=${KARCH}"
-		GKARGS="${GKARGS} --kernel-cross-compile=${CROSS_COMPILE}"
-		GKARGS="${GKARGS} --utils-cross-compile=${CROSS_COMPILE}"
-		# ARCH= must be forced to KARCH
-		ARCH="${KARCH}"
-	else
-		einfo "Cross-emerge is disabled"
-		unset CROSS_COMPILE
-		unset ARCH
+	if [ -n "${K_KERNEL_IMAGE_NAME}" ]; then
+		GKARGS+=( "--kernel-target=${K_KERNEL_IMAGE_NAME}" )
+	elif use arm; then
+		# backward compat + provide sane defaults.
+		GKARGS+=( "--kernel-target=uImage" )
 	fi
-
-	# If ARM, build the uImage directly
-	if use arm; then
-		K_GENKERNEL_ARGS+=" --kernel-target=uImage --kernel-binary=arch/arm/boot/uImage"
+	if [ -n "${K_KERNEL_IMAGE_PATH}" ]; then
+		GKARGS+=( "--kernel-binary=${K_KERNEL_IMAGE_PATH}" )
+	elif use arm; then
+		# backward compat + provide sane defaults.
+		GKARGS+=( "--kernel-binary=arch/arm/boot/uImage" )
 	fi
 
 	# Workaround bug in splash_geninitramfs corrupting the initramfs
 	# if xz compression is used (newer genkernel >3.4.24)
 	local support_comp=$(genkernel --help | grep compress-initramfs-type)
 	if [ -n "${support_comp}" ]; then
-		GKARGS+=" --compress-initramfs-type=gzip"
+		GKARGS+=( "--compress-initramfs-type=gzip" )
 	fi
 
+	# Use --disklabel if genkernel supports it
+	local support_disklabel=$(genkernel --help | grep -- --disklabel)
+	if [ -n "${support_disklabel}" ]; then
+		GKARGS+=( "--disklabel" )
+	fi
+
+	if [ -n "${K_MKIMAGE_KERNEL_ADDRESS}" ]; then
+		export LOADADDR="${K_MKIMAGE_KERNEL_ADDRESS}"
+	fi
+	OLDARCH="${ARCH}"
+	unset ARCH
 	unset LDFLAGS
-	DEFAULT_KERNEL_SOURCE="${S}" CMD_KERNEL_DIR="${S}" genkernel ${GKARGS} ${K_GENKERNEL_ARGS} \
+	DEFAULT_KERNEL_SOURCE="${S}" CMD_KERNEL_DIR="${S}" genkernel "${GKARGS[@]}" ${K_GENKERNEL_ARGS} \
 		--kerneldir="${S}" \
 		--kernel-config="${WORKDIR}"/config \
 		--cachedir="${WORKDIR}"/cache \
@@ -539,6 +580,11 @@ _kernel_src_compile() {
 		--mountboot \
 		--module-prefix="${WORKDIR}"/lib \
 		all || die "genkernel failed"
+
+	if [ -n "${K_MKIMAGE_KERNEL_ADDRESS}" ]; then
+		unset LOADADDR
+	fi
+
 	ARCH=${OLDARCH}
 }
 
@@ -546,12 +592,15 @@ _setup_mkimage_ramdisk() {
 	local initramfs=$(ls "${WORKDIR}"/boot/${KERN_INITRAMFS_SEARCH_NAME}* 2> /dev/null)
 	if [ ! -e "${initramfs}" ] || [ ! -f "${initramfs}" ]; then
 		ewarn "No initramfs at ${initramfs}, cannot run mkimage on it!"
-	else
+	elif [ "${K_MKIMAGE_WRAP_INITRAMFS}" = "1" ]; then
 		einfo "Setting up u-boot initramfs for: ${initramfs}"
-		/usr/bin/mkimage -A arm -O linux -T ramdisk -C none -a "${K_MKIMAGE_RAMDISK_ADDRESS}" \
+		mkimage -A arm -O linux -T ramdisk -C none -a \
+			"${K_MKIMAGE_RAMDISK_ADDRESS}" \
 			-e "${K_MKIMAGE_RAMDISK_ENTRYPOINT}" -d "${initramfs}" \
 			"${initramfs}.u-boot" || return 1
 		mv "${initramfs}.u-boot" "${initramfs}" || return 1
+	else
+		einfo "mkimage won't be called for: ${initramfs}"
 	fi
 	return 0
 }
@@ -593,7 +642,9 @@ _kernel_sources_src_install() {
 }
 
 _kernel_src_install() {
-	use arm && { _setup_mkimage_ramdisk || die "cannot setup mkimage"; }
+	if use arm; then
+		_setup_mkimage_ramdisk || die "cannot setup mkimage"
+	fi
 
 	dodir "${KV_OUT_DIR}"
 	insinto "${KV_OUT_DIR}"
@@ -631,6 +682,20 @@ _kernel_src_install() {
 	doins "${WORKDIR}"/boot/* || die "cannot copy /boot over"
 	cp -Rp "${WORKDIR}"/lib/* "${D}/" || die "cannot copy /lib over"
 
+	# Install dtbs if found
+	if use arm; then
+		local dtb_dir="/lib/dts/${KV_FULL}"
+		elog "Installing .dtbs (if any) into ${dtb_dir}"
+		insinto "${dtb_dir}"
+		local dtb=
+		for dtb in "${S}/arch/arm/boot/dts"/*.dtb; do
+			if [ -f "${dtb}" ]; then
+				elog "Installing dtb: ${dtb}"
+				doins "${dtb}"
+			fi
+		done
+	fi
+
 	# This doesn't always work because KV_FULL (when K_NOSETEXTRAVERSION=1) doesn't
 	# reflect the real value used in Makefile
 	#dosym "../../..${KV_OUT_DIR}" "/lib/modules/${KV_FULL}/source" || die "cannot install source symlink"
@@ -660,15 +725,16 @@ _kernel_src_install() {
 
 	# Install kernel configuration information
 	# useful for Entropy kernel-switcher
-	if _is_kernel_binary; then
-		# release level is enough for now
-		base_dir="/etc/kernels/${P}"
-		dodir "${base_dir}"
-		insinto "${base_dir}"
-		echo "${KV_FULL}" > "RELEASE_LEVEL"
-		doins "RELEASE_LEVEL"
-		einfo "Installing ${base_dir}/RELEASE_LEVEL file: ${KV_FULL}"
-	fi
+	# release level is enough for now
+	base_dir="/etc/kernels/${P}"
+	dodir "${base_dir}"
+	insinto "${base_dir}"
+	echo "${KV_FULL}" > "RELEASE_LEVEL"
+	doins "RELEASE_LEVEL"
+	einfo "Installing ${base_dir}/RELEASE_LEVEL file: ${KV_FULL}"
+
+	use dracut && \
+		_dracut_initramfs_create "${KV_FULL}"
 }
 
 sabayon-kernel_pkg_preinst() {
@@ -737,7 +803,7 @@ sabayon-kernel_uimage_config() {
 		fi
 	else
 		echo
-		elog "You are currently booting with kernel:"
+		elog "If you use eselect-bzimage, you are currently booting with kernel:"
 		elog "${uimage_file}"
 		elog
 		elog "Use 'eselect uimage' in order to switch between the available ones"
@@ -786,6 +852,14 @@ sabayon-kernel_bzimage_config() {
 		ewarn "Use 'eselect bzimage' in order to switch between the available ones"
 		echo
 	fi
+}
+
+_dracut_initramfs_create() {
+	local kver="${1}"
+
+	elog "Creating dracut initramfs for ${kver}"
+	addpredict /etc/ld.so.cache~
+	dracut -q -N -f --kver="${kver}" "${D}/boot/initramfs-dracut-${kver}"
 }
 
 sabayon-kernel_pkg_postinst() {

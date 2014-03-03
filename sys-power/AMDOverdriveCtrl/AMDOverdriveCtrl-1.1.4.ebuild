@@ -15,7 +15,7 @@ SRC_URI="mirror://sourceforge/amdovdrvctrl/${PN}.${PV}.tar.bz2
 LICENSE="GPL"
 SLOT="0"
 KEYWORDS="~x86 ~amd64"
-IUSE="debug_grade_1 "
+IUSE=""
 
 DEPEND="x11-drivers/ati-drivers
 	x11-libs/wxGTK:${WX_GTK_VER}[X]"

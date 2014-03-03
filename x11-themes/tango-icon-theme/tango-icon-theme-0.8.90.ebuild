@@ -14,7 +14,7 @@ SRC_URI="http://tango.freedesktop.org/releases/${P}.tar.gz
 LICENSE="public-domain"
 SLOT="0"
 KEYWORDS="amd64 ppc ppc64 sparc x86 ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
-IUSE="debug_grade_1 branding png"
+IUSE="branding png"
 
 RDEPEND=">=x11-themes/hicolor-icon-theme-0.12"
 DEPEND="${RDEPEND}
@@ -34,9 +34,6 @@ src_configure() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	addwrite /root/.gnome2
 	emake DESTDIR="${D}" install || die
 	dodoc AUTHORS ChangeLog README

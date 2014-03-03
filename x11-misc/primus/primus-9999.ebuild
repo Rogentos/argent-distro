@@ -14,7 +14,7 @@ EGIT_REPO_URI="git://github.com/amonakov/primus.git https://github.com/amonakov/
 LICENSE="ISC"
 SLOT="0"
 KEYWORDS=""
-IUSE="debug_grade_1 multilib"
+IUSE="multilib"
 
 RDEPEND="x11-misc/bumblebee[video_cards_nvidia]
 	multilib? ( app-emulation/emul-linux-x86-xlibs app-emulation/emul-linux-x86-baselibs )"
@@ -32,9 +32,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	sed -i -e "s#^PRIMUS_libGL=.*#PRIMUS_libGL='/usr/\$LIB/primus'#" primusrun
 	sed -i -e "s/^# PRIMUS_libGL=/PRIMUS_libGL=/" primusrun
 	dobin primusrun

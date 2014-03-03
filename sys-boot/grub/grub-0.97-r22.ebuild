@@ -19,7 +19,7 @@ SRC_URI="mirror://gentoo/${P}.tar.gz
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 x86 ~x86-fbsd"
-IUSE="debug_grade_1 custom-cflags ncurses netboot static"
+IUSE="custom-cflags ncurses netboot static"
 
 DEPEND="ncurses? (
 		>=sys-libs/ncurses-5.2-r5
@@ -153,9 +153,6 @@ src_test() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	emake DESTDIR="${D}" install || die
 	if use netboot ; then
 		exeinto /usr/lib/grub/${CHOST}

@@ -28,7 +28,7 @@ HOMEPAGE="http://www.freedesktop.org/wiki/Software/systemd"
 
 LICENSE="LGPL-2.1 MIT GPL-2"
 SLOT="0"
-IUSE="debug_grade_1 acl doc gudev hwdb introspection keymap +openrc selinux static-libs"
+IUSE="acl doc gudev hwdb introspection keymap +openrc selinux static-libs"
 
 RESTRICT="test"
 

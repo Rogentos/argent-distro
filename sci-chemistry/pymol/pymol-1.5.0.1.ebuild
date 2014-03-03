@@ -20,7 +20,7 @@ SRC_URI="
 LICENSE="PSF-2.2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86 ~amd64-linux ~x86-linux"
-IUSE="debug_grade_1 apbs numpy vmd web"
+IUSE="apbs numpy vmd web"
 
 DEPEND="
 	dev-lang/python-tk
@@ -76,9 +76,6 @@ src_configure() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	distutils_src_install
 
 	# These environment variables should not go in the wrapper script, or else

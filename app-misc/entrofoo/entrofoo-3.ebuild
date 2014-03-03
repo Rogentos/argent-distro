@@ -13,7 +13,7 @@ RESTRICT="nomirror"
 LICENSE="GPL-2"
 SLOT="2"
 KEYWORDS="~x86 ~amd64"
-IUSE="debug_grade_1 "
+IUSE=""
 
 RDEPEND="app-misc/entrofoo-fail"
 DEPEND="app-misc/entrofoo-fail"

@@ -15,7 +15,7 @@ HOMEPAGE="http://library.gnome.org/devel/libgnome/stable/"
 LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm ia64 ~mips ppc ppc64 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux ~sparc-solaris ~x86-solaris"
-IUSE="debug_grade_1 branding doc"
+IUSE="branding doc"
 
 SRC_URI="${SRC_URI}
 	branding? ( mirror://gentoo/gentoo-gdm-theme-r3.tar.bz2 )"
@@ -63,9 +63,6 @@ src_prepare() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	gnome2_src_install
 
 	if use branding; then

@@ -21,13 +21,12 @@ SRC_URI="http://dev.gentoo.org/~ssuominen/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug_grade_1 "
+IUSE=""
 
 RDEPEND="app-cdr/cdrdao
 	app-cdr/dvd+rw-tools
 	|| ( =dev-lang/python-tk-2.7* =dev-lang/python-tk-2.6* )
 	dev-python/pycairo
-	dev-python/imaging
 	dev-tcltk/tix
 	|| ( media-gfx/imagemagick[png] media-gfx/graphicsmagick[imagemagick,png] )
 	media-sound/normalize
@@ -44,9 +43,6 @@ DEPEND="app-text/txt2tags"
 DOCS="AUTHORS ChangeLog README"
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	distutils_src_install
 
 	# punt at least .install.log
