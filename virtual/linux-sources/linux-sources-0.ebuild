@@ -11,7 +11,7 @@ SRC_URI=""
 LICENSE=""
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86"
-IUSE="debug_grade_1 "
+IUSE=""
 
 SABAYON_SOURCES="sys-kernel/sabayon-sources
 		sys-kernel/server-sources

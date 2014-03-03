@@ -11,7 +11,7 @@ SRC_URI="mirror://sourceforge/acpid/${P}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha amd64 ia64 -ppc x86"
-IUSE="debug_grade_1 "
+IUSE=""
 
 DEPEND="sys-apps/sed"
 RDEPEND=""
@@ -33,9 +33,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	emake INSTPREFIX="${D}" install || die "emake install failed"
 
 	exeinto /etc/acpi

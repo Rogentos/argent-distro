@@ -3,7 +3,7 @@
 # $Header: $
 
 EAPI=5
-inherit autotools eutils pam readme.gentoo
+inherit autotools eutils pam readme.gentoo systemd
 
 TRUNK_VERSION="1.4"
 REAL_PN="${PN/-base}"
@@ -15,8 +15,8 @@ SRC_URI="http://launchpad.net/${REAL_PN}/${TRUNK_VERSION}/${PV}/+download/${REAL
 
 LICENSE="GPL-3 LGPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="debug_grade_1 +introspection"
+KEYWORDS="~amd64 ~arm ~ppc ~x86"
+IUSE="+introspection"
 S="${WORKDIR}/${REAL_P}"
 
 COMMON_DEPEND=">=dev-libs/glib-2.32.3:2
@@ -72,9 +72,6 @@ src_configure() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	default
 
 	insinto /etc/${REAL_PN}
@@ -89,4 +86,6 @@ src_install() {
 	dopamd "${FILESDIR}"/${REAL_PN}-autologin #390863, #423163
 
 	readme.gentoo_create_doc
+
+	systemd_dounit "${FILESDIR}/lightdm.service"
 }

@@ -11,7 +11,7 @@ HOMEPAGE="http://www.gentoo.org/"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 m68k mips ppc ppc64 s390 sh sparc ~sparc-fbsd x86 ~x86-fbsd"
-IUSE="debug_grade_1 pam"
+IUSE="pam"
 
 RDEPEND="pam? ( virtual/pam )"
 
@@ -24,9 +24,6 @@ pkg_setup() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	dodir /etc/mail
 	insinto /etc/mail
 	doins "${FILESDIR}"/aliases || die

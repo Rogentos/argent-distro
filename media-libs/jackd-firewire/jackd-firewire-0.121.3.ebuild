@@ -14,7 +14,7 @@ SRC_URI="http://www.jackaudio.org/downloads/${MY_PN}-${PV}.tar.gz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="debug_grade_1 "
+IUSE=""
 
 RDEPEND="
 	>=media-libs/alsa-lib-1.0.18
@@ -57,8 +57,5 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	emake -C drivers/firewire DESTDIR="${D}" install || die "install failed"
 }

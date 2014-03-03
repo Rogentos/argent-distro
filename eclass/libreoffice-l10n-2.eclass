@@ -34,35 +34,38 @@ HELPPACK_AVAIL="${HELPPACK_AVAIL:-1}"
 # Set this to "0" if lang pack package is not available
 LANGPACK_AVAIL="${LANGPACK_AVAIL:-1}"
 
-# @ECLASS-VARIABLE: L10N_RC_VERSION
-# @DESCRIPTION:
-# Set this to some string, it will be added to the
-# RPM file names in the unpack phase.
-L10N_RC_VERSION="${L10N_RC_VERSION:-}"
-
 DESCRIPTION="LibreOffice.org ${L10N_LANG} localisation"
 HOMEPAGE="http://www.documentfoundation.org"
 RESTRICT="mirror"
 
 L10N_VER="$(get_version_component_range 1-3)"
+L10N_RC_VERSION="$(get_version_component_range 4)"
 LO_BRANCH=$(get_version_component_range 1-2)
 
-# Upstream moving target hacks:
-# Automatically setup L10N_RC_VERSION if unset
-if [ -z "${L10N_RC_VERSION}" ]; then
-	if [ "${L10N_VER}" = "3.5.4" ]; then
-		L10N_RC_VERSION=rc2
-	fi
+if [ -n "${L10N_RC_VERSION}" ]; then
+	# this is a RC, thus testing
+	BASE_SRC_URI="http://download.documentfoundation.org/libreoffice/testing/${L10N_VER}/rpm"
+	TARBALL_VERSION="${L10N_VER}.${L10N_RC_VERSION}"
+else
+	BASE_SRC_URI="http://download.documentfoundation.org/libreoffice/stable/${L10N_VER}/rpm"
+	TARBALL_VERSION="${L10N_VER}"
 fi
-
-BASE_SRC_URI="http://download.documentfoundation.org/libreoffice/stable/${L10N_VER}/rpm"
 SRC_URI=""
+if [ "$(get_version_component_range 1)" = "3" ]; then
+	URI_PREFIX="LibO"
+	RPM_SUFFIX_LANG="langpack-rpm"
+	RPM_SUFFIX_HELP="helppack-rpm"
+else
+	URI_PREFIX="LibreOffice"
+	RPM_SUFFIX_LANG="rpm_langpack"
+	RPM_SUFFIX_HELP="rpm_helppack"
+fi
 # try guessing
 if [ "${LANGPACK_AVAIL}" = "1" ]; then
-	SRC_URI+="${BASE_SRC_URI}/x86/LibO_${L10N_VER}_Linux_x86_langpack-rpm_${MY_LANG}.tar.gz"
+	SRC_URI+="${BASE_SRC_URI}/x86/${URI_PREFIX}_${TARBALL_VERSION}_Linux_x86_${RPM_SUFFIX_LANG}_${MY_LANG}.tar.gz"
 fi
 if [ "${HELPPACK_AVAIL}" = "1" ]; then
-	SRC_URI+=" ${BASE_SRC_URI}/x86/LibO_${L10N_VER}_Linux_x86_helppack-rpm_${MY_LANG}.tar.gz"
+	SRC_URI+=" ${BASE_SRC_URI}/x86/${URI_PREFIX}_${TARBALL_VERSION}_Linux_x86_${RPM_SUFFIX_HELP}_${MY_LANG}.tar.gz"
 fi
 
 IUSE=""
@@ -96,20 +99,20 @@ libreoffice-l10n-2_src_unpack() {
 	local dir=${lang/_/-}
 	# for english we provide just helppack, as translation is always there
 	if [[ "${LANGPACK_AVAIL}" == "1" ]]; then
-		rpmdir="LibO_${L10N_VER}"*"${L10N_RC_VERSION}_Linux_x86_langpack-rpm_${dir}/RPMS/"
+		rpmdir="${URI_PREFIX}_${TARBALL_VERSION}"*"_Linux_x86_${RPM_SUFFIX_LANG}_${dir}/RPMS/"
 		# First remove dictionaries, we want to use system ones.
 		rm -rf "${S}/${rpmdir}/"*dict*.rpm
 		einfo "Unpacking Langpack"
 		rpm_unpack ./${rpmdir}/*.rpm
 	fi
 	if [[ "${HELPPACK_AVAIL}" == "1" ]]; then
-		rpmdir="LibO_${L10N_VER}"*"${L10N_RC_VERSION}_Linux_x86_helppack-rpm_${dir}/RPMS/"
+		rpmdir="${URI_PREFIX}_${TARBALL_VERSION}"*"_Linux_x86_${RPM_SUFFIX_HELP}_${dir}/RPMS/"
 		einfo "Unpacking Helppack"
 		rpm_unpack ./${rpmdir}/*.rpm
 	fi
 	if [[ -n "${TDEPEND}" ]]; then
 		if use templates; then
-			for i in ${OO_EXTENSIONS[@]}; do
+			for i in "${OO_EXTENSIONS[@]}"; do
 				if [[ ! -f "${S}/${i}" ]]; then
 					cp -v "${DISTDIR}/${i}" "${S}"
 					ooextused+=( "${i}" )
@@ -118,8 +121,8 @@ libreoffice-l10n-2_src_unpack() {
 		fi
 	fi
 	OO_EXTENSIONS=()
-	for i in ${ooextused[@]}; do
-		OO_EXTENSIONS+=( ${i} )
+	for i in "${ooextused[@]}"; do
+		OO_EXTENSIONS+=( "${i}" )
 	done
 }
 

@@ -7,14 +7,14 @@ EAPI="3"
 if [ "${PV}" = "9999" ]; then
 	EGIT_COMMIT="master"
 	EGIT_REPO_URI="git://sabayon.org/projects/anaconda.git"
-	MY_ECLASS="git"
+	MY_ECLASS="git-2"
 fi
 inherit flag-o-matic base python libtool autotools eutils ${MY_ECLASS}
 
 AUDIT_VER="2.1.2"
 AUDIT_SRC_URI="http://people.redhat.com/sgrubb/audit/audit-${AUDIT_VER}.tar.gz"
 
-SEPOL_VER="2.0"
+SEPOL_VER="2.2"
 LSELINUX_VER="2.0.94"
 LSELINUX_SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/libselinux-${LSELINUX_VER}.tar.gz"
 
@@ -34,7 +34,7 @@ LSELINUX_S="${WORKDIR}/libselinux-${LSELINUX_VER}"
 
 LICENSE="GPL-2 public-domain"
 SLOT="0"
-IUSE="debug_grade_1 +ipv6 +nfs ldap"
+IUSE="+ipv6 +nfs ldap"
 RESTRICT="nomirror"
 
 AUDIT_DEPEND="dev-lang/swig"
@@ -45,6 +45,7 @@ LSELINUX_CONFLICT="!sys-libs/libselinux" # due to pythonX.Y/site-packages+/usr/s
 COMMON_DEPEND="app-admin/system-config-keyboard
 	>=app-arch/libarchive-2.8
 	app-cdr/isomd5sum
+	app-crypt/sbsigntool
 	dev-libs/newt
 	nfs? ( net-fs/nfs-utils )
 	sys-fs/lvm2
@@ -69,10 +70,14 @@ src_unpack() {
 }
 
 src_prepare() {
-
 	# Setup CFLAGS, LDFLAGS
 	append-cppflags "-I${D}/usr/include/anaconda-runtime"
 	append-ldflags "-L${D}/usr/$(get_libdir)/anaconda-runtime"
+	append-cflags "-fexceptions"
+
+	# drop after 0.9.11
+	sed -i "s:-O2 -g -pipe -Wp,-D_FORTIFY_SOURCE=2 -fexceptions::g" \
+		"${S}/configure.ac" || die
 
 	# Setup anaconda
 	cd "${S}"
@@ -101,7 +106,6 @@ src_prepare() {
                         "${AUDIT_S}"/audisp/plugins/Makefile.am || die "cannot sed libaudit Makefile.am (ldap)"
         fi
 	eautoreconf
-
 }
 
 copy_audit_data_over() {
@@ -172,9 +176,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 
 	# installing libselinux
 	cd "${LSELINUX_S}"

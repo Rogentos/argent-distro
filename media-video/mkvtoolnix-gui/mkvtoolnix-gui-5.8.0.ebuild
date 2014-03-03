@@ -13,7 +13,7 @@ SRC_URI="http://www.bunkus.org/videotools/mkvtoolnix/sources/${MY_P}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~ppc64 ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
-IUSE="debug_grade_1 bzip2 debug lzo pch"
+IUSE="bzip2 debug lzo pch"
 
 RDEPEND="
 	>=dev-libs/libebml-1.2.2
@@ -29,8 +29,8 @@ RDEPEND="
 	bzip2? ( app-arch/bzip2 )
 	lzo? ( dev-libs/lzo )
 
-	x11-libs/qt-core:4
-	x11-libs/qt-gui:4
+	dev-qt/qtcore:4
+	dev-qt/qtgui:4
 	x11-libs/wxGTK:2.8[X]
 	~media-video/mkvtoolnix-${PV}[-wxwidgets,-qt4]
 "
@@ -90,9 +90,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	DESTDIR="${D}" ./drake -j$(makeopts_jobs) install || die
 
 	dodoc AUTHORS ChangeLog README TODO

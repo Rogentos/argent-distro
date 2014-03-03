@@ -13,15 +13,12 @@ SRC_URI="${BASE_URI}/${P/_p*}-${PV/*_p}.tar.gz"
 LICENSE="XVBA-SDK"
 SLOT="0"
 KEYWORDS="~amd64 ~x86"
-IUSE="debug_grade_1 doc"
+IUSE="doc"
 
 DEPEND=""
 RDEPEND=""
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	local VER_FORMAT="${PV/_p*}"
 	use doc && dodoc "doc/AMD_XvBA_Spec_v${VER_FORMAT/./_}_01_AES_2.pdf"
 

@@ -16,7 +16,7 @@ SRC_URI="http://launchpad.net/${REAL_PN}/${TRUNK_VERSION}/${REAL_PV}/+download/$
 LICENSE="GPL-3 LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="debug_grade_1 "
+IUSE=""
 
 COMMON_DEPEND="~x11-misc/lightdm-base-${PV}"
 RDEPEND="${COMMON_DEPEND}"
@@ -52,9 +52,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	cd "${S}/liblightdm-qt" && \
 		emake DESTDIR="${ED}" install
 }

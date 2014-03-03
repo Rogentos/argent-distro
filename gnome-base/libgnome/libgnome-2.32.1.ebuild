@@ -13,7 +13,7 @@ HOMEPAGE="http://library.gnome.org/devel/libgnome/stable/"
 LICENSE="LGPL-2"
 SLOT="0"
 KEYWORDS="alpha amd64 arm ia64 ~mips ppc ppc64 sh sparc x86 ~x86-fbsd ~x86-interix ~amd64-linux ~x86-linux ~sparc-solaris ~x86-solaris"
-IUSE="debug_grade_1 doc esd"
+IUSE="doc esd"
 
 RDEPEND=">=gnome-base/gconf-2
 	>=dev-libs/glib-2.16
@@ -52,9 +52,6 @@ src_prepare() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	gnome2_src_install
 
 	if use branding; then

@@ -11,7 +11,7 @@ LICENSE="as-is"
 SLOT="0"
 KEYWORDS="amd64 ppc x86 ppc64"
 
-IUSE="debug_grade_1 "
+IUSE=""
 RDEPEND="|| ( >=sys-fs/udev-096 >=sys-apps/hotplug-20040923 )"
 
 S=${WORKDIR}
@@ -21,9 +21,6 @@ src_unpack() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	cd ${S}/lib/firmware/
 	insinto /lib/firmware/
 	doins ./*

@@ -25,7 +25,7 @@ FFMPEG_REVISION="${PV#*_p}"
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ppc ppc64 sparc x86 ~x86-fbsd"
-IUSE="debug_grade_1 +3dnow +3dnowext alsa altivec cpudetection custom-cflags debug dirac
+IUSE="+3dnow +3dnowext alsa altivec cpudetection custom-cflags debug dirac
 	  doc ieee1394 +encode faac faad gsm ipv6 jack +mmx +mmxext vorbis test
 	  theora threads x264 xvid network zlib sdl X mp3 amr
 	  oss pic schroedinger +hardcoded-tables bindist v4l v4l2
@@ -34,7 +34,7 @@ IUSE="debug_grade_1 +3dnow +3dnowext alsa altivec cpudetection custom-cflags deb
 VIDEO_CARDS="nvidia"
 
 for x in ${VIDEO_CARDS}; do
-	IUSE="debug_grade_1 ${IUSE} video_cards_${x}"
+	IUSE="${IUSE} video_cards_${x}"
 done
 
 RDEPEND="sdl? ( >=media-libs/libsdl-1.2.10 )
@@ -237,9 +237,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	emake DESTDIR="${D}" install || die "Install Failed"
 
 	dodoc Changelog README INSTALL

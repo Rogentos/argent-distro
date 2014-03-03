@@ -22,7 +22,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 
-IUSE="debug_grade_1 nls"
+IUSE="nls"
 NMAP_LINGUAS="de es fr hr hu id it ja pl pt_BR pt_PT ro ru sk zh"
 for lingua in ${NMAP_LINGUAS}; do
 	IUSE+=" linguas_${lingua}"
@@ -115,9 +115,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	emake DESTDIR="${D}" install-zenmap || die
 	doicon "${FILESDIR}/nmap-logo-64.png"
 }
