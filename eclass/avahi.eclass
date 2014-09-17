@@ -48,7 +48,7 @@ fi
 
 MY_P=${P/-${AVAHI_MODULE}}
 
-inherit autotools eutils flag-o-matic
+inherit autotools eutils flag-o-matic systemd
 
 DESCRIPTION="avahi ${AVAHI_MODULE} module"
 HOMEPAGE="http://avahi.org/"
@@ -57,7 +57,7 @@ S="${WORKDIR}/${MY_P}"
 
 LICENSE="LGPL-2.1"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~x86"
 
 AVAHI_COMMON_DEPEND=">=dev-util/intltool-0.40.5
 	>=dev-util/pkgconfig-0.9.0"
@@ -96,13 +96,14 @@ avahi_src_configure() {
 		--enable-glib
 		--enable-gobject
 		--disable-qt3
-		$@"
+		$(systemd_with_unitdir)
+		${*}"
 	econf ${myconf}
 }
 
 avahi_src_install-cleanup() {
 	# Remove .la files
-	find "${D}" -name '*.la' -exec rm -f {} + || die
+	find "${ED}" -name '*.la' -exec rm -f {} + || die
 }
 
 EXPORT_FUNCTIONS src_prepare src_configure

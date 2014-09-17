@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $
 
-inherit kde4-base
+inherit base kde4-base
 
 MY_LANG="${PN/kde-l10n-/}"
 
@@ -14,7 +14,7 @@ DESCRIPTION="KDE4 ${L10N_NAME} localization package"
 HOMEPAGE="http://www.kde.org/"
 LICENSE="GPL-2"
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~x86"
 DEPEND=">=sys-devel/gettext-0.15"
 RDEPEND=""
 IUSE="+handbook"
