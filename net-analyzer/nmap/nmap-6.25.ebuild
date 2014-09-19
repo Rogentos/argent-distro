@@ -93,7 +93,7 @@ src_prepare() {
 		Makefile.in || die
 
 	# Fix desktop files wrt bug #432714
-	# not needed in Sabayon's split nmap ebuild
+	# not needed in Argent's split nmap ebuild
 	#sed -i \
 	#	-e '/^Encoding/d' \
 	#	-e 's|^Categories=.*|Categories=Network;System;Security;|g' \

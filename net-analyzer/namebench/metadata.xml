@@ -7,8 +7,8 @@
 		<description>original Gentoo maintainer</description>
 	</maintainer>
 	<maintainer>
-		<email>slawomir.nizio@sabayon.org</email>
-		<description>maintainer of modified ebuild(s) for Sabayon</description>
+		<email>slawomir.nizio@argentlinux.io</email>
+		<description>maintainer of modified ebuild(s) for Argent</description>
 	</maintainer>
 	<upstream>
 		<remote-id type="google-code">namebench</remote-id>

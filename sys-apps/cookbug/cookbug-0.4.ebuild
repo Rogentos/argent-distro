@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 DESCRIPTION="Sabayon Bug Report hardware information collector"
-HOMEPAGE="http://bugs.sabayon.org"
+HOMEPAGE="http://bugs.argentlinux.io"
 SRC_URI=""
 
 LICENSE="GPL-2"

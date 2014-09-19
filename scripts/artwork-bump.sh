@@ -6,15 +6,15 @@ fi
 
 OLD=$1
 NEW=$2
-PACKAGES="x11-themes/sabayon-artwork-core x11-themes/sabayon-artwork-extra \
-		x11-themes/sabayon-artwork-kde x11-themes/sabayon-artwork-gnome \
-			x11-themes/sabayon-artwork-loo x11-themes/sabayon-artwork-lxde\
-			x11-themes/sabayon-artwork-grub x11-themes/sabayon-artwork-isolinux"
+PACKAGES="x11-themes/argent-artwork-core x11-themes/argent-artwork-extra \
+		x11-themes/argent-artwork-kde x11-themes/argent-artwork-gnome \
+			x11-themes/argent-artwork-loo x11-themes/argent-artwork-lxde\
+			x11-themes/argent-artwork-grub x11-themes/argent-artwork-isolinux"
 
 for package in ${PACKAGES}; do
 	name=$(echo ${package} | cut -d/ -f2)
 	if [ -a ${package}/${name}-${NEW}.ebuild ]; then
-		echo "${NEW} ebuild found, not overwriting"
+		echo "${name}-${NEW}.ebuild found, not overwriting"
 	else
 		cp ${package}/${name}-${OLD}.ebuild ${package}/${name}-${NEW}.ebuild
 	fi

@@ -4,7 +4,7 @@
 EAPI="2"
 
 DESCRIPTION="Sabayon Linux Entropy/Portage failure (fooooon't install this)"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.io"
 SRC_URI=""
 
 RESTRICT="nomirror"

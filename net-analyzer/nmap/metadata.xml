@@ -2,7 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
 <maintainer>
-  <email>slawomir.nizio@sabayonlinux.org</email>
+  <email>slawomir.nizio@argentlinux.io</email>
   <description>maintainer of split nmap ebuild (based on Gentoo one)</description>
 </maintainer>
 <use>

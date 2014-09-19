@@ -1,5 +1,5 @@
 From 949ee91acb55baeb4b8761957eabd2e5a345d2ae Mon Sep 17 00:00:00 2001
-From: Mitch Harder <mitch.harder@sabayonlinux.org>
+From: Mitch Harder <mitch.harder@argentlinux.io>
 Date: Thu, 8 Dec 2011 11:02:28 -0600
 Subject: Fix configure.ac test for pam libs.
 

@@ -1,8 +1,7 @@
 @wireless
 @X
 app-editors/leafpad
-app-misc/sabayon-skel
-lxde-base/lxdm
+app-misc/argent-skel
 media-plugins/alsa-plugins
 x11-themes/elementary-icon-theme
 xfce-base/xfce4-meta

@@ -1,4 +1,4 @@
-Sabayon bug 2797, reported by micia.
+Argent bug 2797, reported by micia.
 --- a/data/nautilus.desktop.in.in
 +++ b/data/nautilus.desktop.in.in
 @@ -91,7 +91,7 @@

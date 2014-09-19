@@ -2,7 +2,7 @@
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
   <maintainer>
-    <email>slawomir.nizio@sabayon.org</email>
+    <email>slawomir.nizio@argentlinux.io</email>
   </maintainer>
   <use>
 	<flag name="highlight">GitWeb support for app-text/highlight.</flag>

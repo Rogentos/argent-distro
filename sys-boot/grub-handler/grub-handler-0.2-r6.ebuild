@@ -4,7 +4,7 @@
 inherit eutils
 
 DESCRIPTION="Sabayon Linux GRUB utilities"
-HOMEPAGE="http://www.sabayonlinux.org/"
+HOMEPAGE="http://www.argentlinux.io/"
 SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"

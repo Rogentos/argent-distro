@@ -291,7 +291,7 @@ src_install()
 	dosym ../usr/bin/udevadm /sbin/udevadm
 
 	# Basically this is the only difference between
-	# Sabayon udev and Gentoo one.
+	# Argent udev and Gentoo one.
 	# I don't know why Gentoo dropped the whole
 	# blacklist thing.
         insinto /etc/modprobe.d

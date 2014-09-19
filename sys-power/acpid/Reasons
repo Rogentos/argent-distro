@@ -1,7 +1,7 @@
 sys-power/acpid
 
 Ebuild originally added Jun. 13, 2008
-Added by Fabio Erculiani <lxnay@sabayonlinux.org>
+Added by Stefan Cristian <stefan.cristian@argentlinux.io>
 
 The purpose is making it working with newer kernels and OpenRC,
 adding some patches pulled in from Debian.
