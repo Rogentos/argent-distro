@@ -21,7 +21,7 @@ src_unpack() {
 	unpack ${A}
 
 	cd "${S}"
-	epatch "${FILESDIR}/${PN}-sabayon-version.patch"
+	epatch "${FILESDIR}/${PN}-argent-version.patch"
 }
 
 src_install() {
