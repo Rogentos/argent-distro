@@ -147,7 +147,7 @@ pkg_preinst() {
 	fi
 	rm -f "${D}"/usr/share/${PN}/Makefile
 
-	# Sabayon customization, protect /etc/hosts from removal (from older ebuilds)
+	# Argent customization, protect /etc/hosts from removal (from older ebuilds)
 	local etc_hosts="${ROOT}/etc/hosts"
 	if [ -e "${etc_hosts}" ]; then
 		cp -p "${etc_hosts}" "${etc_hosts}.baselayout_ebuild_backup" # don't die
@@ -158,8 +158,8 @@ src_unpack() {
 	unpack ${A}
 
 	cd "${S}"
-	# We are Sabayon!
-	epatch "${FILESDIR}/${PN}-sabayon-os-release.patch"
+	# We are Argent!
+	epatch "${FILESDIR}/${PN}-argent-os-release.patch"
 }
 
 src_install() {
@@ -191,7 +191,7 @@ src_install() {
 	# rc-scripts version for testing of features that *should* be present
 	echo "Gentoo Base System release ${PV}" > "${D}"/etc/gentoo-release
 
-	# Sabayon customization, install /etc/hosts separately (to .example)
+	# Argent customization, install /etc/hosts separately (to .example)
 	mv "${D}"/etc/hosts "${D}"/etc/hosts.example || die "cannot move /etc/hosts"
 
 }
@@ -244,7 +244,7 @@ pkg_postinst() {
 		fi
 	fi
 
-	# Sabayon customization, copy /etc/hosts back in place if it doesn't exist
+	# Argent customization, copy /etc/hosts back in place if it doesn't exist
 	local etc_hosts="${ROOT}/etc/hosts"
 	if [ -e "${etc_hosts}.baselayout_ebuild_backup" ]; then
 		cp -p "${etc_hosts}.baselayout_ebuild_backup" "${etc_hosts}" # don't die
