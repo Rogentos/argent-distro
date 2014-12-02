@@ -10,7 +10,7 @@ SLOT="0"
 KEYWORDS="x86 amd64 ppc"
 IUSE="debug_grade_1 "
 
-RDEPEND=">=app-misc/sabayonlive-tools-1.6.0"
+RDEPEND=">=app-misc/rogentoslive-tools-1.6.0"
 DEPEND=""
 
 src_unpack () {
