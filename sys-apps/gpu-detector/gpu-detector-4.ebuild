@@ -1,4 +1,5 @@
-# Copyright 2004-2013 Sabayon
+# Copyright 2004-2014 Sabayon
+# Copyright 2014 Argent
 # Distributed under the terms of the GNU General Public License v2
 
 DESCRIPTION="Configures your GPU when autodetection fails do to it"
@@ -9,7 +10,7 @@ SLOT="0"
 KEYWORDS="x86 amd64 ppc"
 IUSE=""
 
-RDEPEND="!>=app-misc/sabayon-live-11 <app-misc/sabayon-live-11"
+RDEPEND="!<app-misc/argent-live-0.9"
 DEPEND="${RDEPEND}"
 
 src_unpack () {

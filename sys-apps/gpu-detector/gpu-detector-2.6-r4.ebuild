@@ -1,7 +1,8 @@
 # Copyright 2004-2010 Sabayon
+# Copyright 2014 Argent
 # Distributed under the terms of the GNU General Public License v2
 
-DESCRIPTION="Sabayon live tool for X.Org video driver configuration"
+DESCRIPTION="Argent live tool for X.Org video driver configuration"
 HOMEPAGE="http://www.sabayon.org"
 SRC_URI=""
 LICENSE="GPL-2"
