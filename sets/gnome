@@ -1,6 +1,6 @@
 app-arch/file-roller
 app-cdr/brasero
-app-misc/sabayon-skel
+app-misc/argent-skel
 app-text/evince
 gnome-base/gdm
 gnome-base/gnome
@@ -12,4 +12,4 @@ media-gfx/eog
 media-video/totem
 @X
 x11-apps/xdm
-x11-themes/sabayon-artwork-gnome
+x11-themes/argent-artwork-gnome
