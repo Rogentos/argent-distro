@@ -1,4 +1,4 @@
-# Copyright 2004-2014 RogentOS Team
+# Copyright 2004-2010 Sabayon Project
 # Distributed under the terms of the GNU General Public License v2
 # $
 
@@ -24,7 +24,7 @@ K_ARGKERNEL_SELF_TARBALL_NAME="${K_ARGKERNEL_SELF_TARBALL_NAME:-}"
 # @ECLASS-VARIABLE: K_ARGKERNEL_PATCH_UPSTREAM_TARBALL
 # @DESCRIPTION:
 # If set to 1, the ebuild will fetch the upstream kernel tarball and
-# apply the RogentOS patch against it. This strategy avoids the need of
+# apply the Sabayon patch against it. This strategy avoids the need of
 # creating complete kernel source tarballs. The default value is 0.
 K_ARGKERNEL_PATCH_UPSTREAM_TARBALL="${K_ARGKERNEL_PATCH_UPSTREAM_TARBALL:-0}"
 
@@ -183,7 +183,7 @@ inherit eutils multilib kernel-2 argent-artwork mount-boot linux-info
 detect_version
 detect_arch
 
-DESCRIPTION="Kogaion, Argent and ArgOS linux kernel functions and phases"
+DESCRIPTION="Sabayon Linux kernel functions and phases"
 
 
 K_LONGTERM_URL_STR=""
@@ -194,12 +194,13 @@ fi
 ## kernel-2 eclass settings
 if [ "${K_ARGKERNEL_PATCH_UPSTREAM_TARBALL}" = "1" ]; then
 	_patch_name="$(get_version_component_range 1-2)-${K_ARGKERNEL_SELF_TARBALL_NAME}-${PVR}.patch.xz"
-	SRC_URI="${KERNEL_URI}"
+	SRC_URI="${KERNEL_URI}
+		mirror://argent/${CATEGORY}/${_patch_name}
+	"
 	UNIPATCH_LIST="${UNIPATCH_LIST} ${DISTDIR}/${_patch_name}"
 	unset _patch_name
 elif [ -n "${K_ARGKERNEL_SELF_TARBALL_NAME}" ]; then
-	#SRC_URI="mirror://argent/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
-	SRC_URI="http://bpr.bluepink.ro/~argent/distro/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
+	SRC_URI="mirror://argent/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
 else
 	SRC_URI="${KERNEL_URI}"
 fi
@@ -292,9 +293,9 @@ if _is_kernel_binary; then
 fi
 
 if [ -n "${K_ARGKERNEL_SELF_TARBALL_NAME}" ]; then
-	HOMEPAGE="https://github.com/Rogentos/kernel"
+	HOMEPAGE="https://github.com/Sabayon/kernel"
 else
-	HOMEPAGE="http://www.argent.ro"
+	HOMEPAGE="http://www.argent.org"
 fi
 
 # Returns success if _set_config_file_vars was called.
@@ -906,11 +907,11 @@ argent-kernel_pkg_postinst() {
 		_update_depmod "${depmod_r}"
 
 		elog "Please report kernel bugs at:"
-		elog "http://bugs.argent.ro"
+		elog "http://bugs.argent.org"
 
 		elog "The source code of this kernel is located at"
 		elog "=${K_KERNEL_SOURCES_PKG}."
-		elog "RogentOS Team recommends that portage users install"
+		elog "Sabayon Linux recommends that portage users install"
 		elog "${K_KERNEL_SOURCES_PKG} if you want"
 		elog "to build any packages that install kernel modules"
 		elog "(such as ati-drivers, nvidia-drivers, virtualbox, etc...)."
