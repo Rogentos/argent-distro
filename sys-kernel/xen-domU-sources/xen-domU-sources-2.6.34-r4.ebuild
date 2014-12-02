@@ -8,7 +8,7 @@ K_SABKERNEL_NAME="xen"
 K_SABKERNEL_NAME="xen-domU"
 K_ONLY_SOURCES="1"
 
-inherit sabayon-kernel
+inherit argent-kernel
 
 # Also see:
 # http://ec2-downloads.s3.amazonaws.com/user_specified_kernels.pdf
