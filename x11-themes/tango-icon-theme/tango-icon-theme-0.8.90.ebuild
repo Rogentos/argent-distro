@@ -9,7 +9,7 @@ inherit gnome2-utils
 DESCRIPTION="SVG and PNG icon theme from the Tango project"
 HOMEPAGE="http://tango.freedesktop.org"
 SRC_URI="http://tango.freedesktop.org/releases/${P}.tar.gz
-	branding? ( mirror://sabayon/x11-themes/fdo-icons-sabayon${SLREV}.tar.gz )"
+	branding? ( mirror://argent/x11-themes/fdo-icons-argent${SLREV}.tar.gz )"
 
 LICENSE="public-domain"
 SLOT="0"
@@ -39,16 +39,16 @@ src_install() {
 	dodoc AUTHORS ChangeLog README
 
 	if use branding; then
-		# replace tango icon start-here.{png,svg} with Sabayon ones
+		# replace tango icon start-here.{png,svg} with Argent ones
 		for dir in "${D}"/usr/share/icons/Tango/*/places; do
 			base_dir=$(dirname "${dir}")
 			icon_dir=$(basename "${base_dir}")
-			sabayon_svg_file="${WORKDIR}"/fdo-icons-sabayon/scalable/places/start-here.svg
+			argent_svg_file="${WORKDIR}"/fdo-icons-argent/scalable/places/start-here.svg
 			if [ "${icon_dir}" = "scalable" ]; then
-				cp "${sabayon_svg_file}" "${dir}/start-here.svg" || die
+				cp "${argent_svg_file}" "${dir}/start-here.svg" || die
 			else
 				convert  -background none -resize \
-					"${icon_dir}" "${sabayon_svg_file}" \
+					"${icon_dir}" "${argent_svg_file}" \
 					"${dir}/start-here.png" || die
 			fi
 		done
