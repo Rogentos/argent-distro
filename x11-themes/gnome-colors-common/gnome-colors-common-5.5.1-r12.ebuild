@@ -10,7 +10,7 @@ DESCRIPTION="Colorized icons shared between all gnome-colors iconsets"
 HOMEPAGE="http://code.google.com/p/gnome-colors/"
 
 SRC_URI="http://gnome-colors.googlecode.com/files/gnome-colors-${PV}.tar.gz
-	branding? ( mirror://sabayon/x11-themes/fdo-icons-sabayon${SLREV}.tar.gz )"
+	branding? ( mirror://argent/x11-themes/fdo-icons-argent${SLREV}.tar.gz )"
 
 LICENSE="GPL-2 public-domain"
 SLOT="0"
@@ -23,7 +23,7 @@ RESTRICT="binchecks strip"
 
 src_prepare() {
 	if use branding; then
-		cp -r fdo-icons-sabayon/* ${PN} || die "Sabayon branding failed"
+		cp -r fdo-icons-argent/* ${PN} || die "Argent branding failed"
 	fi
 }
 
