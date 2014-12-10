@@ -1,7 +1,7 @@
-diff --git a/5.4/sabayon-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc b/5.4/sabayon-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc
+diff --git a/5.4/argent-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc b/5.4/argent-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc
 index eda2347..05ac147 100644
---- a/5.4/sabayon-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc
-+++ b/5.4/sabayon-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc
+--- a/5.4/argent-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc
++++ b/5.4/argent-artwork-gnome/gtk/ClearlooksSL/gtk-2.0/gtkrc
 @@ -427,7 +427,7 @@ style "panel"
   fg[INSENSITIVE] = "#2257B1"
   bg[NORMAL] = "#222222"

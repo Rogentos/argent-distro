@@ -5,7 +5,7 @@ show-date=true
 show-weekdate=true
 
 [org.gnome.desktop.background]
-picture-uri='file:///usr/share/backgrounds/sabayonlinux.png'
+picture-uri='file:///usr/share/backgrounds/argentlinux.png'
 show-desktop-icons=true
 
 [org.gnome.desktop.interface]

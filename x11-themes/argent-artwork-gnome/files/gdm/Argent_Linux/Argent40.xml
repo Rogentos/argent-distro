@@ -2,11 +2,11 @@
 <!DOCTYPE greeter SYSTEM "greeter.dtd">
 <greeter>
   <item type="pixmap">
-    <normal file="/usr/share/backgrounds/sabayonlinux.png"/>
+    <normal file="/usr/share/backgrounds/argentlinux.png"/>
     <pos x="0" y="0" width="100%" height="100%"/>
   </item>
   
-  <!-- #Sabayon 4.0 Based on EVA2 -->
+  <!-- #Argent 4.0 Based on EVA2 -->
   
   <!-- 
   This is the box in the botton left "command box" 
