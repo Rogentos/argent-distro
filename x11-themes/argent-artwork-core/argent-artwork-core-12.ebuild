@@ -1,4 +1,5 @@
-# Copyright 1999-2013 Argent
+# Copyright 1999-2013 Sabayon
+# Copyright 2014 Argent
 # Distributed under the terms of the GNU General Public License v2
 #
 
