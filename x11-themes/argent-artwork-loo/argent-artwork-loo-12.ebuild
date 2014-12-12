@@ -1,4 +1,5 @@
-# Copyright 1999-2011 Argent Linux
+# Copyright 1999-2011 Sabayon Linux
+# Copyright 2014 Argent Linux
 # Distributed under the terms of the GNU General Public License v2
 # 
 
