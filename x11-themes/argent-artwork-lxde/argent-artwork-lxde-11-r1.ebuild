@@ -1,4 +1,5 @@
-# Copyright 2004-2011 Argent Promotion
+# Copyright 2004-2011 Sabayon Promotion
+# Copyright 2014 Argent Promotion
 # Distributed under the terms of the GNU General Public License v2
 #
 
