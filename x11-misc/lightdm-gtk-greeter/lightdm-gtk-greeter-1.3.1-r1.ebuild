@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="amd64 arm ~ppc x86"
 IUSE=""
 
-# This ebuild needs custom Sabayon themes, thus it must depend on sabayon-artwork-core
+# This ebuild needs custom Sabayon themes, thus it must depend on argent-artwork-core
 DEPEND="x11-libs/gtk+:3
 	>=x11-misc/lightdm-1.2.2"
 RDEPEND="app-admin/eselect-lightdm
@@ -21,7 +21,7 @@ RDEPEND="app-admin/eselect-lightdm
 	>=x11-misc/lightdm-1.2.2
 	x11-themes/gnome-themes-standard
 	x11-themes/gnome-icon-theme
-	x11-themes/sabayon-artwork-core"
+	x11-themes/argent-artwork-core"
 
 src_prepare() {
 	# Apply custom Sabayon theme
