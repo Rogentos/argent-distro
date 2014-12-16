@@ -1,7 +1,7 @@
-# Copyright 2004-2011 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 
-DESCRIPTION="Sabayon Bug Report hardware information collector"
+DESCRIPTION="Argent Bug Report hardware information collector"
 HOMEPAGE="http://bugs.argentlinux.org"
 SRC_URI=""
 

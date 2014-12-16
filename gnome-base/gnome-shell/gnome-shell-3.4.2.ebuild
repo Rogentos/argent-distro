@@ -132,7 +132,7 @@ src_prepare() {
 	# Make networkmanager optional, bug #398593
 	epatch "${FILESDIR}/${PN}-3.4.0-optional-networkmanager.patch"
 
-	# Sabayon Linux custom patch to have minimize and maximize buttons
+	# Argent Linux custom patch to have minimize and maximize buttons
 	epatch "${FILESDIR}/${PN}-minimize-maximize-close-buttons-2.patch"
 
 	# ARM patches taken from steev's overlay

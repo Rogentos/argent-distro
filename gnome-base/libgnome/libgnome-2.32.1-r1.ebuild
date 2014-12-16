@@ -47,7 +47,7 @@ pkg_setup() {
 src_prepare() {
 	gnome2_src_prepare
 
-	# Sabayon customization
+	# Argent customization
 	epatch "${FILESDIR}/${PN}-2.32-sabayon-background.patch"
 
 	# Make sure menus have icons. People don't like change

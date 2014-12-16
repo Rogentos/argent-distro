@@ -1,4 +1,4 @@
-# Copyright 2004-2013 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,7 +6,7 @@ EAPI=4
 
 inherit multilib
 
-DESCRIPTION="Sabayon system release virtual package"
+DESCRIPTION="Argent system release virtual package"
 HOMEPAGE="http://www.argentlinux.org"
 SRC_URI=""
 
@@ -27,7 +27,7 @@ RDEPEND="app-admin/eselect-python
 	sys-devel/gcc-config"
 
 src_unpack () {
-	echo "Sabayon Linux ${ARCH} ${PV}" > "${T}/sabayon-release"
+	echo "Argent Linux ${ARCH} ${PV}" > "${T}/sabayon-release"
 	mkdir -p "${S}" || die
 }
 

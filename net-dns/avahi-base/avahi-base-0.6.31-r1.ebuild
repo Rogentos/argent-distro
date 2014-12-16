@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -42,7 +42,7 @@ AVAHI_PATCHES=(
 	"${FILESDIR}"/${P/-base}-install-exec-hook.patch
 	# Backport host-name-from-machine-id patch, bug #466134
 	"${FILESDIR}"/${P/-base}-host-name-from-machine-id.patch
-	# Sabayon, workaround timeout on shutdown
+	# Argent, workaround timeout on shutdown
 	"${FILESDIR}"/${PN/-base}-0.6.31-workaround-systemd-stop-timeout.patch
 )
 inherit eutils multilib python avahi

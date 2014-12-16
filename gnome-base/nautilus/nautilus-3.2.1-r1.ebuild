@@ -73,9 +73,9 @@ pkg_setup() {
 src_prepare() {
 	gnome2_src_prepare
 
-	# Sabayon, fix icons setup during Live system autostart (first boot only)
+	# Argent, fix icons setup during Live system autostart (first boot only)
 	epatch "${FILESDIR}/${PN}-3.0.2-fix-autostart-live-boot.patch"
-	# Sabayon bug #2797
+	# Argent bug #2797
 	epatch "${FILESDIR}/${PN}-3.2.1-startup-notify.patch"
 
 	# Restore the nautilus-2.x Delete shortcut (Ctrl+Delete will still work);

@@ -1,5 +1,5 @@
-# Copyright 1999-2011 Sabayon Linux
-# Copyright 2014 Sabayon Linux
+# Copyright 2004-2014 Sabayon Linux
+# Copyright 2004-2014 Sabayon Linux
 # Distributed under the terms of the GNU General Public License v2
 # 
 

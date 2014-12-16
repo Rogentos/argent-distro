@@ -1,15 +1,15 @@
-# Copyright 2004-2013 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
-EGIT_REPO_URI="git://github.com/Sabayon/steambox.git"
+EGIT_REPO_URI="git://github.com/Argent/steambox.git"
 EGIT_COMMIT="v${PV}"
 
 inherit eutils python-single-r1 systemd git-2
 
-DESCRIPTION="Sabayon Steam Box provisioning tools"
+DESCRIPTION="Argent Steam Box provisioning tools"
 HOMEPAGE="http://www.argentlinux.org"
 
 SLOT="0"

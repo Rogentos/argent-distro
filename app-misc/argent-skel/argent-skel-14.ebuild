@@ -1,14 +1,14 @@
-# Copyright 1999-2012 SabayonLinux
+# Copyright 2004-2014 SabayonLinux
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=4
 EGIT_COMMIT="${PVR}"
-EGIT_REPO_URI="git://github.com/Sabayon/skel.git"
+EGIT_REPO_URI="git://github.com/Argent/skel.git"
 
 inherit eutils git-2 fdo-mime
 
-DESCRIPTION="Sabayon Linux skel tree"
+DESCRIPTION="Argent Linux skel tree"
 HOMEPAGE="http://www.argentlinux.org"
 LICENSE="GPL-2"
 SLOT="0"
@@ -20,7 +20,7 @@ src_install () {
 	dodir /etc/xdg/menus
 	cp "${S}"/* "${D}"/etc/ -Ra
 
-	# Sabayon Menu
+	# Argent Menu
 	dodir /usr/share/desktop-directories
 	cp "${FILESDIR}"/4.0.97/xdg/*.directory "${D}"/usr/share/desktop-directories/
 	dodir /usr/share/sabayon

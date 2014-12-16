@@ -214,7 +214,7 @@ eblit-src_unpack-post() {
 			|| die "Failed to ensure nscd builds with ssp-all"
 	fi
 
-	# See Sabayon bug 2699
+	# See Argent bug 2699
 	cd "${S}"
 	einfo "Fixing first workday and weekday for it_IT"
 	epatch "${FILESDIR}"/glibc-it_IT-workday-upstream-bug-13197.patch

@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -33,6 +33,6 @@ src_install() {
 
 	mkdir -p "${D}/etc"
 	cat > "${D}/etc/lsb-release" <<- EOF
-		DISTRIB_ID="Sabayon"
+		DISTRIB_ID="Argent"
 	EOF
 }

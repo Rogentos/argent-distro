@@ -1,4 +1,4 @@
-# Copyright 2004-2008 Sabayon Linux
+# Copyright 2004-2014 Sabayon Linux
 # Distributed under the terms of the GNU General Public License v2
 
 DESCRIPTION="Firmware for the new b43 b43-legacy drivers for Broadcom wireless adapters using mac80211 driver"

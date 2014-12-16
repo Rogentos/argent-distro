@@ -1,14 +1,14 @@
-# Copyright 2004-2013 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
 
-EGIT_REPO_URI="git://github.com/Sabayon/sabayon-live.git"
+EGIT_REPO_URI="git://github.com/Argent/sabayon-live.git"
 EGIT_COMMIT="v${PV}"
 
 inherit eutils systemd git-2
 
-DESCRIPTION="Sabayon live image scripts and tools"
+DESCRIPTION="Argent live image scripts and tools"
 HOMEPAGE="http://www.argentlinux.org"
 
 SLOT="0"

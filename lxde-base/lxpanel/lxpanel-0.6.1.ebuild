@@ -65,7 +65,7 @@ src_install () {
 
 	readme.gentoo_create_doc
 
-	# Sabayon, add our computer icon
+	# Argent, add our computer icon
 	insinto /usr/share/lxpanel/images
 	newins "${FILESDIR}"/start-here.png my-computer.png
 }

@@ -70,9 +70,9 @@ src_prepare() {
 	# bug #393663
 	epatch "${FILESDIR}/${PN}-3.5.91-delete.patch"
 
-	# Sabayon, fix icons setup during Live system autostart (first boot only)
+	# Argent, fix icons setup during Live system autostart (first boot only)
 	epatch "${FILESDIR}/${PN}-3.0.2-fix-autostart-live-boot.patch"
-	# Sabayon bug #2797
+	# Argent bug #2797
 	epatch "${FILESDIR}/${PN}-3.2.1-startup-notify.patch"
 
 	# Remove -D*DEPRECATED flags. Don't leave this for eclass! (bug #448822)

@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="amd64 arm ~ppc x86"
 IUSE=""
 
-# This ebuild needs custom Sabayon themes, thus it must depend on argent-artwork-core
+# This ebuild needs custom Argent themes, thus it must depend on argent-artwork-core
 DEPEND="x11-libs/gtk+:3
 	>=x11-misc/lightdm-1.2.2"
 RDEPEND="app-admin/eselect-lightdm
@@ -24,7 +24,7 @@ RDEPEND="app-admin/eselect-lightdm
 	x11-themes/argent-artwork-core"
 
 src_prepare() {
-	# Apply custom Sabayon theme
+	# Apply custom Argent theme
 	sed -i \
 		-e 's:#background=.*:background=/usr/share/backgrounds/kgdm.png:' \
 		-e 's:#show-language-selector=.*:show-language-selector=true:' \

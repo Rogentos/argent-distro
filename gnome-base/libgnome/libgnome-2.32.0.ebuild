@@ -49,7 +49,7 @@ src_prepare() {
 	# Make sure menus have icons. People don't like change
 	epatch "${FILESDIR}/${PN}-2.28.0-menus-have-icons.patch"
 
-	# Sabayon customization
+	# Argent customization
 	epatch "${FILESDIR}/${PN}-2.32-sabayon-background.patch"
 }
 

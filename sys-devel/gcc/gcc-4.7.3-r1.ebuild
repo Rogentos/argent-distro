@@ -47,12 +47,12 @@ fi
 
 ## Check for valid gcc profile.
 src_unpack() {
-	# Since Sabayon's gcc ebuild are split into two parts, we have to
+	# Since Argent's gcc ebuild are split into two parts, we have to
 	# build gcc with a different version of gcc, or terrible breakage
 	# will occur after sys-devel/base-gcc is installed, but the
 	# partner sys-devel/gcc still needs to be built.
 
-	# While it is possible to rebuild Sabayon's split gcc from
+	# While it is possible to rebuild Argent's split gcc from
 	# the same version, we have to disallow this also since
 	# we have no way of discerning if a configuration change
 	# is significant enough to cause breakage.
@@ -68,7 +68,7 @@ src_unpack() {
 	if [[ "${GCC_PROFILE_SLOT}" = "${SLOT}" ]] ; then
 		eerror "Error!"
 		eerror "The active gcc-profile is for sys-devel/gcc slot ${SLOT}."
-		eerror "Sabayon's split sys-devel/gcc package MUST be built"
+		eerror "Argent's split sys-devel/gcc package MUST be built"
 		eerror "with another slotted version of sys-devel/gcc active."
 		ebeep 10
 	fi

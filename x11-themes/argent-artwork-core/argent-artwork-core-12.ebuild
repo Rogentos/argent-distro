@@ -1,5 +1,5 @@
-# Copyright 1999-2013 Sabayon
-# Copyright 2014 Argent
+# Copyright 2004-2014 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 #
 

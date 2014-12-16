@@ -4,7 +4,7 @@
 
 EAPI=3
 
-# Change for Sabayon: python[tk] -> python-tk.
+# Change for Argent: python[tk] -> python-tk.
 
 #PYTHON_USE_WITH="tk"
 PYTHON_DEPEND="2:2.6"

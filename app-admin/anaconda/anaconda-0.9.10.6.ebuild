@@ -1,4 +1,4 @@
-# Copyright 2004-2010 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -18,7 +18,7 @@ SEPOL_VER="2.0"
 LSELINUX_VER="2.0.94"
 LSELINUX_SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/libselinux-${LSELINUX_VER}.tar.gz"
 
-DESCRIPTION="Sabayon Redhat Anaconda Installer Port"
+DESCRIPTION="Argent Redhat Anaconda Installer Port"
 HOMEPAGE="http://gitweb.argentlinux.org/?p=anaconda.git;a=summary"
 if [ "${PV}" = "9999" ]; then
 	SRC_URI="${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"

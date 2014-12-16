@@ -72,7 +72,7 @@ REQUIRED_USE="grub_platforms_qemu? ( truetype )
 
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
-# sbsigntool is Sabayon specific
+# sbsigntool is Argent specific
 RDEPEND="
 	app-crypt/sbsigntool
 	x11-themes/sabayon-artwork-grub
@@ -187,7 +187,7 @@ grub_configure() {
 		*)	platform=${MULTIBUILD_VARIANT} ;;
 	esac
 
-	# Sabayon: backward compatibility, do not change --with-grubdir
+	# Argent: backward compatibility, do not change --with-grubdir
 	local myeconfargs=(
 		--disable-werror
 		--program-prefix=
@@ -207,7 +207,7 @@ grub_configure() {
 		$(usex efiemu '' --disable-efiemu)
 	)
 
-	# Sabayon: keep --with-grubdir=grub to grub for backward compatibility
+	# Argent: keep --with-grubdir=grub to grub for backward compatibility
 	if use multislot; then
 		myeconfargs+=(
 			--program-transform-name="s,grub,grub2,"

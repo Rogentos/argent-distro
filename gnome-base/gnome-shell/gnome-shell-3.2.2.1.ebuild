@@ -129,9 +129,9 @@ src_prepare() {
 
 	# Fix automagic gnome-bluetooth dep, bug #398145
 	epatch "${FILESDIR}/${PN}-3.2.1-automagic-gnome-bluetooth.patch"
-	# Sabayon Linux custom patch to have minimize and maximize buttons
+	# Argent Linux custom patch to have minimize and maximize buttons
 	epatch "${FILESDIR}/${PN}-minimize-maximize-close-buttons.patch"
-	# Sabayon Linux custom patch to have a readable applications menu font
+	# Argent Linux custom patch to have a readable applications menu font
 	epatch "${FILESDIR}/${PN}-applications-menu-style-fix.patch"
 
 	# Make networkmanager optional, bug #398593

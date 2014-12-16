@@ -1,9 +1,9 @@
-# Copyright 2009 Sabayon Linux
+# Copyright 2004-2014 Sabayon Linux
 # Distributed under the terms of the GNU General Public License v2
 
 inherit eutils
 
-DESCRIPTION="Sabayon Linux GRUB utilities"
+DESCRIPTION="Argent Linux GRUB utilities"
 HOMEPAGE="http://www.sabayonlinux.org/"
 SRC_URI=""
 LICENSE="GPL-2"

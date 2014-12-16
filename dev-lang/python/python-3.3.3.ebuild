@@ -67,7 +67,7 @@ src_prepare() {
 
 	EPATCH_SUFFIX="patch" epatch "${WORKDIR}/patches"
 
-	# Sabayon: fix http://bugs.python.org/issue19839
+	# Argent: fix http://bugs.python.org/issue19839
 	epatch "${FILESDIR}/${P}-bz2-eof.patch"
 
 	sed -i -e "s:@@GENTOO_LIBDIR@@:$(get_libdir):g" \

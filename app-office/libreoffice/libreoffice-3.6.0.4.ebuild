@@ -464,7 +464,7 @@ src_configure() {
 		--disable-systray \
 		--disable-zenity \
 		--with-alloc=$(use jemalloc && echo "jemalloc" || echo "system") \
-		--with-build-version="Sabayon official package" \
+		--with-build-version="Argent official package" \
 		--enable-extension-integration \
 		--with-external-dict-dir="${EPREFIX}/usr/share/myspell" \
 		--with-external-hyph-dir="${EPREFIX}/usr/share/myspell" \
@@ -474,7 +474,7 @@ src_configure() {
 		--with-max-jobs=${jbs} \
 		--with-num-cpus=${jbs} \
 		--with-unix-wrapper=libreoffice \
-		--with-vendor="Sabayon Foundation" \
+		--with-vendor="Argent Foundation" \
 		--with-x \
 		--without-afms \
 		--without-fonts \

@@ -27,7 +27,7 @@ src_unpack() {
 	epatch "${FILESDIR}"/${PN}-2.6-syslog-updates.patch
 	epatch "${FILESDIR}"/${PN}-2.6.4-mdassemble.patch #211426
 	epatch "${FILESDIR}"/${PN}-3.1.5-cflags.patch #336175
-	# Sabayon specific, inhibit mdadm calls when anaconda
+	# Argent specific, inhibit mdadm calls when anaconda
 	# is running
 	epatch "${FILESDIR}"/mdadm-udev-anaconda.patch
 	use static && append-ldflags -static

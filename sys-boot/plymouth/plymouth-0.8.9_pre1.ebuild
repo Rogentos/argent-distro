@@ -41,7 +41,7 @@ DOC_CONTENTS="
 "
 
 src_prepare() {
-	# Sabayon: setup our default settings
+	# Argent: setup our default settings
 	epatch "${FILESDIR}/${PN}-sabayon-defaults.patch"
 
 	epatch_user
@@ -67,7 +67,7 @@ src_configure() {
 src_install() {
 	autotools-utils_src_install
 
-	# Sabayon: provided by sabayon-artwork-core
+	# Argent: provided by sabayon-artwork-core
 	rm "${D}/usr/share/plymouth/bizcom.png"
 
 	# Install compatibility symlinks as some rdeps hardcode the paths

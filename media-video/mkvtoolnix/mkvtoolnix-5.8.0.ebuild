@@ -99,5 +99,5 @@ src_install() {
 
 pkg_postinst() {
 	einfo \
-		"On Sabayon the GUI is provided by media-video/mkvtoolnix-gui package."
+		"On Argent the GUI is provided by media-video/mkvtoolnix-gui package."
 }

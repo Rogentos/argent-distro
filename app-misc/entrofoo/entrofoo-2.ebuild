@@ -1,11 +1,11 @@
-# Copyright 2004-2009 Sabayon Linux
+# Copyright 2004-2014 Sabayon Linux
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="2"
 
 inherit eutils
 
-DESCRIPTION="Sabayon Linux Entropy Test Package (fooooon't install this)"
+DESCRIPTION="Argent Linux Entropy Test Package (fooooon't install this)"
 HOMEPAGE="http://www.argentlinux.org"
 SRC_URI="mirror://sabayon/app-misc/entrofoo-2.tar.bz2"
 
