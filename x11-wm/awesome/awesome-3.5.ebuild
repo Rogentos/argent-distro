@@ -79,7 +79,7 @@ src_prepare() {
 	# bug  #408025
 	epatch "${FILESDIR}/${PN}-3.5_rc1-convert-path.patch"
 
-	# Sabayon stuff
+	# Argent stuff
 	epatch "${FILESDIR}/sabayon-background.patch"
 }
 
