@@ -79,7 +79,7 @@ src_unpack() {
 
 	cd "${S}"
 	epatch "${FILESDIR}"/${PN}-crypt-config-3.patch
-	# Sabayon Bug 2836, can be upstreamed
+	# Argent Bug 2836, can be upstreamed
 	epatch "${FILESDIR}"/${PN}-virtio-support-bug-2836.patch
 }
 

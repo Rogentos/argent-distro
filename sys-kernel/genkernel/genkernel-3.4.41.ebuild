@@ -79,7 +79,7 @@ src_prepare() {
 	use selinux && sed -i 's/###//g' "${S}"/gen_compile.sh
 
 	epatch "${FILESDIR}"/${PN}-crypt-config-5.patch
-	# Sabayon Bug 2836, can be upstreamed
+	# Argent Bug 2836, can be upstreamed
 	epatch "${FILESDIR}"/${PN}-virtio-support-bug-2836-3.patch
 	# when aufs/unionfs is turned off, mount --bind /mnt/cdrom anyway
 	epatch "${FILESDIR}"/${PN}-bind-mount-cdrom.patch
