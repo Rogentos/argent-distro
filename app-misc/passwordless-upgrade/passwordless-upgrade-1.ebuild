@@ -5,7 +5,7 @@
 EAPI=5
 
 DESCRIPTION="Allow users in the entropy group to run system upgrades without password"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 LICENSE="GPL-2"
 
 SLOT="0"

@@ -10,7 +10,7 @@ EGIT_COMMIT="v${PV}"
 inherit eutils python-single-r1 systemd git-2
 
 DESCRIPTION="Sabayon Steam Box provisioning tools"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 
 SLOT="0"
 LICENSE="GPL-2"

@@ -7,7 +7,7 @@ fix crash when using full allocation storage mode
 
 bugs:
 https://code.google.com/p/libtorrent/issues/detail?id=577
-https://bugs.sabayon.org/show_bug.cgi?id=4613
+https://bugs.argentlinux.org/show_bug.cgi?id=4613
 
 Index: src/storage.cpp
 ===================================================================

@@ -236,6 +236,6 @@ pkg_postinst() {
 		ewarn "${PN} needs Systemd to be *running* for working"
 		ewarn "properly. Please follow the this guide to migrate:"
 		ewarn "http://wiki.gentoo.org/wiki/Systemd"
-		ewarn "https://wiki.sabayon.org/index.php?title=En:HOWTO:_systemd"
+		ewarn "https://wiki.argentlinux.org/index.php?title=En:HOWTO:_systemd"
 	fi
 }

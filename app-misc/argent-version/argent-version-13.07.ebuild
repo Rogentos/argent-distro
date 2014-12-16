@@ -7,7 +7,7 @@ EAPI=4
 inherit multilib
 
 DESCRIPTION="Sabayon system release virtual package"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 SRC_URI=""
 
 LICENSE="GPL-2"

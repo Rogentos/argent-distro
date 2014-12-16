@@ -9,7 +9,7 @@ EGIT_COMMIT="v${PV}"
 inherit eutils systemd git-2
 
 DESCRIPTION="Sabayon live image scripts and tools"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 
 SLOT="0"
 LICENSE="GPL-2"

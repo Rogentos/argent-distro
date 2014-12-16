@@ -6,7 +6,7 @@ EAPI=5
 inherit eutils systemd
 
 DESCRIPTION="Sabayon Linux Media Center Infrastructure"
-HOMEPAGE="http://www.sabayon.org/"
+HOMEPAGE="http://www.argentlinux.org/"
 SRC_URI=""
 
 RESTRICT="nomirror"

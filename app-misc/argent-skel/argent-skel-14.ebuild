@@ -9,7 +9,7 @@ EGIT_REPO_URI="git://github.com/Sabayon/skel.git"
 inherit eutils git-2 fdo-mime
 
 DESCRIPTION="Sabayon Linux skel tree"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"

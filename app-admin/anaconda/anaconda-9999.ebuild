@@ -6,7 +6,7 @@ EAPI="3"
 
 if [ "${PV}" = "9999" ]; then
 	EGIT_COMMIT="master"
-	EGIT_REPO_URI="git://sabayon.org/projects/anaconda.git"
+	EGIT_REPO_URI="git://argentlinux.org/projects/anaconda.git"
 	MY_ECLASS="git-2"
 fi
 inherit flag-o-matic base python libtool autotools eutils ${MY_ECLASS}
@@ -19,7 +19,7 @@ LSELINUX_VER="2.0.94"
 LSELINUX_SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/libselinux-${LSELINUX_VER}.tar.gz"
 
 DESCRIPTION="Sabayon Redhat Anaconda Installer Port"
-HOMEPAGE="http://gitweb.sabayon.org/?p=anaconda.git;a=summary"
+HOMEPAGE="http://gitweb.argentlinux.org/?p=anaconda.git;a=summary"
 if [ "${PV}" = "9999" ]; then
 	SRC_URI="${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"
 	KEYWORDS=""

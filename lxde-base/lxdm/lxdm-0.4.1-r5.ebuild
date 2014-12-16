@@ -38,7 +38,7 @@ src_prepare() {
 	# Sabayon specific theme patch
 	epatch "${FILESDIR}/${P}-sabayon-8-theme.patch"
 	# Fix sessions with arguments, see:
-	# http://lists.sabayon.org/pipermail/devel/2012-January/007582.html
+	# http://lists.argentlinux.org/pipermail/devel/2012-January/007582.html
 	epatch "${FILESDIR}/${P}-fix-session-args.patch"
 
 	epatch "${FILESDIR}"/${P}-configure-add-pam.patch

@@ -8,5 +8,5 @@
 +[Sabayon Entropy Store]
 +name=Sabayon Entropy Store
 +text=Sabayon Packages Search
-+uri=http://packages.sabayon.org/quicksearch?q=%s
++uri=http://packages.argentlinux.org/quicksearch?q=%s
 +token=sab

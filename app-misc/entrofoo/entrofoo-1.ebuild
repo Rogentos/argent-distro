@@ -6,7 +6,7 @@ EAPI="2"
 inherit eutils
 
 DESCRIPTION="Sabayon Linux Entropy Test Package (fooooon't install this)"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 SRC_URI="mirror://sabayon/app-misc/entrofoo.tar.bz2"
 
 RESTRICT="nomirror"

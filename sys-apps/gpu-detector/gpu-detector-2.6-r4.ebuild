@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 DESCRIPTION="Argent live tool for X.Org video driver configuration"
-HOMEPAGE="http://www.sabayon.org"
+HOMEPAGE="http://www.argentlinux.org"
 SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
