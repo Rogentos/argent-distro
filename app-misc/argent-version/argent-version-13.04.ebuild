@@ -21,16 +21,16 @@ RDEPEND="app-admin/eselect-python
 	sys-devel/gcc-config"
 
 src_unpack () {
-	echo "Argent Linux ${ARCH} ${PV}" > "${T}/sabayon-release"
+	echo "Argent Linux ${ARCH} ${PV}" > "${T}/argent-release"
 }
 
 src_install () {
 	insinto /etc
-	doins "${T}"/sabayon-release
-	dosym /etc/sabayon-release /etc/system-release
+	doins "${T}"/argent-release
+	dosym /etc/argent-release /etc/system-release
 	# Bug 3459 - reduce the risk of fork bombs
 	insinto /etc/security/limits.d
-	doins "${FILESDIR}/00-sabayon-anti-fork-bomb.conf"
+	doins "${FILESDIR}/00-argent-anti-fork-bomb.conf"
 }
 
 pkg_postinst() {

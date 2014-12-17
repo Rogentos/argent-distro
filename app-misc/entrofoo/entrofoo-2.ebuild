@@ -7,7 +7,7 @@ inherit eutils
 
 DESCRIPTION="Argent Linux Entropy Test Package (fooooon't install this)"
 HOMEPAGE="http://www.argentlinux.org"
-SRC_URI="mirror://sabayon/app-misc/entrofoo-2.tar.bz2"
+SRC_URI="mirror://argent/app-misc/entrofoo-2.tar.bz2"
 
 RESTRICT="nomirror"
 LICENSE="GPL-2"

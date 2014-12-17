@@ -14,7 +14,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 IUSE=""
-RDEPEND="!<=app-misc/sabayonlinux-skel-3.5-r6"
+RDEPEND="!<=app-misc/argentlinux-skel-3.5-r6"
 
 src_install () {
 	dodir /etc/xdg/menus
@@ -23,9 +23,9 @@ src_install () {
 	# Argent Menu
 	dodir /usr/share/desktop-directories
 	cp "${FILESDIR}"/4.0.97/xdg/*.directory "${D}"/usr/share/desktop-directories/
-	dodir /usr/share/sabayon
-	cp -a "${FILESDIR}"/4.0.97/* "${D}"/usr/share/sabayon/
-	doicon "${FILESDIR}"/4.0.97/img/sabayon-weblink.png
+	dodir /usr/share/argent
+	cp -a "${FILESDIR}"/4.0.97/* "${D}"/usr/share/argent/
+	doicon "${FILESDIR}"/4.0.97/img/argent-weblink.png
 
 	chown root:root "${D}"/etc/skel -R
 }
@@ -34,8 +34,8 @@ pkg_postinst () {
 	if [ -x "/usr/bin/xdg-desktop-menu" ]; then
 		# Manual install otherwise it wont be set up correctly
 		xdg-desktop-menu install \
-			/usr/share/sabayon/xdg/sabayon-sabayon.directory \
-			/usr/share/sabayon/xdg/*.desktop
+			/usr/share/argent/xdg/argent-argent.directory \
+			/usr/share/argent/xdg/*.desktop
 	fi
 
 	fdo-mime_desktop_database_update
@@ -44,6 +44,6 @@ pkg_postinst () {
 
 pkg_prerm() {
 	if [ -x "/usr/bin/xdg-desktop-menu" ]; then
-		xdg-desktop-menu uninstall /usr/share/sabayon/xdg/sabayon-sabayon.directory /usr/share/sabayon/xdg/*.desktop
+		xdg-desktop-menu uninstall /usr/share/argent/xdg/argent-argent.directory /usr/share/argent/xdg/*.desktop
 	fi
 }

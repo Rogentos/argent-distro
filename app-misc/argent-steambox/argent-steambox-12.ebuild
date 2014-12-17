@@ -21,7 +21,7 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 DEPEND="${PYTHON_DEPS}"
 RDEPEND="${PYTHON_DEPS}
-	>=app-misc/sabayon-live-8
+	>=app-misc/argent-live-8
 	|| ( dev-python/pygobject-cairo:3 dev-python/pygobject:3[cairo] )
 	x11-apps/xsetroot
 	x11-libs/gtk+:3

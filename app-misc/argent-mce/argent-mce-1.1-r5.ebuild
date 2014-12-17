@@ -15,7 +15,7 @@ SLOT="0"
 KEYWORDS="amd64 arm x86"
 IUSE=""
 
-RDEPEND="media-tv/xbmc app-misc/sabayon-live"
+RDEPEND="media-tv/xbmc app-misc/argent-live"
 DEPEND=""
 
 S="${WORKDIR}"
@@ -23,7 +23,7 @@ S="${WORKDIR}"
 src_install () {
 	local dir="${FILESDIR}/${PV}"
 
-	doinitd "${dir}/init.d/sabayon-mce"
+	doinitd "${dir}/init.d/argent-mce"
 	systemd_dounit "${dir}"/systemd/*
 
 	dodir /usr/bin
@@ -40,7 +40,7 @@ src_install () {
 }
 
 pkg_postinst() {
-	# create new user sabayonmce
+	# create new user argentmce
 	local mygroups="users"
 	local gr="lp wheel uucp audio cdrom scanner video "
 	gr+="cdrw usb plugdev polkituser"
@@ -50,5 +50,5 @@ pkg_postinst() {
 			mygroups+=",${mygroup}"
 		fi
 	done
-	enewuser sabayonmce -1 /bin/sh /var/sabayonmce "${mygroups}"
+	enewuser argentmce -1 /bin/sh /var/argentmce "${mygroups}"
 }
