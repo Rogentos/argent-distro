@@ -13,7 +13,7 @@ PYTHON_COMPAT=( python2_{6,7} )
 [[ ${PV} == *9999 ]] && SCM="git-2"
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
 
-SAB_PATCHES_SRC=( "mirror://sabayon/dev-vcs/git/git-1.9.0_rc3-optional-cvs.patch.gz" )
+SAB_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-1.9.0_rc3-optional-cvs.patch.gz" )
 inherit sab-patches toolchain-funcs eutils python-single-r1 ${SCM}
 
 MY_PV="${PV/_rc/.rc}"

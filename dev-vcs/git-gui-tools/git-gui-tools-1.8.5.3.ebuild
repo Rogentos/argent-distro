@@ -34,7 +34,7 @@ else
 	KEYWORDS=""
 fi
 
-SRC_URI+=" mirror://sabayon/dev-vcs/git/git-1.8.5-optional-cvs.patch.gz"
+SRC_URI+=" mirror://argent/dev-vcs/git/git-1.8.5-optional-cvs.patch.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
