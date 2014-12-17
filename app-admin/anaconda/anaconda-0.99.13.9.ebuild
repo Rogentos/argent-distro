@@ -25,9 +25,9 @@ if [ "${PV}" = "9999" ]; then
 	KEYWORDS=""
 	S="${WORKDIR}"/${PN}-${PVR}
 else
-	SRC_URI="mirror://sabayon/${CATEGORY}/${PN}-sabayon-${PVR}.tar.bz2 ${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"
+	SRC_URI="mirror://argent/${CATEGORY}/${PN}-argent-${PVR}.tar.bz2 ${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}"/${PN}-sabayon-${PVR}
+	S="${WORKDIR}"/${PN}-argent-${PVR}
 fi
 AUDIT_S="${WORKDIR}/audit-${AUDIT_VER}"
 LSELINUX_S="${WORKDIR}/libselinux-${LSELINUX_VER}"
