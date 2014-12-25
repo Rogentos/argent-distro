@@ -68,8 +68,8 @@ src_unpack() {
 
 src_prepare() {
 	epatch \
-		"${FILESDIR}/"midori-add-sabayon-package-search.patch \
-		"${FILESDIR}"/midori-sabayon-user-agent-3+arch.patch
+		"${FILESDIR}/"midori-add-argent-package-search.patch \
+		"${FILESDIR}"/midori-argent-user-agent-3+arch.patch
 	epatch "${FILESDIR}"/${P}-dl.patch
 }
 

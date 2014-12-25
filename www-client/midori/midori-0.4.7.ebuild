@@ -76,8 +76,8 @@ src_prepare() {
 	sed -i -e 's:gcr-3-gtk2:&dIsAbLe:' wscript || die
 
 	epatch \
-		"${FILESDIR}/"midori-add-sabayon-package-search.patch \
-		"${FILESDIR}"/${PN}-0.4.7-sabayon-user-agent-arch.patch
+		"${FILESDIR}/"midori-add-argent-package-search.patch \
+		"${FILESDIR}"/${PN}-0.4.7-argent-user-agent-arch.patch
 }
 
 src_configure() {
