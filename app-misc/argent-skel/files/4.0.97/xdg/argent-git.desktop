@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Type=Application
 
-Exec=xdg-open https://git.sabayon.org
-Icon=sabayon-weblink
+Exec=xdg-open https://git.argent.org
+Icon=argent-weblink
 
 Name=Sabayon Git Repos
 

@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Type=Application
 
-Exec=xdg-open https://www.sabayon.org/chat
-Icon=sabayon-weblink
+Exec=xdg-open https://www.argent.org/chat
+Icon=argent-weblink
 
 Name=Get Live Help
 

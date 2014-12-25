@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # setup
-myxinitrc="/usr/bin/sabayon-mce-session"
-myuser="sabayonmce"
-mcepid="/var/sabayonmce/.mcepid"
+myxinitrc="/usr/bin/argent-mce-session"
+myuser="argentmce"
+mcepid="/var/argentmce/.mcepid"
 
 # make sure samba is started
 [[ -f "/etc/init.d/samba" ]] && /etc/init.d/samba start &> /dev/null
@@ -14,5 +14,5 @@ mcepid="/var/sabayonmce/.mcepid"
 [[ -f "$mcepid" ]] && kill $(cat $mcepid) &> /dev/null
 
 # spawn!
-echo $$ > /var/run/sabayon-mce-start.pid
-su - ${myuser} -c "source /etc/profile && /usr/bin/sabayon-mce-startx ${myxinitrc} &> /dev/null" &
+echo $$ > /var/run/argent-mce-start.pid
+su - ${myuser} -c "source /etc/profile && /usr/bin/argent-mce-startx ${myxinitrc} &> /dev/null" &

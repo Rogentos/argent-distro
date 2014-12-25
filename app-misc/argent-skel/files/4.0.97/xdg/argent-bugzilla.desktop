@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Type=Application
 
-Exec=xdg-open https://bugs.sabayon.org
-Icon=sabayon-weblink
+Exec=xdg-open https://bugs.argent.org
+Icon=argent-weblink
 
 Name=Report Bugs
 

@@ -1,7 +1,7 @@
 #!/sbin/runscript
 
 depend() {
-	after mtab sabayonlive
+	after mtab argentlive
 	before xdm
 	need dbus
 	need net
@@ -9,7 +9,7 @@ depend() {
 
 start() {
 	ebegin "Configuring Sabayon Media Center if needed"
-	/usr/libexec/sabayon-mce.sh
+	/usr/libexec/argent-mce.sh
 	eend $?
 }
 

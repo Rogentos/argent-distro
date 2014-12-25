@@ -2,7 +2,7 @@
 Encoding=UTF-8
 Name=Sabayon Media Center
 Comment=This session loads Sabayon in Media Center mode
-Exec=/usr/bin/sabayon-mce-session
+Exec=/usr/bin/argent-mce-session
 Icon=
 Type=Application
 

@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Type=Application
 
-Exec=xdg-open https://www.sabayon.org/download
-Icon=sabayon-weblink
+Exec=xdg-open https://www.argent.org/download
+Icon=argent-weblink
 
 Name=Download Locations
 

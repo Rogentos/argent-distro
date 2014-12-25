@@ -2,8 +2,8 @@
 Encoding=UTF-8
 Type=Application
 
-Exec=xdg-open https://forum.sabayon.org
-Icon=sabayon-weblink
+Exec=xdg-open https://forum.argent.org
+Icon=argent-weblink
 
 Name=Sabayon Help Forum
 

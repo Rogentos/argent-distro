@@ -20,7 +20,7 @@ zvalue=170
 [Containments][1][Applets][31][Configuration]
 animations=true
 droptarget=false
-feeds=http://www.sabayonlinux.org/feeds/news.rss,http://planet.sabayonlinux.org/?feed=rss2
+feeds=http://www.argentlinux.org/feeds/news.rss,http://planet.argentlinux.org/?feed=rss2
 interval=30
 logo=true
 maxAge=0
@@ -29,8 +29,8 @@ switchInterval=10
 [Containments][1][Wallpaper][image]
 slideTimer=600
 slidepaths=/usr/kde/4.2/share/wallpapers/
-userswallpapers=/usr/share/backgrounds/sabayonlinux.png
-wallpaper=/usr/share/backgrounds/sabayonlinux.png
+userswallpapers=/usr/share/backgrounds/argentlinux.png
+wallpaper=/usr/share/backgrounds/argentlinux.png
 wallpapercolor=32,64,86
 wallpaperposition=0
 
