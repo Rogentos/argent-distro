@@ -9,7 +9,7 @@ inherit autotools-utils
 DESCRIPTION="Graphical boot animation (splash) and logger"
 HOMEPAGE="http://cgit.freedesktop.org/plymouth/"
 SRC_URI="
-	mirror://sabayon/${CATEGORY}/plymouth/sabayon-logo.png
+	mirror://argent/${CATEGORY}/plymouth/argent-logo.png
 	http://dev.gentoo.org/~aidecoe/distfiles/${CATEGORY}/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
@@ -77,7 +77,7 @@ src_install() {
 	fi
 
 	insinto /usr/share/plymouth
-	newins "${DISTDIR}"/sabayon-logo.png bizcom.png
+	newins "${DISTDIR}"/argent-logo.png bizcom.png
 }
 
 pkg_postinst() {
