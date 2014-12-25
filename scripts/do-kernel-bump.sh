@@ -6,7 +6,7 @@ fi
 
 OLD=$1
 NEW=$2
-PACKAGES="sys-kernel/sabayon-sources sys-kernel/linux-sabayon
+PACKAGES="sys-kernel/argent-sources sys-kernel/linux-argent
 	sys-kernel/server-sources sys-kernel/linux-server
 	sys-kernel/ec2-sources sys-kernel/linux-ec2
 	sys-kernel/panda-sources sys-kernel/linux-panda

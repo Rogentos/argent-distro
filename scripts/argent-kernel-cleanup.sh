@@ -5,8 +5,8 @@ if [ -z "$1" ]; then
 fi
 
 packages=(
-	"sys-kernel/sabayon-sources"
-	"sys-kernel/linux-sabayon"
+	"sys-kernel/argent-sources"
+	"sys-kernel/linux-argent"
 	"sys-kernel/ec2-sources"
 	"sys-kernel/linux-ec2"
 )
