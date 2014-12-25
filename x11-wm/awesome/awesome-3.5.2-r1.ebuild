@@ -55,7 +55,7 @@ src_prepare() {
 	epatch "${FILESDIR}/${PN}-3.5_rc1-convert-path.patch"
 
 	# Argent stuff
-	epatch "${FILESDIR}/sabayon-background.patch"
+	epatch "${FILESDIR}/argent-background.patch"
 }
 
 src_configure() {
