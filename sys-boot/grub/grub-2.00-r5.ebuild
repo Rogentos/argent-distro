@@ -75,7 +75,7 @@ REQUIRED_USE="grub_platforms_qemu? ( truetype )
 # sbsigntool is Argent specific
 RDEPEND="
 	app-crypt/sbsigntool
-	x11-themes/sabayon-artwork-grub
+	x11-themes/argent-artwork-grub
 	app-arch/xz-utils
 	>=sys-libs/ncurses-5.2-r5
 	debug? (
