@@ -1,4 +1,5 @@
-# Copyright 2004-2014 Sabayon
+# Copyright 2004-2013 Sabayon
+# Copyright 2015 Argent
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -7,7 +8,7 @@ EAPI=4
 inherit multilib
 
 DESCRIPTION="Argent system release virtual package"
-HOMEPAGE="http://www.argentlinux.org"
+HOMEPAGE="http://www.argent.org"
 SRC_URI=""
 
 LICENSE="GPL-2"
@@ -16,25 +17,34 @@ KEYWORDS="~amd64 ~arm ~x86"
 
 IUSE=""
 DEPEND=""
-GCC_VER="4.7"
+GCC_VER="4.8"
 PYTHON_VER="2.7"
 # Listing default packages for the current release
-RDEPEND="app-admin/eselect-python
-	dev-lang/python:${PYTHON_VER}
-	sys-apps/systemd[logind]
+RDEPEND="!app-admin/eselect-init
+	!<sys-apps/sysvinit-1000
+	!sys-apps/hal
 	!sys-auth/consolekit
+	app-admin/eselect-python
+	dev-lang/python:${PYTHON_VER}
+	sys-apps/systemd
+	sys-apps/systemd-sysv-utils
 	sys-devel/base-gcc:${GCC_VER}
 	sys-devel/gcc-config"
 
 src_unpack () {
 	echo "Argent Linux ${ARCH} ${PV}" > "${T}/argent-release"
+
+	# Anaconda expects a "release" somewhere in the string
+	# and no trailing \n
+	echo -n "Argent ${ARCH} release ${PV}" > "${T}/system-release"
 	mkdir -p "${S}" || die
 }
 
 src_install () {
 	insinto /etc
 	doins "${T}"/argent-release
-	dosym /etc/argent-release /etc/system-release
+	doins "${T}"/system-release
+
 	# Bug 3459 - reduce the risk of fork bombs
 	insinto /etc/security/limits.d
 	doins "${FILESDIR}/00-argent-anti-fork-bomb.conf"
@@ -66,4 +76,11 @@ pkg_postinst() {
 			mv -f "${xdm_boot_runlevel}" "${xdm_default_runlevel}"
 		fi
 	fi
+
+	# remove old hal udev rules.d file, if found. sys-apps/hal is long gone.
+	rm -f "${ROOT}/lib/udev/rules.d/90-hal.rules"
+
+	# make sure that systemd is correctly linked to /sbin/init
+	# Drop this in 2015, keep in sync with systemd-sysv-utils
+	ln -sf ../usr/lib/systemd/systemd "${ROOT}/sbin/init" || true
 }
