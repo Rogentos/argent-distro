@@ -1,4 +1,5 @@
 # Copyright 2004-2014 Sabayon Linux
+# Copyright 2015 Argent Linux
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -22,10 +23,10 @@ src_install () {
 
 	# Argent Menu
 	dodir /usr/share/desktop-directories
-	cp "${FILESDIR}"/4.0.97/xdg/*.directory "${D}"/usr/share/desktop-directories/
+	cp "${FILESDIR}"/1.0/xdg/*.directory "${D}"/usr/share/desktop-directories/
 	dodir /usr/share/argent
-	cp -a "${FILESDIR}"/4.0.97/* "${D}"/usr/share/argent/
-	doicon "${FILESDIR}"/4.0.97/img/argent-weblink.png
+	cp -a "${FILESDIR}"/1.0/* "${D}"/usr/share/argent/
+	doicon "${FILESDIR}"/1.0/img/argent-weblink.png
 
 	chown root:root "${D}"/etc/skel -R
 }
