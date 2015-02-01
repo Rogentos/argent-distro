@@ -7,7 +7,7 @@ EAPI=4
 inherit multilib
 
 DESCRIPTION="Argent LibreOffice Artwork"
-HOMEPAGE="http://www.argent.ro"
+HOMEPAGE="http://www.argentlinux.io"
 SRC_URI="mirror://argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
@@ -27,5 +27,5 @@ src_install () {
 
 pkg_postinst () {
 	ewarn "Please report bugs or glitches to"
-	ewarn "bugs.argent.ro"
+	ewarn "bugs.argentlinux.io"
 }

@@ -1,5 +1,5 @@
 # Copyright 2004-2014 Sabayon
-# Copyright 2004-2014 Sabayon
+# Copyright 2015 Argent Linux
 # Distributed under the terms of the GNU General Public License v2
 #
 
@@ -7,7 +7,7 @@ EAPI=5
 inherit eutils mount-boot argent-artwork
 
 DESCRIPTION="Official Argent Linux Core Artwork"
-HOMEPAGE="http://www.argent.ro/"
+HOMEPAGE="http://www.argentlinux.io/"
 SRC_URI="mirror://argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
@@ -49,9 +49,6 @@ pkg_postinst() {
 	# mount boot first
 	mount-boot_mount_boot_partition
 
-	# Update Argent initramfs images
-	update_argent_kernel_initramfs_splash
-
 	einfo "Please report bugs or glitches to"
-	einfo "http://bugs.argent.ro"
+	einfo "http://bugs.argentlinux.io"
 }
