@@ -7,7 +7,9 @@ EAPI=3
 
 DESCRIPTION="Official Argent Linux Artwork Extras"
 HOMEPAGE="http://www.argentlinux.io/"
-SRC_URI="mirror://argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
+SRC_URI="mirror://argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz
+	bpr.bluepink.ro/~rogentos/argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
+
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
