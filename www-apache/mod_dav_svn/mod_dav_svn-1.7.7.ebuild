@@ -15,7 +15,7 @@ inherit autotools db-use depend.apache flag-o-matic libtool multilib eutils
 DESCRIPTION="Subversion WebDAV support"
 HOMEPAGE="http://subversion.apache.org/"
 SRC_URI="mirror://apache/${MY_SVN_PN}/${MY_SVN_P}.tar.bz2
-	mirror://sabayon/dev-vcs/${MY_SVN_PN}-${PV}-Gentoo-patches.tar.gz"
+	mirror://argent/dev-vcs/${MY_SVN_PN}-${PV}-Gentoo-patches.tar.gz"
 S="${WORKDIR}/${MY_SVN_P}"
 
 LICENSE="Subversion"
