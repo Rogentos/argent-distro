@@ -8,8 +8,8 @@ inherit autotools-utils
 
 DESCRIPTION="Graphical boot animation (splash) and logger"
 HOMEPAGE="http://cgit.freedesktop.org/plymouth/"
-SRC_URI="
-	mirror://argent/${CATEGORY}/plymouth/argent-logo.png
+SRC_URI="http://bpr.bluepink.ro/argent/${CATEGORY}/${PN}/argent-logo.png
+	mirror://argent/${CATEGORY}/${PN}/argent-logo.png
 	http://dev.gentoo.org/~aidecoe/distfiles/${CATEGORY}/${PN}/${P}.tar.bz2"
 
 LICENSE="GPL-2"
