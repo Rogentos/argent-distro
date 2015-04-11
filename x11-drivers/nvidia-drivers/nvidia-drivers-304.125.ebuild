@@ -1,33 +1,37 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="2"
+EAPI=4
 
-inherit eutils unpacker portability versionator linux-mod flag-o-matic nvidia-driver
+inherit eutils flag-o-matic linux-info linux-mod multilib nvidia-driver \
+	portability toolchain-funcs unpacker user versionator
 
 X86_NV_PACKAGE="NVIDIA-Linux-x86-${PV}"
 AMD64_NV_PACKAGE="NVIDIA-Linux-x86_64-${PV}"
 X86_FBSD_NV_PACKAGE="NVIDIA-FreeBSD-x86-${PV}"
+AMD64_FBSD_NV_PACKAGE="NVIDIA-FreeBSD-x86_64-${PV}"
 
 DESCRIPTION="NVIDIA GPUs kernel drivers"
 HOMEPAGE="http://www.nvidia.com/"
-SRC_URI="x86? ( http://download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_PACKAGE}.run )
-	 amd64? ( http://download.nvidia.com/XFree86/Linux-x86_64/${PV}/${AMD64_NV_PACKAGE}.run )
-	 x86-fbsd? ( http://download.nvidia.com/XFree86/FreeBSD-x86/${PV}/${X86_FBSD_NV_PACKAGE}.tar.gz )"
+SRC_URI="x86? ( http://us.download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_PACKAGE}.run )
+	amd64? ( http://us.download.nvidia.com/XFree86/Linux-x86_64/${PV}/${AMD64_NV_PACKAGE}.run )
+	amd64-fbsd? ( http://us.download.nvidia.com/XFree86/FreeBSD-x86_64/${PV}/${AMD64_FBSD_NV_PACKAGE}.tar.gz )
+	x86-fbsd? ( http://us.download.nvidia.com/XFree86/FreeBSD-x86/${PV}/${X86_FBSD_NV_PACKAGE}.tar.gz )"
 
 LICENSE="NVIDIA"
 SLOT="0"
-KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
-IUSE="debug_grade_1 acpi custom-cflags multilib kernel_linux"
+KEYWORDS="-* ~amd64 ~x86 ~amd64-fbsd ~x86-fbsd"
+IUSE="acpi custom-cflags multilib x-multilib kernel_FreeBSD kernel_linux pax_kernel tools X"
 RESTRICT="strip"
 
 DEPEND="kernel_linux? ( virtual/linux-sources )"
 RDEPEND="~x11-drivers/nvidia-userspace-${PV}
+	x-multilib? ( ~x11-drivers/nvidia-userspace-${PV}[x-multilib] )
 	multilib? ( ~x11-drivers/nvidia-userspace-${PV}[multilib] )
-	x11-libs/libXvMC
-	acpi? ( sys-power/acpid )"
-PDEPEND=">=x11-libs/libvdpau-0.3-r1"
+	~x11-drivers/nvidia-userspace-${PV}[tools=]
+	~x11-drivers/nvidia-userspace-${PV}[X=]"
+PDEPEND=""
 
 S="${WORKDIR}/"
 
@@ -48,36 +52,30 @@ mtrr_check() {
 }
 
 lockdep_check() {
-	if linux_chkconfig_present LOCKDEP; then
-		eerror "You've enabled LOCKDEP -- lock tracking -- in the kernel."
-		eerror "Unfortunately, this option exports the symbol "
-		eerror "'lockdep_init_map' as GPL-only which will prevent "
-		eerror "${P} from compiling."
-		eerror "Please make sure the following options have been unset:"
-		eerror
-		eerror "    Kernel hacking  --->"
-		eerror "        [ ] Lock debugging: detect incorrect freeing of live locks"
-		eerror "        [ ] Lock debugging: prove locking correctness"
-		eerror "        [ ] Lock usage statistics"
-		eerror "in 'menuconfig'"
-		die "LOCKDEP enabled"
-	fi
+	# Kernel features/options to check for
+	CONFIG_CHECK="~ZONE_DMA ~MTRR ~SYSVIPC ~!LOCKDEP"
+	use x86 && CONFIG_CHECK+=" ~HIGHMEM"
+
+	# Now do the above checks
+	use kernel_linux && check_extra_config
 }
 
 pkg_setup() {
+	# try to turn off distcc and ccache for people that have a problem with it
+	export DISTCC_DISABLE=1
+	export CCACHE_DISABLE=1
+
 	if use kernel_linux; then
 		linux-mod_pkg_setup
 		MODULE_NAMES="nvidia(video:${S}/kernel)"
 		BUILD_PARAMS="IGNORE_CC_MISMATCH=yes V=1 SYSSRC=${KV_DIR} \
-		SYSOUT=${KV_OUT_DIR} HOST_CC=$(tc-getBUILD_CC)"
-		mtrr_check
-		lockdep_check
+		SYSOUT=${KV_OUT_DIR} CC=$(tc-getBUILD_CC)"
+		# linux-mod_src_compile calls set_arch_to_kernel, which
+		# sets the ARCH to x86 but NVIDIA's wrapping Makefile
+		# expects x86_64 or i386 and then converts it to x86
+		# later on in the build process
+		BUILD_FIXES="ARCH=$(uname -m | sed -e 's/i.86/i386/')"
 	fi
-
-	# On BSD userland it wants real make command
-	use userland_BSD && MAKE="$(get_bmake)"
-
-	export _POSIX2_VERSION="199209"
 
 	# Since Nvidia ships 3 different series of drivers, we need to give the user
 	# some kind of guidance as to what version they should install. This tries
@@ -87,26 +85,20 @@ pkg_setup() {
 
 	# set variables to where files are in the package structure
 	if use kernel_FreeBSD; then
+		use x86-fbsd   && S="${WORKDIR}/${X86_FBSD_NV_PACKAGE}"
+		use amd64-fbsd && S="${WORKDIR}/${AMD64_FBSD_NV_PACKAGE}"
 		NV_SRC="${S}/src"
+		NV_SOVER=1
 	elif use kernel_linux; then
 		NV_SRC="${S}/kernel"
+		NV_SOVER=${PV}
 	else
 		die "Could not determine proper NVIDIA package"
 	fi
 }
 
 src_unpack() {
-	if use kernel_linux && kernel_is lt 2 6 7; then
-		echo
-		ewarn "Your kernel version is ${KV_MAJOR}.${KV_MINOR}.${KV_PATCH}"
-		ewarn "This is not officially supported for ${P}. It is likely you"
-		ewarn "will not be able to compile or use the kernel module."
-		ewarn "It is recommended that you upgrade your kernel to a version >= 2.6.7"
-		echo
-		ewarn "DO NOT file bug reports for kernel versions less than 2.6.7 as they will be ignored."
-	fi
-
-	if ! use x86-fbsd; then
+	if ! use kernel_FreeBSD; then
 		cd "${S}"
 		unpack_makeself
 	else
@@ -116,23 +108,32 @@ src_unpack() {
 
 src_prepare() {
 	# Please add a brief description for every added patch
-	use x86-fbsd && cd doc
 
 	if use kernel_linux; then
-		# Quiet down warnings the user does not need to see
-		sed -i \
-			-e 's:-Wsign-compare::g' \
-			"${NV_SRC}"/Makefile.kbuild
-
-		# Add support for the 'x86' unified kernel arch in conftest.sh
-		epatch "${FILESDIR}"/256.35-unified-arch.patch
-
-		# If you set this then it's your own fault when stuff breaks :)
-		use custom-cflags && sed -i "s:-O:${CFLAGS}:" "${NV_SRC}"/Makefile.*
+		if kernel_is lt 2 6 9 ; then
+			eerror "You must build this against 2.6.9 or higher kernels."
+		fi
 
 		# If greater than 2.6.5 use M= instead of SUBDIR=
 		convert_to_m "${NV_SRC}"/Makefile.kbuild
 	fi
+	if use pax_kernel; then
+		ewarn "Using PAX patches is not supported. You will be asked to"
+		ewarn "use a standard kernel should you have issues. Should you"
+		ewarn "need support with these patches, contact the PaX team."
+		epatch "${FILESDIR}"/nvidia-drivers-pax-const.patch
+		epatch "${FILESDIR}"/nvidia-drivers-pax-usercopy.patch
+	fi
+	cat <<- EOF > "${S}"/nvidia.icd
+		/usr/$(get_libdir)/libnvidia-opencl.so
+	EOF
+
+	if kernel_is ge 3 19 0; then
+		epatch "${FILESDIR}/${PN}-3.19.patch"
+	fi
+
+	# Allow user patches so they can support RC kernels and whatever else
+	epatch_user
 }
 
 src_compile() {
@@ -141,7 +142,7 @@ src_compile() {
 	# it by itself, pass this.
 
 	cd "${NV_SRC}"
-	if use x86-fbsd; then
+	if use kernel_FreeBSD; then
 		MAKE="$(get_bmake)" CFLAGS="-Wno-sign-compare" emake CC="$(tc-getCC)" \
 			LD="$(tc-getLD)" LDFLAGS="$(raw-ldflags)" || die
 	elif use kernel_linux; then
@@ -150,33 +151,27 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	if use kernel_linux; then
 		linux-mod_src_install
-	elif use x86-fbsd; then
-		insinto /boot/modules
-		doins "${WORKDIR}/${NV_PACKAGE}/src/nvidia.kld" || die
+	elif use kernel_FreeBSD; then
+		if use x86-fbsd; then
+			insinto /boot/modules
+			doins "${S}/src/nvidia.kld" || die
+		fi
 
 		exeinto /boot/modules
-		doexe "${WORKDIR}/${NV_PACKAGE}/src/nvidia.ko" || die
+		doexe "${S}/src/nvidia.ko" || die
 	fi
 
-	# Gentoo bug #375615 -- GTK apps hanging
-	doenvd "${FILESDIR}"/10nvidia
+	is_final_abi || die "failed to iterate through all ABIs"
 }
 
 pkg_preinst() {
-	if use kernel_linux; then
-		linux-mod_pkg_postinst
-	fi
+	use kernel_linux && linux-mod_pkg_preinst
 }
 
 pkg_postinst() {
-	if use kernel_linux; then
-		linux-mod_pkg_postinst
-	fi
+	use kernel_linux && linux-mod_pkg_postinst
 
 	echo
 	elog "You must be in the video group to use the NVIDIA device"
@@ -192,7 +187,5 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	if use kernel_linux; then
-		linux-mod_pkg_postrm
-	fi
+	use kernel_linux && linux-mod_pkg_postrm
 }

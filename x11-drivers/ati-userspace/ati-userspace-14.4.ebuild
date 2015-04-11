@@ -1,29 +1,32 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="2"
+EAPI=5
 
-inherit eutils multilib toolchain-funcs versionator
+inherit eutils multilib toolchain-funcs versionator pax-utils
 
-DESCRIPTION="AMD X11 drivers for radeon r600 (HD Series) and newer chipsets"
+DESCRIPTION="Ati precompiled drivers for Radeon Evergreen (HD5000 Series) and newer chipsets"
 HOMEPAGE="http://www.amd.com"
-MY_V=( $(get_version_components) )
-#RUN="${WORKDIR}/amd-driver-installer-9.00-x86.x86_64.run"
-SRC_URI="http://www2.ati.com/drivers/linux/amd-driver-installer-catalyst-${PV}-x86.x86_64.zip"
-FOLDER_PREFIX="common/"
-IUSE="debug_grade_1 debug multilib x-multilib static-libs"
-
-LICENSE="AMD GPL-2 as-is"
-KEYWORDS="~amd64 ~x86"
+RUN="${WORKDIR}/fglrx-14.10.1006/amd-driver-installer-14.10.1006-x86.x86_64.run"
 SLOT="1"
-RESTRICT="bindist"
+DRIVERS_URI="mirror://sabayon/${CATEGORY}/amd-catalyst-14-4-linux-x86-x86-64.zip"
+XVBA_SDK_URI="http://developer.amd.com/wordpress/media/2012/10/xvba-sdk-0.74-404001.tar.gz"
+SRC_URI="${DRIVERS_URI} ${XVBA_SDK_URI}"
+FOLDER_PREFIX="common/"
+IUSE="debug multilib x-multilib static-libs pax_kernel"
 
-RDEPEND="<=x11-base/xorg-server-1.12.49[-minimal]
+LICENSE="AMD GPL-2 QPL-1.0"
+KEYWORDS="-* ~amd64 ~x86"
+RESTRICT="bindist test"
+
+# Note: do not add !>ati-userspace-ver or !<ati-userspace-ver
+# because it would cause pkg_postrm to set the wrong opengl implementation
+RDEPEND="<=x11-base/xorg-server-1.14.49[-minimal]
 	!x11-drivers/ati-drivers:0
 	!x11-apps/ati-drivers-extra
-	>=app-admin/eselect-opengl-1.0.7
-	app-admin/eselect-opencl
+	>=app-eselect/eselect-opengl-1.0.7
+	app-eselect/eselect-opencl
 	sys-power/acpid
 	x11-apps/xauth
 	x11-libs/libX11
@@ -34,9 +37,7 @@ RDEPEND="<=x11-base/xorg-server-1.12.49[-minimal]
 	x-multilib? (
 			app-emulation/emul-linux-x86-opengl
 			app-emulation/emul-linux-x86-xlibs
-	)
-	!<x11-drivers/ati-userspace-${PV}
-	!>x11-drivers/ati-userspace-${PV}"
+	)"
 
 DEPEND="${RDEPEND}
 	x11-proto/inputproto
@@ -45,8 +46,9 @@ DEPEND="${RDEPEND}
 	x11-proto/xineramaproto
 	x11-libs/libXtst
 	sys-apps/findutils
-	app-misc/pax-utils"
-
+	app-misc/pax-utils
+	app-arch/unzip
+"
 
 EMULTILIB_PKG="true"
 
@@ -81,6 +83,8 @@ QA_PRESTRIPPED="
 	usr/lib\(32\|64\)\?/libAMDXvBA.so.1.0
 	usr/lib\(32\|64\)\?/libaticaldd.so
 	usr/lib\(32\|64\)\?/dri/fglrx_dri.so
+	usr/lib\(32\|64\)\?/OpenCL/vendors/amd/libOpenCL.so.1
+	usr/lib\(32\|64\)\?/OpenCL/vendors/amd/libamdocl\(32\|64\).so
 "
 
 QA_SONAME="
@@ -135,21 +139,43 @@ pkg_setup() {
 		PKG_LIBDIR=lib
 		ARCH_DIR="${S}/arch/x86"
 	fi
+
+	elog
+	elog "Please note that this driver only supports graphic cards based on"
+	elog "Evergreen chipset and newer."
+	elog "This includes the AMD Radeon HD 5400+ series at this moment."
+	elog
+	elog "If your card is older then use ${CATEGORY}/xf86-video-ati"
+	elog "For migration information please refer to:"
+	elog "http://www.gentoo.org/proj/en/desktop/x/x11/ati-migration-guide.xml"
+	einfo
 }
 
 src_unpack() {
-	if [[ ${A} =~ .*\.tar\.gz ]]; then
-		unpack ${A}
+	local DRIVERS_DISTFILE XVBA_SDK_DISTFILE
+	DRIVERS_DISTFILE=${DRIVERS_URI##*/}
+	XVBA_SDK_DISTFILE=${XVBA_SDK_URI##*/}
+
+	if [[ ${DRIVERS_DISTFILE} =~ .*\.tar\.gz ]]; then
+		unpack ${DRIVERS_DISTFILE}
 	else
 		#please note, RUN may be insanely assigned at top near SRC_URI
-		if [[ ${A} =~ .*\.zip ]]; then
-			unpack ${A}
-			[[ -z "$RUN" ]] && RUN="${S}/${A/%.zip/.run}"
+		if [[ ${DRIVERS_DISTFILE} =~ .*\.zip ]]; then
+			unpack ${DRIVERS_DISTFILE}
+			[[ -z "$RUN" ]] && RUN="${S}/${DRIVERS_DISTFILE/%.zip/.run}"
 		else
-			RUN="${DISTDIR}/${A}"
+			RUN="${DISTDIR}/${DRIVERS_DISTFILE}"
 		fi
-		sh ${RUN} --extract "${S}" 2>&1 > /dev/null || die
+		sh "${RUN}" --extract "${S}" 2>&1 > /dev/null || die
 	fi
+
+	mkdir xvba_sdk
+	cd xvba_sdk
+	unpack ${XVBA_SDK_DISTFILE}
+
+	mkdir -p "${WORKDIR}/extra" || die "mkdir extra failed"
+	cd "${WORKDIR}/extra"
+	tar -xf "../${FOLDER_PREFIX}usr/src/ati/fglrx_sample_source.tgz"
 }
 
 src_prepare() {
@@ -167,7 +193,7 @@ src_prepare() {
 		-e "s:/var/lib/xdm/authdir/authfiles/:/var/run/xauth/:" \
 		-e "s:/var/lib/gdm/:/var/gdm/:" \
 		"${S}/${FOLDER_PREFIX}etc/ati/authatieventsd.sh" \
-		|| die "sed failed."
+		|| die "ACPI fixups failed."
 
 	# Since "who" is in coreutils, we're using that one instead of "finger".
 	sed -i -e 's:finger:who:' \
@@ -177,19 +203,24 @@ src_prepare() {
 	# add function to detect default state.
 	epatch "${FILESDIR}"/ati-powermode-opt-path-3.patch
 
-	cd "${S}"
-	mkdir extra || die "mkdir failed"
-	cd extra
-	unpack ./../${FOLDER_PREFIX}usr/src/ati/fglrx_sample_source.tgz
+	# see http://ati.cchtml.com/show_bug.cgi?id=495
+	#epatch "${FILESDIR}"/ati-drivers-old_rsp.patch
+	# first hunk applied upstream second (x32 related) was not
+	epatch "${FILESDIR}"/ati-drivers-x32_something_something.patch
 
-	# Get rid of watermark. Oldest known reference:
-	# http://phoronix.com/forums/showthread.php?19875-Unsupported-Hardware-watermark
-	ebegin "Disabling watermark"
-	driver="${MY_BASE_DIR}"/usr/X11R6/${PKG_LIBDIR}/modules/drivers/fglrx_drv.so
-	for x in $(objdump -d ${driver}|awk '/call/&&/EnableLogo/{print "\\x"$2"\\x"$3"\\x"$4"\\x"$5"\\x"$6}'); do
-		sed -i "s/${x}/\x90\x90\x90\x90\x90/g" ${driver} || break 1
-	done
-	eend $? || die "Disabling watermark failed"
+	# compile fix for AGP-less kernel, bug #435322
+	epatch "${FILESDIR}"/ati-drivers-12.9-KCL_AGP_FindCapsRegisters-stub.patch
+
+	# Compile fix for kernel typesafe uid types #469160
+	epatch "${FILESDIR}/typesafe-kuid.diff"
+
+	epatch "${FILESDIR}/ati-drivers-13.8-beta-include-seq_file.patch"
+
+	# Fix #483400
+	epatch "${FILESDIR}/fgl_glxgears-do-not-include-glATI.patch"
+
+	# Compile fix, https://bugs.gentoo.org/show_bug.cgi?id=454870
+	use pax_kernel && epatch "${FILESDIR}/const-notifier-block.patch"
 }
 
 src_compile() {
@@ -198,7 +229,6 @@ src_compile() {
 	# These extra libs/utils either have an Imakefile that does not
 	# work very well without tweaking or a Makefile ignoring CFLAGS
 	# and the like. We bypass those.
-
 	# The -DUSE_GLU is needed to compile using nvidia headers
 	# according to a comment in ati-drivers-extra-8.33.6.ebuild.
 	"$(tc-getCC)" -o fgl_glxgears ${CFLAGS} ${LDFLAGS} -DUSE_GLU \
@@ -208,9 +238,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	# We can do two things here, and neither of them is very nice.
 
 	# For direct rendering libGL has to be able to load one or more
@@ -281,7 +308,7 @@ src_install() {
 	insinto /etc/ati
 	exeinto /etc/ati
 	# Everything except for the authatieventsd.sh script.
-	doins ${FOLDER_PREFIX}etc/ati/{logo*,control,atiogl.xml,signature,amdpcsdb.default}
+	doins ${FOLDER_PREFIX}etc/ati/{logo*,control,signature,amdpcsdb.default}
 	doexe ${FOLDER_PREFIX}etc/ati/authatieventsd.sh
 
 	# include.
@@ -321,11 +348,6 @@ src_install() {
 	doexe "${FILESDIR}"/switchlibGL || die "doexe switchlibGL failed"
 	cp "${FILESDIR}"/switchlibGL "${T}"/switchlibglx
 	doexe "${T}"/switchlibglx || die "doexe switchlibglx failed"
-
-	# Required by upstream AMD
-	touch "${D}/etc/ati/atiapfuser.blb" || die
-	insinto /etc/ati
-	doins "${FOLDER_PREFIX}etc/ati/atiapfxx.blb"
 }
 
 src_install-libs() {
@@ -357,12 +379,11 @@ src_install-libs() {
 
 	exeinto ${ATI_ROOT}/extensions
 	doexe "${EX_BASE_DIR}"/usr/X11R6/${pkglibdir}/modules/extensions/fglrx/fglrx-libglx.so
-	# PowerXpress stuff
 	mv "${D}"/${ATI_ROOT}/extensions/{fglrx-,}libglx.so
 
-	# lib.
+	# other libs
 	exeinto /usr/$(get_libdir)
-	# Everything except for the libGL.so installed in src_install-libs.
+	# Everything except for the libGL.so installed some row above
 	doexe $(find "${MY_ARCH_DIR}"/usr/X11R6/${pkglibdir} \
 		-maxdepth 1 -type f -name '*.so*' -not -name '*libGL.so*')
 	insinto /usr/$(get_libdir)
@@ -399,13 +420,25 @@ src_install-libs() {
 	for so in $(find "${D}"/usr/$(get_libdir) -maxdepth 1 -name *.so.[0-9].[0-9])
 	do
 		local soname=${so##*/}
-		## let's keep also this alternative way ;)
-		#dosym ${soname} /usr/$(get_libdir)/${soname%.[0-9]}
-		dosym ${soname} /usr/$(get_libdir)/$(scanelf -qF "#f%S" ${so})
+		local soname_one=${soname%.[0-9]}
+		local soname_zero=${soname_one%.[0-9]}
+		dosym ${soname} /usr/$(get_libdir)/${soname_one}
+		dosym ${soname_one} /usr/$(get_libdir)/${soname_zero}
 	done
+
+	# See https://bugs.gentoo.org/show_bug.cgi?id=443466
+	dodir /etc/revdep-rebuild/
+	echo "SEARCH_DIRS_MASK=\"/opt/bin/clinfo\"" > "${ED}/etc/revdep-rebuild/62-ati-drivers"
 
 	#remove static libs if not wanted
 	use static-libs || rm -rf "${D}"/usr/$(get_libdir)/libfglrx_dm.a
+
+	#install xvba sdk headers
+	doheader xvba_sdk/include/amdxvba.h
+
+	if use pax_kernel; then
+		pax-mark m "${D}"/usr/lib*/opengl/ati/lib/libGL.so.1.2 || die "pax-mark failed"
+	fi
 }
 
 pkg_postinst() {
@@ -422,9 +455,18 @@ pkg_postinst() {
 	elog
 	elog "Some cards need acpid running to handle events"
 	elog "Please add it to boot runlevel with rc-update add acpid boot"
+	elog
 
 	"${ROOT}"/usr/bin/eselect opengl set --use-old ati
 	"${ROOT}"/usr/bin/eselect opencl set --use-old amd
+
+	if has_version "x11-drivers/xf86-video-intel[sna]"; then
+		ewarn "It is reported that xf86-video-intel built with USE=\"sna\" causes the X server"
+		ewarn "to crash on systems that use hybrid AMD/Intel graphics. If you experience"
+		ewarn "this crash, downgrade to xf86-video-intel-2.20.2 or earlier or"
+		ewarn "try disabling sna for xf86-video-intel."
+		ewarn "For details, see https://bugs.gentoo.org/show_bug.cgi?id=430000"
+	fi
 }
 
 pkg_prerm() {
