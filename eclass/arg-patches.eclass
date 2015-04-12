@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-# @ECLASS: sab-patches.eclass
+# @ECLASS: arg-patches.eclass
 # @MAINTAINER:
 # slawomir.nizio@sabayon.org
 # @AUTHOR:
@@ -34,18 +34,18 @@ if [[ ${#SAB_PATCHES_SRC[@]} -eq 0 ]]; then
 	die "SAB_PATCHES_SRC is not set"
 fi
 
-# @FUNCTION: sab-patches_update_SRC_URI
+# @FUNCTION: arg-patches_update_SRC_URI
 # @DESCRIPTION:
 # Appends patches entries to SRC_URI. If it is not done, an error will
 # occur later on.
-sab-patches_update_SRC_URI() {
+arg-patches_update_SRC_URI() {
 	local p
 	for p in "${SAB_PATCHES_SRC[@]}"; do
 		SRC_URI+=${SRC_URI:+ }${p}
 	done
 }
 
-# @FUNCTION: sab-patches_apply_all
+# @FUNCTION: arg-patches_apply_all
 # @DESCRIPTION:
 # Applies patches specified using SAB_PATCHES_SRC, skipping patches
 # with names matched in SAB_PATCHES_SKIP.
@@ -56,26 +56,26 @@ sab-patches_update_SRC_URI() {
 # of patches to apply.
 # 2. A patch which is not a tarball, which will be simply applied (if
 # it is not skipped).
-sab-patches_apply_all() {
+arg-patches_apply_all() {
 	local p
 	for p in "${SAB_PATCHES_SRC[@]}"; do
 		if [[ ${p} = *.tar* ]]; then
 			local dir=${p##*/}
 			dir=${dir%.tar*}
-			_sab-patches_apply_from_dir "${WORKDIR}/${dir}"
+			_arg-patches_apply_from_dir "${WORKDIR}/${dir}"
 		else
 			local name=${p##*/}
-			_sab-patches_apply_nonskipped "${DISTDIR}" "${name}"
+			_arg-patches_apply_nonskipped "${DISTDIR}" "${name}"
 		fi
 	done
 }
 
-# @FUNCTION: sab-patches_apply
+# @FUNCTION: arg-patches_apply
 # @DESCRIPTION:
 # Apply selected patches. Arguments are the directory containing
 # the patch, followed by one or more patch names.
-sab-patches_apply() {
-	[[ $# -lt 2 ]] && die "sab-patches_apply: missing arguments"
+arg-patches_apply() {
+	[[ $# -lt 2 ]] && die "arg-patches_apply: missing arguments"
 	local dir=$1
 	shift
 	local patch
@@ -84,10 +84,10 @@ sab-patches_apply() {
 	done
 }
 
-# @FUNCTION: sab-patches_unpack
+# @FUNCTION: arg-patches_unpack
 # @DESCRIPTION:
 # Unpack every file provided in SAB_PATCHES_SRC.
-sab-patches_unpack() {
+arg-patches_unpack() {
 	local p
 	pushd "${WORKDIR}" > /dev/null || die
 
@@ -99,17 +99,17 @@ sab-patches_unpack() {
 	popd > /dev/null || die
 }
 
-# @FUNCTION: _sab-patches_apply_nonskipped
+# @FUNCTION: _arg-patches_apply_nonskipped
 # @INTERNAL
 # @DESCRIPTION:
 # Apply selected patches - only those which should not be skipped.
 # Arguments are the directory containing the patch, followed by
 # one or more patch names.
 # This function is not intended to be used by ebuilds because there
-# is a better way: use sab-patches_apply and skip the unwanted ones.
-_sab-patches_apply_nonskipped() {
+# is a better way: use arg-patches_apply and skip the unwanted ones.
+_arg-patches_apply_nonskipped() {
 	if [[ $# -lt 2 ]]; then
-		die "_sab-patches_apply_nonskipped: missing arguments"
+		die "_arg-patches_apply_nonskipped: missing arguments"
 	fi
 
 	local dir=$1
@@ -118,10 +118,10 @@ _sab-patches_apply_nonskipped() {
 	local patch
 	for patch; do
 		if [[ ${patch} = */* ]]; then
-			die "_sab-patches_apply_nonskipped: '${patch}' contains slashes"
+			die "_arg-patches_apply_nonskipped: '${patch}' contains slashes"
 		fi
 
-		if _sab-patches_is_skipped "${patch}"; then
+		if _arg-patches_is_skipped "${patch}"; then
 			einfo "(skipping ${patch})"
 		else
 			epatch "${dir}/${patch}"
@@ -129,11 +129,11 @@ _sab-patches_apply_nonskipped() {
 	done
 }
 
-# @FUNCTION: _sab-patches_apply_from_dir
+# @FUNCTION: _arg-patches_apply_from_dir
 # @INTERNAL
 # @DESCRIPTION:
 # Apply all patches from a directory in order. Obeys SAB_PATCHES_SKIP.
-_sab-patches_apply_from_dir() {
+_arg-patches_apply_from_dir() {
 	local dir=$1
 	local order_file=${dir}/order
 	if [[ ! -r ${order_file} ]] || [[ ! -f ${order_file} ]]; then
@@ -151,17 +151,17 @@ _sab-patches_apply_from_dir() {
 			die "Problems with the patch '${patch}', see ${order_file}."
 		fi
 
-		_sab-patches_apply_nonskipped "${dir}" "${patch}"
+		_arg-patches_apply_nonskipped "${dir}" "${patch}"
 	done < "${order_file}"
 
-	[[ $? -ne 0 ]] && die "_sab-patches_apply_from_dir: loop failed"
+	[[ $? -ne 0 ]] && die "_arg-patches_apply_from_dir: loop failed"
 }
 
-# @FUNCTION: _sab-patches_is_skipped
+# @FUNCTION: _arg-patches_is_skipped
 # @INTERNAL
 # @DESCRIPTION:
 # Returns success if the patch should be skipped. O(n). :)
-_sab-patches_is_skipped() {
+_arg-patches_is_skipped() {
 	local arg=$1
 	local p
 	for p in "${SAB_PATCHES_SKIP[@]}"; do
