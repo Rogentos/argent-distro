@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -10,13 +10,15 @@ MY_SVN_PN="subversion"
 MY_SVN_P="${MY_SVN_PN}-${PV}"
 MY_SVN_PF="${MY_SVN_PN}-${PVR}"
 
-SAB_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.5-Gentoo-patches.tar.gz )
+SAB_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.9-Gentoo-patches.tar.gz )
 inherit arg-patches autotools db-use depend.apache flag-o-matic libtool multilib eutils
 
 DESCRIPTION="Subversion WebDAV support"
 HOMEPAGE="http://subversion.apache.org/"
-SRC_URI+=" mirror://apache/${MY_SVN_PN}/${MY_SVN_P}.tar.bz2"
+SRC_URI="mirror://apache/${MY_SVN_PN}/${MY_SVN_P}.tar.bz2"
 S="${WORKDIR}/${MY_SVN_P}"
+
+arg-patches_update_SRC_URI
 
 LICENSE="Subversion"
 SLOT="0"
@@ -46,9 +48,10 @@ MY_CDEPS="
 	>=dev-libs/apr-1.3:1
 	>=dev-libs/apr-util-1.3:1
 	dev-libs/expat
+	sys-apps/file
 	sys-libs/zlib
 	app-arch/bzip2
-	berkdb? ( >=sys-libs/db-4.0.14 )
+	berkdb? ( >=sys-libs/db-4.0.14:= )
 "
 
 DEPEND="${MY_CDEPS}
@@ -108,6 +111,7 @@ pkg_setup() {
 }
 
 src_prepare() {
+	local SAB_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
 	arg-patches_apply_all
 	epatch_user
 
@@ -169,9 +173,9 @@ src_configure() {
 	#check newer versions, if this is still/again needed
 	myconf+=" --disable-disallowing-of-undefined-references"
 
-	# force ruby-1.9
+	# force ruby-2.1
 	# allow overriding Python include directory
-	ac_cv_path_RUBY="${EPREFIX}"/usr/bin/ruby19 ac_cv_path_RDOC="${EPREFIX}"/usr/bin/rdoc19 \
+	ac_cv_path_RUBY="${EPREFIX}"/usr/bin/ruby21 ac_cv_path_RDOC="${EPREFIX}"/usr/bin/rdoc21 \
 	ac_cv_python_includes='-I$(PYTHON_INCLUDEDIR)' \
 	econf --libdir="${EPREFIX}/usr/$(get_libdir)" \
 		--with-apache-libexecdir \
