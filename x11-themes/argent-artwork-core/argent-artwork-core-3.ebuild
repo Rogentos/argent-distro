@@ -16,8 +16,7 @@ SLOT="0"
 KEYWORDS="~arm ~x86 ~amd64"
 IUSE=""
 RDEPEND="
-	sys-apps/findutils
-"
+	sys-apps/findutils"
 
 S="${WORKDIR}/${PN}"
 
