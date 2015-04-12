@@ -1,65 +1,81 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="5"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.* *-jython *-pypy-*"
+EAPI=5
+PYTHON_COMPAT=( python2_7 )
+DISTUTILS_OPTIONAL=1
 WANT_AUTOMAKE="none"
+GENTOO_DEPEND_ON_PERL="no"
+
+SAB_PATCHES_SRC=( mirror://sabayon/dev-vcs/${PN}-1.8.9-Gentoo-patches.tar.gz )
+inherit sab-patches autotools bash-completion-r1 db-use depend.apache distutils-r1 elisp-common flag-o-matic libtool multilib perl-module eutils
+
 MY_P="${P/_/-}"
-
-inherit autotools bash-completion-r1 db-use depend.apache elisp-common eutils flag-o-matic libtool multilib perl-module python
-
 DESCRIPTION="Advanced version control system"
 HOMEPAGE="http://subversion.apache.org/"
 SRC_URI="mirror://apache/${PN}/${MY_P}.tar.bz2"
 S="${WORKDIR}/${MY_P}"
 
+sab-patches_update_SRC_URI
+
 LICENSE="Subversion GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
-IUSE="debug_grade_1 apache2 berkdb ctypes-python debug doc +dso extras gnome-keyring java kde nls perl python ruby sasl vim-syntax +webdav-neon webdav-serf"
+IUSE="apache2 berkdb ctypes-python debug doc +dso extras gnome-keyring +http java kde nls perl python ruby sasl test vim-syntax"
 
-CDEPEND=">=dev-db/sqlite-3.4
+COMMON_DEPEND=">=dev-db/sqlite-3.7.12
 	>=dev-libs/apr-1.3:1
 	>=dev-libs/apr-util-1.3:1
 	dev-libs/expat
+	sys-apps/file
 	sys-libs/zlib
-	berkdb? ( >=sys-libs/db-4.0.14 )
-	ctypes-python? ( =dev-lang/python-2* )
-	gnome-keyring? ( dev-libs/glib:2 sys-apps/dbus gnome-base/gnome-keyring )
-	kde? ( sys-apps/dbus x11-libs/qt-core:4 x11-libs/qt-dbus:4 x11-libs/qt-gui:4 >=kde-base/kdelibs-4:4 )
-	perl? ( dev-lang/perl )
-	python? ( =dev-lang/python-2* )
-	ruby? ( >=dev-lang/ruby-1.8.2:1.8 )
+	app-arch/bzip2
+	berkdb? ( >=sys-libs/db-4.0.14:= )
+	ctypes-python? ( ${PYTHON_DEPS} )
+	gnome-keyring? ( dev-libs/glib:2 sys-apps/dbus gnome-base/libgnome-keyring )
+	kde? ( sys-apps/dbus dev-qt/qtcore:4 dev-qt/qtdbus:4 dev-qt/qtgui:4 >=kde-base/kdelibs-4:4 )
+	perl? ( dev-lang/perl:= )
+	python? ( ${PYTHON_DEPS} )
+	ruby? ( >=dev-lang/ruby-2.1:2.1
+		dev-ruby/rubygems[ruby_targets_ruby21] )
 	sasl? ( dev-libs/cyrus-sasl )
-	webdav-neon? ( >=net-libs/neon-0.28 )
-	webdav-serf? ( >=net-libs/serf-0.3.0 )"
-RDEPEND="${CDEPEND}
+	http? ( >=net-libs/serf-1.2.1 )"
+RDEPEND="${COMMON_DEPEND}
 	apache2? ( www-servers/apache[apache2_modules_dav] )
-	kde? ( kde-base/kwalletd )
+	kde? ( || ( kde-apps/kwalletd:4 kde-base/kwalletd ) )
 	nls? ( virtual/libintl )
 	perl? ( dev-perl/URI )"
-DEPEND="${CDEPEND}
+# Note: ctypesgen doesn't need PYTHON_USEDEP, it's used once
+DEPEND="${COMMON_DEPEND}
+	test? ( ${PYTHON_DEPS} )
 	!!<sys-apps/sandbox-1.6
 	ctypes-python? ( dev-python/ctypesgen )
 	doc? ( app-doc/doxygen )
 	gnome-keyring? ( virtual/pkgconfig )
 	kde? ( virtual/pkgconfig )
 	nls? ( sys-devel/gettext )
-	webdav-neon? ( virtual/pkgconfig )"
+	http? ( virtual/pkgconfig )"
 PDEPEND="java? ( ~dev-vcs/subversion-java-${PV} )"
+
+REQUIRED_USE="
+	ctypes-python? ( ${PYTHON_REQUIRED_USE} )
+	python? ( ${PYTHON_REQUIRED_USE} )
+	test? (
+		${PYTHON_REQUIRED_USE}
+		!dso
+	)"
 
 want_apache
 
 pkg_setup() {
-	if use berkdb; then
+	if use berkdb ; then
 		local apu_bdb_version="$(${EPREFIX}/usr/bin/apu-1-config --includes \
 			| grep -Eoe '-I${EPREFIX}/usr/include/db[[:digit:]]\.[[:digit:]]' \
 			| sed 's:.*b::')"
 		einfo
-		if [[ -z "${SVN_BDB_VERSION}" ]]; then
-			if [[ -n "${apu_bdb_version}" ]]; then
+		if [[ -z "${SVN_BDB_VERSION}" ]] ; then
+			if [[ -n "${apu_bdb_version}" ]] ; then
 				SVN_BDB_VERSION="${apu_bdb_version}"
 				einfo "Matching db version to apr-util"
 			else
@@ -81,40 +97,34 @@ pkg_setup() {
 
 	depend.apache_pkg_setup
 
-	if use ctypes-python || use python; then
-		python_pkg_setup
-	fi
-
-	if ! use webdav-neon && ! use webdav-serf; then
+	if ! use http ; then
 		ewarn "WebDAV support is disabled. You need WebDAV to"
 		ewarn "access repositories through the HTTP protocol."
-		ewarn "Consider enabling one of the following USE-flags:"
-		ewarn "  webdav-neon webdav-serf"
+		ewarn "Consider enabling \"http\" USE flag"
 		echo -ne "\a"
 	fi
 
-	if use debug; then
+	if use debug ; then
 		append-cppflags -DSVN_DEBUG -DAP_DEBUG
 	fi
+
+	# http://mail-archives.apache.org/mod_mbox/subversion-dev/201306.mbox/%3C51C42014.3060700@wandisco.com%3E
+	[[ ${CHOST} == *-solaris2* ]] && append-cppflags -D__EXTENSIONS__
 
 	# Allow for custom repository locations.
 	SVN_REPOS_LOC="${SVN_REPOS_LOC:-${EPREFIX}/var/svn}"
 }
 
 src_prepare() {
-	epatch "${FILESDIR}"/${PN}-1.5.4-interix.patch \
-		"${FILESDIR}"/${PN}-1.5.6-aix-dso.patch \
-		"${FILESDIR}"/${PN}-1.6.3-hpux-dso.patch \
-		"${FILESDIR}"/${PN}-fix-parallel-build-support-for-perl-bindings.patch \
-		"${FILESDIR}"/${PN}-1.7.6-kwallet.patch
+	local SAB_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
+	sab-patches_apply_all
+	epatch_user
 
 	fperms +x build/transform_libtool_scripts.sh
 
 	sed -i \
 		-e "s/\(BUILD_RULES=.*\) bdb-test\(.*\)/\1\2/g" \
 		-e "s/\(BUILD_RULES=.*\) test\(.*\)/\1\2/g" configure.ac
-
-	sed -e "/SWIG_PY_INCLUDES=/s/\$ac_cv_python_includes/\\\\\$(PYTHON_INCLUDES)/" -i build/ac-macros/swig.m4 || die "sed failed"
 
 	# this bites us in particular on Solaris
 	sed -i -e '1c\#!/usr/bin/env sh' build/transform_libtool_scripts.sh || \
@@ -123,7 +133,22 @@ src_prepare() {
 	eautoconf
 	elibtoolize
 
-	sed -e "s/libsvn_swig_py-1\.la/libsvn_swig_py-\$(PYTHON_VERSION)-1.la/" -i build-outputs.mk || die "sed failed"
+	sed -e 's/\(libsvn_swig_py\)-\(1\.la\)/\1-$(EPYTHON)-\2/g' \
+		-i build-outputs.mk || die "sed failed"
+
+	if use python ; then
+		if [[ ${CHOST} == *-darwin* ]] ; then
+			# http://mail-archives.apache.org/mod_mbox/subversion-dev/201306.mbox/%3C20130614113003.GA19257@tarsus.local2%3E
+			# in short, we don't have gnome-keyring stuff here, patch
+			# borrowed from MacPorts
+			die "Darwin not supported; use Gentoo ebuild" # no need to bother with the patch for our needs
+			#epatch "${FILESDIR}"/...swig-python-no-gnome-keyring.patch
+		fi
+
+		# XXX: make python_copy_sources accept path
+		S=${S}/subversion/bindings/swig/python python_copy_sources
+		rm -r "${S}"/subversion/bindings/swig/python || die
+	fi
 }
 
 src_configure() {
@@ -133,12 +158,6 @@ src_configure() {
 		myconf+=" --with-swig"
 	else
 		myconf+=" --without-swig"
-	fi
-
-	if use kde || use nls; then
-		myconf+=" --enable-nls"
-	else
-		myconf+=" --disable-nls"
 	fi
 
 	case ${CHOST} in
@@ -153,20 +172,40 @@ src_configure() {
 		*-solaris*)
 			# need -lintl to link
 			use nls && append-libs intl
+			# this breaks installation, on x64 echo replacement is 32-bits
+			myconf+=" --disable-local-library-preloading"
+		;;
+		*-mint*)
+			myconf+=" --enable-all-static --disable-local-library-preloading"
+		;;
+		*)
+			# inject LD_PRELOAD entries for easy in-tree development
+			myconf+=" --enable-local-library-preloading"
 		;;
 	esac
-
-	#workaround for bug 387057
-	has_version =dev-vcs/subversion-1.6* && myconf+=" --disable-disallowing-of-undefined-references"
 
 	#version 1.7.7 again tries to link against the older installed version and fails, when trying to
 	#compile for x86 on amd64, so workaround this issue again
 	#check newer versions, if this is still/again needed
 	myconf+=" --disable-disallowing-of-undefined-references"
 
-	#force ruby-1.8 for bug 399105
-	ac_cv_path_RUBY="${EPREFIX}"/usr/bin/ruby18 ac_cv_path_RDOC="${EPREFIX}"/usr/bin/rdoc18 \
+	# for build-time scripts
+	if use ctypes-python || use python || use test; then
+		python_export_best
+	fi
+
+	if use python && [[ ${CHOST} == *-darwin* ]] ; then
+		export ac_cv_python_link="$(tc-getCC) "'$(PYTHON_CFLAGS) -bundle -undefined dynamic_lookup $(PYTHON_LIBS)'
+		export ac_cv_python_libs='$(PYTHON_CFLAGS) -bundle -undefined dynamic_lookup $(PYTHON_LIBS)'
+		export ac_cv_python_compile="$(tc-getCC)"
+	fi
+
+	# force ruby-2.1
+	# allow overriding Python include directory
+	ac_cv_path_RUBY="${EPREFIX}"/usr/bin/ruby21 ac_cv_path_RDOC="${EPREFIX}"/usr/bin/rdoc21 \
+	ac_cv_python_includes='-I$(PYTHON_INCLUDEDIR)' \
 	econf --libdir="${EPREFIX}/usr/$(get_libdir)" \
+		$(use_with apache2 apache-libexecdir) \
 		$(use_with apache2 apxs "${APXS}") \
 		$(use_with berkdb berkeley-db "db.h:${EPREFIX}/usr/include/db${SVN_BDB_VERSION}::db-${SVN_BDB_VERSION}") \
 		$(use_with ctypes-python ctypesgen "${EPREFIX}/usr") \
@@ -174,131 +213,141 @@ src_configure() {
 		$(use_with gnome-keyring) \
 		--disable-javahl \
 		$(use_with kde kwallet) \
+		$(use_enable nls) \
 		$(use_with sasl) \
-		$(use_with webdav-neon neon) \
-		$(use_with webdav-serf serf "${EPREFIX}/usr") \
+		$(use_with http serf) \
 		${myconf} \
 		--with-apr="${EPREFIX}/usr/bin/apr-1-config" \
 		--with-apr-util="${EPREFIX}/usr/bin/apu-1-config" \
 		--disable-experimental-libtool \
 		--without-jikes \
-		--enable-local-library-preloading \
 		--disable-mod-activation \
-		--disable-neon-version-check \
 		--disable-static
 }
 
 src_compile() {
-	emake local-all || die "Building of core of Subversion failed"
+	emake local-all
 
-	if use ctypes-python; then
-		python_copy_sources subversion/bindings/ctypes-python
-		rm -fr subversion/bindings/ctypes-python
-		ctypes_python_bindings_building() {
-			rm -f subversion/bindings/ctypes-python
-			ln -s ctypes-python-${PYTHON_ABI} subversion/bindings/ctypes-python
-			emake ctypes-python
+	if use ctypes-python ; then
+		# pre-generate .py files
+		use ctypes-python && emake ctypes-python
+
+		pushd subversion/bindings/ctypes-python >/dev/null || die
+		distutils-r1_src_compile
+		popd >/dev/null || die
+	fi
+
+	if use python ; then
+		swig_py_compile() {
+			local p=subversion/bindings/swig/python
+			rm -f ${p} || die
+			ln -s "${BUILD_DIR}" ${p} || die
+
+			python_export PYTHON_INCLUDEDIR
+			emake swig-py \
+				swig_pydir="$(python_get_sitedir)/libsvn" \
+				swig_pydir_extra="$(python_get_sitedir)/svn"
 		}
-		python_execute_function \
-			--action-message 'Building of Subversion Ctypes Python bindings with $(python_get_implementation) $(python_get_version)' \
-			--failure-message 'Building of Subversion Ctypes Python bindings failed with $(python_get_implementation) $(python_get_version)' \
-			ctypes_python_bindings_building
+
+		# this will give us proper BUILD_DIR for symlinking
+		BUILD_DIR=python \
+		python_foreach_impl swig_py_compile
 	fi
 
-	if use python; then
-		python_copy_sources subversion/bindings/swig/python
-		rm -fr subversion/bindings/swig/python
-		swig_python_bindings_building() {
-			rm -f subversion/bindings/swig/python
-			ln -s python-${PYTHON_ABI} subversion/bindings/swig/python
-			emake \
-				PYTHON_INCLUDES="-I${EPREFIX}$(python_get_includedir)" \
-				PYTHON_VERSION="$(python_get_version)" \
-				swig_pydir="${EPREFIX}$(python_get_sitedir)/libsvn" \
-				swig_pydir_extra="${EPREFIX}$(python_get_sitedir)/svn" \
-				swig-py
-		}
-		python_execute_function \
-			--action-message 'Building of Subversion SWIG Python bindings with $(python_get_implementation) $(python_get_version)' \
-			--failure-message 'Building of Subversion SWIG Python bindings failed with $(python_get_implementation) $(python_get_version)' \
-			swig_python_bindings_building
+	if use perl ; then
+		emake swig-pl
 	fi
 
-	if use perl; then
-		emake swig-pl || die "Building of Subversion SWIG Perl bindings failed"
+	if use ruby ; then
+		emake swig-rb
 	fi
 
-	if use ruby; then
-		emake swig-rb || die "Building of Subversion SWIG Ruby bindings failed"
+	if use extras ; then
+		emake tools
 	fi
 
-	if use extras; then
-		emake tools || die "Building of tools failed"
-	fi
-
-	if use doc; then
+	if use doc ; then
 		doxygen doc/doxygen.conf || die "Building of Subversion HTML documentation failed"
 	fi
 }
 
-src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
-	emake -j1 DESTDIR="${D}" local-install || die "Installation of core of Subversion failed"
+src_test() {
+	if has_version ~${CATEGORY}/${P} ; then
+		default
 
-	if use ctypes-python; then
-		ctypes_python_bindings_installation() {
-			rm -f subversion/bindings/ctypes-python
-			ln -s ctypes-python-${PYTHON_ABI} subversion/bindings/ctypes-python
-			emake DESTDIR="${D}" install-ctypes-python
-		}
-		python_execute_function \
-			--action-message 'Installation of Subversion Ctypes Python bindings with $(python_get_implementation) $(python_get_version)' \
-			--failure-message 'Installation of Subversion Ctypes Python bindings failed with $(python_get_implementation) $(python_get_version)' \
-			ctypes_python_bindings_installation
+		if use ctypes-python ; then
+			python_test() {
+				"${PYTHON}" subversion/bindings/ctypes-python/test/run_all.py \
+					|| die "ctypes-python tests fail with ${EPYTHON}"
+			}
+
+			distutils-r1_src_test
+		fi
+
+		if use python ; then
+			swig_py_test() {
+				pushd "${BUILD_DIR}" >/dev/null || die
+				"${PYTHON}" tests/run_all.py || die "swig-py tests fail with ${EPYTHON}"
+				popd >/dev/null || die
+			}
+
+			BUILD_DIR=subversion/bindings/swig/python \
+			python_foreach_impl swig_py_test
+		fi
+	else
+		ewarn "The test suite shows errors when there is an older version of"
+		ewarn "${CATEGORY}/${PN} installed. Please install =${CATEGORY}/${P}*"
+		ewarn "before running the test suite."
+		ewarn "Test suite skipped."
+	fi
+}
+
+src_install() {
+	emake -j1 DESTDIR="${D}" local-install
+
+	if use ctypes-python ; then
+		pushd subversion/bindings/ctypes-python >/dev/null || die
+		distutils-r1_src_install
+		popd >/dev/null || die
 	fi
 
-	if use python; then
-		swig_python_bindings_installation() {
-			rm -f subversion/bindings/swig/python
-			ln -s python-${PYTHON_ABI} subversion/bindings/swig/python
+	if use python ; then
+		swig_py_install() {
+			local p=subversion/bindings/swig/python
+			rm -f ${p} || die
+			ln -s "${BUILD_DIR}" ${p} || die
+
 			emake \
 				DESTDIR="${D}" \
-				PYTHON_VERSION="$(python_get_version)" \
-				swig_pydir="${EPREFIX}$(python_get_sitedir)/libsvn" \
-				swig_pydir_extra="${EPREFIX}$(python_get_sitedir)/svn" \
+				swig_pydir="$(python_get_sitedir)/libsvn" \
+				swig_pydir_extra="$(python_get_sitedir)/svn" \
 				install-swig-py
 		}
-		python_execute_function \
-			--action-message 'Installation of Subversion SWIG Python bindings with $(python_get_implementation) $(python_get_version)' \
-			--failure-message 'Installation of Subversion SWIG Python bindings failed with $(python_get_implementation) $(python_get_version)' \
-			swig_python_bindings_installation
+
+		BUILD_DIR=python \
+		python_foreach_impl swig_py_install
 	fi
 
-	if use ctypes-python || use python; then
-		python_clean_installation_image -q
+	if use perl ; then
+		emake DESTDIR="${D}" INSTALLDIRS="vendor" install-swig-pl
+		perl_delete_localpod
+		find "${ED}" "(" -name .packlist -o -name "*.bs" ")" -delete
 	fi
 
-	if use perl; then
-		emake DESTDIR="${D}" INSTALLDIRS="vendor" install-swig-pl || die "Installation of Subversion SWIG Perl bindings failed"
-		fixlocalpod
-		find "${ED}" "(" -name .packlist -o -name "*.bs" ")" -print0 | xargs -0 rm -fr
-	fi
-
-	if use ruby; then
-		emake DESTDIR="${D}" install-swig-rb || die "Installation of Subversion SWIG Ruby bindings failed"
+	if use ruby ; then
+		emake DESTDIR="${D}" install-swig-rb
 	fi
 
 	# Install Apache module configuration.
-	if use apache2; then
+	if use apache2 ; then
 		keepdir "${APACHE_MODULES_CONFDIR}"
 		insinto "${APACHE_MODULES_CONFDIR}"
 		doins "${FILESDIR}/47_mod_dav_svn.conf"
 	fi
 
 	# Install Bash Completion, bug 43179.
-	newbashcomp tools/client-side/bash_completion subversion
+	newbashcomp tools/client-side/bash_completion svn
+	bashcomp_alias svn svn{admin,dumpfilter,look,sync,version}
 	rm -f tools/client-side/bash_completion
 
 	# Install hot backup script, bug 54304.
@@ -306,7 +355,7 @@ src_install() {
 	rm -fr tools/backup
 
 	# Install svnserve init-script and xinet.d snippet, bug 43245.
-	newinitd "${FILESDIR}"/svnserve.initd2 svnserve
+	newinitd "${FILESDIR}"/svnserve.initd3 svnserve
 	newconfd "${FILESDIR}"/svnserve.confd svnserve
 	insinto /etc/xinetd.d
 	newins "${FILESDIR}"/svnserve.xinetd svnserve
@@ -325,14 +374,14 @@ src_install() {
 	rm -fr tools/xslt
 
 	# Install extra files.
-	if use extras; then
+	if use extras ; then
 		cat << EOF > 80subversion-extras
 PATH="${EPREFIX}/usr/$(get_libdir)/subversion/bin"
 ROOTPATH="${EPREFIX}/usr/$(get_libdir)/subversion/bin"
 EOF
 		doenvd 80subversion-extras
 
-		emake DESTDIR="${D}" toolsdir="/usr/$(get_libdir)/subversion/bin" install-tools || die "Installation of tools failed"
+		emake DESTDIR="${D}" toolsdir="/usr/$(get_libdir)/subversion/bin" install-tools
 
 		find tools "(" -name "*.bat" -o -name "*.in" -o -name ".libs" ")" -print0 | xargs -0 rm -fr
 		rm -fr tools/client-side/svnmucc
@@ -340,15 +389,15 @@ EOF
 		rm -fr tools/{buildbot,dev,diff,po}
 
 		insinto /usr/share/${PN}
-		python_convert_shebangs -r 2 tools
+		find tools -name '*.py' -exec sed -i -e '1s:python:&2:' {} + || die
 		doins -r tools
 	fi
 
-	if use doc; then
-		dohtml -r doc/doxygen/html/* || die "Installation of Subversion HTML documentation failed"
+	if use doc ; then
+		dohtml -r doc/doxygen/html/*
 	fi
 
-	find "${ED}" '(' -name '*.la' ')' -print0 | xargs -0 rm -f
+	prune_libtool_files --all
 
 	cd "${ED}"usr/share/locale
 	for i in * ; do
@@ -358,27 +407,17 @@ EOF
 
 pkg_preinst() {
 	# Compare versions of Berkeley DB, bug 122877.
-	if use berkdb && [[ -f "${EROOT}usr/bin/svn" ]]; then
+	if use berkdb && [[ -f "${EROOT}usr/bin/svn" ]] ; then
 		OLD_BDB_VERSION="$(scanelf -nq "${EROOT}usr/$(get_libdir)/libsvn_subr-1$(get_libname 0)" | grep -Eo "libdb-[[:digit:]]+\.[[:digit:]]+" | sed -e "s/libdb-\(.*\)/\1/")"
 		NEW_BDB_VERSION="$(scanelf -nq "${ED}usr/$(get_libdir)/libsvn_subr-1$(get_libname 0)" | grep -Eo "libdb-[[:digit:]]+\.[[:digit:]]+" | sed -e "s/libdb-\(.*\)/\1/")"
-		if [[ "${OLD_BDB_VERSION}" != "${NEW_BDB_VERSION}" ]]; then
+		if [[ "${OLD_BDB_VERSION}" != "${NEW_BDB_VERSION}" ]] ; then
 			CHANGED_BDB_VERSION="1"
 		fi
 	fi
 }
 
 pkg_postinst() {
-	use perl && perl-module_pkg_postinst
-
-	if use ctypes-python; then
-		python_mod_optimize csvn
-	fi
-
-	if use python; then
-		python_mod_optimize libsvn svn
-	fi
-
-	if [[ -n "${CHANGED_BDB_VERSION}" ]]; then
+	if [[ -n "${CHANGED_BDB_VERSION}" ]] ; then
 		ewarn "You upgraded from an older version of Berkeley DB and may experience"
 		ewarn "problems with your repository. Run the following commands as root to fix it:"
 		ewarn "    db4_recover -h ${SVN_REPOS_LOC}/repos"
@@ -389,22 +428,14 @@ pkg_postinst() {
 }
 
 pkg_postrm() {
-	use perl && perl-module_pkg_postrm
-
-	if use ctypes-python; then
-		python_mod_cleanup csvn
-	fi
-
-	if use python; then
-		python_mod_cleanup libsvn svn
-	fi
+	:
 }
 
 pkg_config() {
 	# Remember: Don't use ${EROOT}${SVN_REPOS_LOC} since ${SVN_REPOS_LOC}
 	# already has EPREFIX in it
 	einfo "Initializing the database in ${SVN_REPOS_LOC}..."
-	if [[ -e "${SVN_REPOS_LOC}/repos" ]]; then
+	if [[ -e "${SVN_REPOS_LOC}/repos" ]] ; then
 		echo "A Subversion repository already exists and I will not overwrite it."
 		echo "Delete \"${SVN_REPOS_LOC}/repos\" first if you're sure you want to have a clean version."
 	else
@@ -417,7 +448,7 @@ pkg_config() {
 		einfo "Setting repository permissions..."
 		SVNSERVE_USER="$(. "${EROOT}etc/conf.d/svnserve"; echo "${SVNSERVE_USER}")"
 		SVNSERVE_GROUP="$(. "${EROOT}etc/conf.d/svnserve"; echo "${SVNSERVE_GROUP}")"
-		if use apache2; then
+		if use apache2 ; then
 			[[ -z "${SVNSERVE_USER}" ]] && SVNSERVE_USER="apache"
 			[[ -z "${SVNSERVE_GROUP}" ]] && SVNSERVE_GROUP="apache"
 		else
