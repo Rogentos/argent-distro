@@ -17,7 +17,7 @@ IUSE=""
 src_unpack() {
 	unpacker_src_unpack
 	cd "${S}" || die
-	epatch "${FILESDIR}/${PN}-sabayon-base-gcc-support.patch"
+	epatch "${FILESDIR}/${PN}-argent-base-gcc-support.patch"
 }
 
 src_compile() {
