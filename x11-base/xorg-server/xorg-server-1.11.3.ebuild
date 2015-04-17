@@ -14,7 +14,7 @@ KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86 ~x86-
 IUSE_SERVERS="dmx kdrive xnest xorg xvfb"
 IUSE="debug_grade_1 ${IUSE_SERVERS} ipv6 minimal nptl tslib +udev"
 
-RDEPEND=">=app-admin/eselect-opengl-1.0.8
+RDEPEND=">=app-eselect/eselect-opengl-1.0.8
 	dev-libs/openssl
 	media-libs/freetype
 	>=x11-apps/iceauth-1.0.2

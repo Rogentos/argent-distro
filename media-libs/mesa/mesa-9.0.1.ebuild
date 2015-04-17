@@ -82,9 +82,9 @@ LIBDRM_DEPSTRING=">=x11-libs/libdrm-2.4.39"
 RDEPEND="~virtual/glu-9.0
 	!<x11-base/xorg-server-1.7
 	!<=x11-proto/xf86driproto-2.0.3
-	classic? ( app-admin/eselect-mesa )
-	gallium? ( app-admin/eselect-mesa )
-	>=app-admin/eselect-opengl-1.2.6
+	classic? ( app-eselect/eselect-mesa )
+	gallium? ( app-eselect/eselect-mesa )
+	>=app-eselect/eselect-opengl-1.2.6
 	dev-libs/expat
 	gbm? (
 		virtual/udev
