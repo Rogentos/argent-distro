@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 s390 sh sparc x86"
 IUSE=""
 
-SABAYON_SOURCES="sys-kernel/sabayon-sources
+SABAYON_SOURCES="sys-kernel/argent-sources
 		sys-kernel/server-sources
 		sys-kernel/rt-sources
 		sys-kernel/xen-dom0-sources
