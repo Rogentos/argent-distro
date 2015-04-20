@@ -1,4 +1,5 @@
 # Copyright 2004-2010 Sabayon Project
+# Copyright 2014 Argent Linux
 # Distributed under the terms of the GNU General Public License v2
 # $
 
@@ -24,7 +25,7 @@ K_ARGKERNEL_SELF_TARBALL_NAME="${K_ARGKERNEL_SELF_TARBALL_NAME:-}"
 # @ECLASS-VARIABLE: K_ARGKERNEL_PATCH_UPSTREAM_TARBALL
 # @DESCRIPTION:
 # If set to 1, the ebuild will fetch the upstream kernel tarball and
-# apply the Sabayon patch against it. This strategy avoids the need of
+# apply the Sabayon/Argent patch against it. This strategy avoids the need of
 # creating complete kernel source tarballs. The default value is 0.
 K_ARGKERNEL_PATCH_UPSTREAM_TARBALL="${K_ARGKERNEL_PATCH_UPSTREAM_TARBALL:-0}"
 
@@ -183,7 +184,7 @@ inherit eutils multilib kernel-2 argent-artwork mount-boot linux-info
 detect_version
 detect_arch
 
-DESCRIPTION="Sabayon Linux kernel functions and phases"
+DESCRIPTION="Argent Linux kernel functions and phases"
 
 
 K_LONGTERM_URL_STR=""
@@ -280,6 +281,8 @@ _is_kernel_lts() {
 	[ "${_ver}" = "3.2" ] && return 0
 	[ "${_ver}" = "3.4" ] && return 0
 	[ "${_ver}" = "3.10" ] && return 0
+	[ "${_ver}" = "3.12" ] && return 0
+	[ "${_ver}" = "3.14" ] && return 0
 	return 1
 }
 
@@ -293,9 +296,9 @@ if _is_kernel_binary; then
 fi
 
 if [ -n "${K_ARGKERNEL_SELF_TARBALL_NAME}" ]; then
-	HOMEPAGE="https://github.com/Sabayon/kernel"
+	HOMEPAGE="https://github.com/Rogentos/kernel"
 else
-	HOMEPAGE="http://www.argent.org"
+	HOMEPAGE="http://www.argentlinux.io"
 fi
 
 # Returns success if _set_config_file_vars was called.
@@ -351,7 +354,7 @@ if [ -n "${K_ONLY_SOURCES}" ] || [ -n "${K_FIRMWARE_PACKAGE}" ]; then
 	DEPEND="sys-apps/sed"
 	RDEPEND="${RDEPEND}"
 else
-	IUSE="dmraid dracut iscsi luks lvm mdadm plymouth splash"
+	IUSE="btrfs dmraid dracut iscsi luks lvm mdadm plymouth splash"
 	if [ -n "${K_ARGKERNEL_ZFS}" ]; then
 		IUSE="${IUSE} zfs"
 	fi
@@ -363,6 +366,7 @@ else
 		arm? ( dev-embedded/u-boot-tools )
 		amd64? ( sys-apps/v86d )
 		x86? ( sys-apps/v86d )
+		btrfs? ( sys-fs/btrfs-progs )
 		splash? ( x11-themes/argent-artwork-core )
 		lvm? ( sys-fs/lvm2 sys-block/thin-provisioning-tools )
 		plymouth? (
@@ -515,7 +519,8 @@ _kernel_src_compile() {
 
 	cd "${S}" || die
 	local GKARGS=()
-	GKARGS+=( "--no-save-config" "--e2fsprogs" "--udev" )
+	GKARGS+=( "--no-menuconfig" "--no-save-config" "--e2fsprogs" "--udev" )
+	use btrfs && GKARGS+=( "--btrfs" )
 	use splash && GKARGS+=( "--splash=argent" )
 	use plymouth && GKARGS+=( "--plymouth" "--plymouth-theme=${PLYMOUTH_THEME}" )
 	use dmraid && GKARGS+=( "--dmraid" )
@@ -784,8 +789,8 @@ argent-kernel_uimage_config() {
 	# 1. /boot/uImage symlink is broken (pkg_postrm)
 	# 2. /boot/uImage symlink doesn't exist (pkg_postinst)
 
-	if ! has_version app-admin/eselect-uimage; then
-		ewarn "app-admin/eselect-uimage not installed"
+	if ! has_version app-eselect/eselect-uimage; then
+		ewarn "app-eselect/eselect-uimage not installed"
 		ewarn "If you are using this tool, please install it"
 		return 0
 	fi
@@ -819,8 +824,8 @@ argent-kernel_bzimage_config() {
 	use x86 && kern_arch="x86"
 	use amd64 && kern_arch="x86_64"
 
-	if ! has_version app-admin/eselect-bzimage; then
-		ewarn "app-admin/eselect-bzimage not installed"
+	if ! has_version app-eselect/eselect-bzimage; then
+		ewarn "app-eselect/eselect-bzimage not installed"
 		ewarn "If you are using this tool, please install it"
 		return 0
 	fi
@@ -872,7 +877,7 @@ argent-kernel_pkg_postinst() {
 		fi
 
 		# Update kernel initramfs to match user customizations
-		update_argent_kernel_initramfs_splash
+		use splash && update_argent_kernel_initramfs_splash
 
 		# Add kernel to grub.conf
 		if use amd64 || use x86; then
@@ -911,7 +916,7 @@ argent-kernel_pkg_postinst() {
 
 		elog "The source code of this kernel is located at"
 		elog "=${K_KERNEL_SOURCES_PKG}."
-		elog "Sabayon Linux recommends that portage users install"
+		elog "Argent Linux recommends that portage users install"
 		elog "${K_KERNEL_SOURCES_PKG} if you want"
 		elog "to build any packages that install kernel modules"
 		elog "(such as ati-drivers, nvidia-drivers, virtualbox, etc...)."

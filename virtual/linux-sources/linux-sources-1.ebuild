@@ -13,7 +13,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~hppa ~ia64 ~x86"
 IUSE="firmware"
 
-SABAYON_SOURCES="sys-kernel/sabayon-sources
+SABAYON_SOURCES="sys-kernel/argent-sources
 		sys-kernel/server-sources
 		sys-kernel/rt-sources
 		sys-kernel/efikamx-sources

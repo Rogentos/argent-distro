@@ -48,7 +48,7 @@ src_prepare() {
 	gnome2_src_prepare
 
 	# Argent customization
-	epatch "${FILESDIR}/${PN}-2.32-sabayon-background.patch"
+	epatch "${FILESDIR}/${PN}-2.32-argent-background.patch"
 
 	# Make sure menus have icons. People don't like change
 	epatch "${FILESDIR}/${PN}-2.28.0-menus-have-icons.patch"
