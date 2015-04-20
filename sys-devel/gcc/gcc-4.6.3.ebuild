@@ -51,7 +51,7 @@ BASE_GCC_USE="fortran gcj gtk mudflap multilib nls nptl openmp altivec
 for base_use in ${BASE_GCC_USE}; do
 	RDEPEND+=" ~sys-devel/base-gcc-${PV}[${base_use}?]"
 done
-IUSE="debug_grade_1 ${BASE_GCC_USE}"
+IUSE="${BASE_GCC_USE}"
 
 DEPEND="${RDEPEND}
 	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )"
@@ -63,12 +63,12 @@ fi
 
 ## Check for valid gcc profile.
 src_unpack() {
-	# Since Argent's gcc ebuild are split into two parts, we have to
+	# Since Sabayon's gcc ebuild are split into two parts, we have to
 	# build gcc with a different version of gcc, or terrible breakage
 	# will occur after sys-devel/base-gcc is installed, but the
 	# partner sys-devel/gcc still needs to be built.
 
-	# While it is possible to rebuild Argent's split gcc from
+	# While it is possible to rebuild Sabayon's split gcc from
 	# the same version, we have to disallow this also since
 	# we have no way of discerning if a configuration change
 	# is significant enough to cause breakage.
@@ -84,7 +84,7 @@ src_unpack() {
 	if [[ "${GCC_PROFILE_SLOT}" = "${SLOT}" ]] ; then
 		eerror "Error!"
 		eerror "The active gcc-profile is for sys-devel/gcc slot ${SLOT}."
-		eerror "Argent's split sys-devel/gcc package MUST be built"
+		eerror "Sabayon's split sys-devel/gcc package MUST be built"
 		eerror "with another slotted version of sys-devel/gcc active."
 		die "Invalid gcc profile selected!"
 	fi
@@ -122,9 +122,6 @@ pkg_setup() {
 
 ## Just install libgcc stuff
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	toolchain_src_install
 
 	# now drop what's provided by sys-devel/base-gcc-${PV}:${SLOT}

@@ -2,8 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=2
-PATCH_VER="1.4"
+EAPI="4"
+
+PATCH_VER="1.2"
 UCLIBC_VER="1.0"
 
 # Hardened gcc 4 stuff
@@ -24,6 +25,7 @@ inherit toolchain
 DESCRIPTION="The GNU Compiler Collection"
 
 LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.3+"
+
 KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 -amd64-fbsd -x86-fbsd"
 
 ## Make sure we share all the USE flags in sys-devel/base-gcc
@@ -46,7 +48,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 ## Check for valid gcc profile.
-src_unpack() {
+src_prepare() {
 	# Since Sabayon's gcc ebuild are split into two parts, we have to
 	# build gcc with a different version of gcc, or terrible breakage
 	# will occur after sys-devel/base-gcc is installed, but the
@@ -84,11 +86,10 @@ src_unpack() {
 		EPATCH_EXCLUDE+=" 90_all_gcc-4.7-x32.patch"
 	fi
 
-	toolchain_src_unpack
+	toolchain_src_prepare
 
 	use vanilla && return 0
 
-	cd "${S}" || die
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env.patch
 }
 

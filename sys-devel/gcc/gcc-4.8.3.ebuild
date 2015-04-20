@@ -2,12 +2,13 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=2
-PATCH_VER="1.4"
+EAPI="4"
+
+PATCH_VER="1.1"
 UCLIBC_VER="1.0"
 
 # Hardened gcc 4 stuff
-PIE_VER="0.5.5"
+PIE_VER="0.5.9"
 SPECS_VER="0.2.0"
 SPECS_GCC_VER="4.4.3"
 # arch/libc configurations known to be stable with {PIE,SSP}-by-default
@@ -19,12 +20,11 @@ SSP_STABLE="amd64 x86 ppc ppc64 arm"
 SSP_UCLIBC_STABLE="x86 amd64 ppc ppc64 arm"
 #end Hardened stuff
 
-inherit toolchain
+inherit eutils toolchain
 
 DESCRIPTION="The GNU Compiler Collection"
 
-LICENSE="GPL-3+ LGPL-3+ || ( GPL-3+ libgcc libstdc++ gcc-runtime-library-exception-3.1 ) FDL-1.3+"
-KEYWORDS="alpha amd64 arm hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 -amd64-fbsd -x86-fbsd"
+KEYWORDS="~alpha amd64 arm ~arm64 hppa ~ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
 
 ## Make sure we share all the USE flags in sys-devel/base-gcc
 BASE_GCC_USE="fortran gcj mudflap multilib nls nptl openmp altivec
@@ -38,7 +38,7 @@ IUSE="${BASE_GCC_USE}"
 RDEPEND="~sys-devel/base-gcc-${PV} ${RDEPEND}"
 DEPEND="${RDEPEND}
 	elibc_glibc? ( >=sys-libs/glibc-2.8 )
-	>=${CATEGORY}/binutils-2.18"
+	>=${CATEGORY}/binutils-2.20"
 ## Should this be moved to base-gcc?
 ## I guess the cross-* thing is now utterly broken
 if [[ ${CATEGORY} != cross-* ]] ; then
@@ -46,7 +46,7 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 ## Check for valid gcc profile.
-src_unpack() {
+src_prepare() {
 	# Since Sabayon's gcc ebuild are split into two parts, we have to
 	# build gcc with a different version of gcc, or terrible breakage
 	# will occur after sys-devel/base-gcc is installed, but the
@@ -79,17 +79,12 @@ src_unpack() {
 		EPATCH_EXCLUDE+=" 10_all_default-fortify-source.patch"
 	fi
 
-	# drop the x32 stuff once 4.7 goes stable
-	if [[ ${CTARGET} != x86_64* ]] || ! has x32 $(get_all_abis TARGET) ; then
-		EPATCH_EXCLUDE+=" 90_all_gcc-4.7-x32.patch"
-	fi
-
-	toolchain_src_unpack
+	toolchain_src_prepare
 
 	use vanilla && return 0
 
-	cd "${S}" || die
-	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env.patch
+	#Use -r1 for newer piepatchet that use DRIVER_SELF_SPECS for the hardened specs.
+	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env-r1.patch
 }
 
 ## Just install libgcc stuff
@@ -98,11 +93,14 @@ src_install() {
 
 	# now drop what's provided by sys-devel/base-gcc-${PV}:${SLOT}
 	base_gcc_libs="libgfortran.so* libgcc_s.so* libobjc.so*
-		libobjc_gc.so* libmudflap.so* libmudflapth.so* libgomp.so* libstdc++.so*
-		libquadmath.so*"
+		libobjc_gc.so* libmudflap.so* libmudflapth.so* libgomp.so* libstdc++.so* libquadmath.so*
+		crtprec80.o crtbeginP.o crtfastmath.o crtprec32.o crtbeginT.o
+		crtbeginS.o crtbegin.o crtend.o crtendS.o crtprec64.o"
 	base_multilib_gcc_libs="32/libgfortran.so* 32/libobjc.so* 32/libobjc_gc.so*
 		32/libgcc_s.so* 32/libgomp.so* 32/libmudflap.so*
-		32/libmudflapth.so* 32/libstdc++.so* 32/libquadmath.so*"
+		32/libmudflapth.so* 32/libstdc++.so* 32/libquadmath.so*
+		32/crtprec80.o 32/crtbeginP.o 32/crtfastmath.o 32/crtprec32.o 32/crtbeginT.o
+		32/crtbeginS.o 32/crtbegin.o 32/crtend.o 32/crtendS.o 32/crtprec64.o"
 	for gcc_lib in ${base_gcc_libs}; do
 		# -f is used because the file might not be there
 		rm "${D}"${LIBPATH}/${gcc_lib} -rf || die "cannot execute rm on ${gcc_lib}"

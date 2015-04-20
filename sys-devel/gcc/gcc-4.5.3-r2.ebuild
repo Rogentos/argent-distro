@@ -50,7 +50,7 @@ BASE_GCC_USE="fortran gcj gtk mudflap multilib nls nptl openmp altivec
 for base_use in ${BASE_GCC_USE}; do
 	RDEPEND+=" ~sys-devel/base-gcc-${PV}[${base_use}?]"
 done
-IUSE="debug_grade_1 ${BASE_GCC_USE}"
+IUSE="${BASE_GCC_USE}"
 
 DEPEND="${RDEPEND}
 	amd64? ( multilib? ( gcj? ( app-emulation/emul-linux-x86-xlibs ) ) )"
@@ -78,9 +78,6 @@ pkg_setup() {
 
 ## Just install libgcc stuff
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	toolchain_src_install
 
 	# now drop what's provided by sys-devel/base-gcc-${PV}:${SLOT}
