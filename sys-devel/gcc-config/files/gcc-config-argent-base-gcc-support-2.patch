@@ -5,7 +5,7 @@ diff -Nurp gcc-config-1.8.orig/gcc-config gcc-config-1.8/gcc-config
  		)
  	) )
  
-+	# Sabayon: base-gcc does not bring any gcc executables. Return 1
++	# Argent: base-gcc does not bring any gcc executables. Return 1
 +	# if ${ROOT}${GCC_PATH} does not exist without even trying to
 +	# `cd` it.
 +	if [[ ! -d "${ROOT}${GCC_PATH}" ]]; then

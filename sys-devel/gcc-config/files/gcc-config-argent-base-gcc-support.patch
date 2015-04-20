@@ -4,7 +4,7 @@
  		)
  	) )
  
-+	# Sabayon: base-gcc does not bring any gcc executables. Return 1
++	# Argent: base-gcc does not bring any gcc executables. Return 1
 +	# if ${ROOT}${GCC_PATH} does not exist without even trying to
 +	# `cd` it.
 +	if [[ ! -d "${ROOT}${GCC_PATH}" ]]; then
@@ -19,7 +19,7 @@
  
  	gcc="${ROOT}${LATEST_GCC_PATH}/gcc"
  
-+	# Sabayon: base-gcc does not carry the GCC executable, so
++	# Argent: base-gcc does not carry the GCC executable, so
 +	# skip this part
 +	if [[ ! -x "${gcc}" ]]; then
 +		return 0
