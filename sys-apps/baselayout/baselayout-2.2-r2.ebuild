@@ -189,8 +189,8 @@ src_install() {
 	echo "LDPATH='${ldpaths#:}'" >> "${D}"/etc/env.d/00basic
 
 	# rc-scripts version for testing of features that *should* be present
-	echo "Argent Gentoo-based System release ${PV}" > "${D}"/etc/gentoo-release
-	echo "Argent Linux amd64 ${PV}" > "${D}"/etc/issue
+	echo "Argent Linux Release 2.0" > "${D}"/etc/gentoo-release
+	echo "Argent Linux x86_64 2.0" > "${D}"/etc/issue
 
 	# Argent customization, install /etc/hosts separately (to .example)
 	mv "${D}"/etc/hosts "${D}"/etc/hosts.example || die "cannot move /etc/hosts"
