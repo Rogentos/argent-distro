@@ -1,4 +1,5 @@
-# Copyright 2004-2014 Sabayon Linux
+# Copyright 2004-2013 Sabayon Linux
+# Copyright 2015 Kogaion
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -6,7 +7,7 @@ EAPI=5
 inherit versionator
 
 K_ROGKERNEL_SELF_TARBALL_NAME="argent"
-K_REQUIRED_LINUX_FIRMWARE_VER="20140603"
+K_REQUIRED_LINUX_FIRMWARE_VER="20150206"
 K_ROGKERNEL_FORCE_SUBLEVEL="0"
 K_ROGKERNEL_PATCH_UPSTREAM_TARBALL="0"
 
