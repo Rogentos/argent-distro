@@ -1,5 +1,4 @@
-# Copyright 2004-2013 Sabayon Linux
-# Copyright 2014 Argent
+# Copyright 2004-2014 Sabayon Linux
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=5
@@ -7,7 +6,7 @@ EAPI=5
 inherit versionator
 
 K_ARGKERNEL_SELF_TARBALL_NAME="argent"
-K_REQUIRED_LINUX_FIRMWARE_VER="20150320"
+K_REQUIRED_LINUX_FIRMWARE_VER="20150206"
 K_ARGKERNEL_FORCE_SUBLEVEL="0"
 K_ARGKERNEL_PATCH_UPSTREAM_TARBALL="0"
 
@@ -26,5 +25,5 @@ K_MKIMAGE_KERNEL_ADDRESS="0x80008000"
 inherit argent-kernel
 
 KEYWORDS="~amd64 ~x86"
-DESCRIPTION="Official Argent Linux Standard kernel image"
+DESCRIPTION="Official Kogaion Linux Standard kernel image"
 RESTRICT="mirror"
