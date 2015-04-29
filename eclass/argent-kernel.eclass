@@ -1,5 +1,4 @@
-# Copyright 2004-2010 Sabayon Project
-# Copyright 2014 Argent Linux
+# Copyright 2004-2014 RogentOS Team
 # Distributed under the terms of the GNU General Public License v2
 # $
 
@@ -25,7 +24,7 @@ K_ARGKERNEL_SELF_TARBALL_NAME="${K_ARGKERNEL_SELF_TARBALL_NAME:-}"
 # @ECLASS-VARIABLE: K_ARGKERNEL_PATCH_UPSTREAM_TARBALL
 # @DESCRIPTION:
 # If set to 1, the ebuild will fetch the upstream kernel tarball and
-# apply the Sabayon/Argent patch against it. This strategy avoids the need of
+# apply the RogentOS patch against it. This strategy avoids the need of
 # creating complete kernel source tarballs. The default value is 0.
 K_ARGKERNEL_PATCH_UPSTREAM_TARBALL="${K_ARGKERNEL_PATCH_UPSTREAM_TARBALL:-0}"
 
@@ -184,7 +183,7 @@ inherit eutils multilib kernel-2 argent-artwork mount-boot linux-info
 detect_version
 detect_arch
 
-DESCRIPTION="Argent Linux kernel functions and phases"
+DESCRIPTION="Argent linux kernel functions and phases"
 
 
 K_LONGTERM_URL_STR=""
@@ -195,13 +194,11 @@ fi
 ## kernel-2 eclass settings
 if [ "${K_ARGKERNEL_PATCH_UPSTREAM_TARBALL}" = "1" ]; then
 	_patch_name="$(get_version_component_range 1-2)-${K_ARGKERNEL_SELF_TARBALL_NAME}-${PVR}.patch.xz"
-	SRC_URI="${KERNEL_URI}
-		mirror://argent/${CATEGORY}/${_patch_name}
-	"
+	SRC_URI="${KERNEL_URI}"
 	UNIPATCH_LIST="${UNIPATCH_LIST} ${DISTDIR}/${_patch_name}"
 	unset _patch_name
 elif [ -n "${K_ARGKERNEL_SELF_TARBALL_NAME}" ]; then
-	SRC_URI="mirror://argent/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
+	SRC_URI="http://bpr.bluepink.ro/~rogentos/distro/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
 else
 	SRC_URI="${KERNEL_URI}"
 fi
@@ -298,7 +295,7 @@ fi
 if [ -n "${K_ARGKERNEL_SELF_TARBALL_NAME}" ]; then
 	HOMEPAGE="https://github.com/Rogentos/kernel"
 else
-	HOMEPAGE="http://www.argentlinux.io"
+	HOMEPAGE="http://www.argent.ro"
 fi
 
 # Returns success if _set_config_file_vars was called.
@@ -354,7 +351,7 @@ if [ -n "${K_ONLY_SOURCES}" ] || [ -n "${K_FIRMWARE_PACKAGE}" ]; then
 	DEPEND="sys-apps/sed"
 	RDEPEND="${RDEPEND}"
 else
-	IUSE="btrfs dmraid dracut iscsi luks lvm mdadm plymouth splash"
+	IUSE="dmraid dracut iscsi luks lvm mdadm plymouth splash"
 	if [ -n "${K_ARGKERNEL_ZFS}" ]; then
 		IUSE="${IUSE} zfs"
 	fi
@@ -366,7 +363,6 @@ else
 		arm? ( dev-embedded/u-boot-tools )
 		amd64? ( sys-apps/v86d )
 		x86? ( sys-apps/v86d )
-		btrfs? ( sys-fs/btrfs-progs )
 		splash? ( x11-themes/argent-artwork-core )
 		lvm? ( sys-fs/lvm2 sys-block/thin-provisioning-tools )
 		plymouth? (
@@ -520,9 +516,8 @@ _kernel_src_compile() {
 	cd "${S}" || die
 	local GKARGS=()
 	GKARGS+=( "--no-menuconfig" "--no-save-config" "--e2fsprogs" "--udev" )
-	use btrfs && GKARGS+=( "--btrfs" )
-	use splash && GKARGS+=( "--splash=argent" )
-	use plymouth && GKARGS+=( "--plymouth" "--plymouth-theme=${PLYMOUTH_THEME}" )
+	# use splash && GKARGS+=( "--splash=argent" ) #NO MORE fbsplash!!!
+	use plymouth && GKARGS+=( "--plymouth" "--plymouth-theme=${PLYMOUTH_THEME}" ) #reverted to use variable (check the eclass)
 	use dmraid && GKARGS+=( "--dmraid" )
 	use iscsi && GKARGS+=( "--iscsi" )
 	use mdadm && GKARGS+=( "--mdadm" )
@@ -789,8 +784,8 @@ argent-kernel_uimage_config() {
 	# 1. /boot/uImage symlink is broken (pkg_postrm)
 	# 2. /boot/uImage symlink doesn't exist (pkg_postinst)
 
-	if ! has_version app-eselect/eselect-uimage; then
-		ewarn "app-eselect/eselect-uimage not installed"
+	if ! has_version app-eselect/uimage; then
+		ewarn "app-eselect/uimage not installed"
 		ewarn "If you are using this tool, please install it"
 		return 0
 	fi
@@ -912,11 +907,11 @@ argent-kernel_pkg_postinst() {
 		_update_depmod "${depmod_r}"
 
 		elog "Please report kernel bugs at:"
-		elog "http://bugs.argent.org"
+		elog "http://bugs.argent.ro"
 
 		elog "The source code of this kernel is located at"
 		elog "=${K_KERNEL_SOURCES_PKG}."
-		elog "Argent Linux recommends that portage users install"
+		elog "RogentOS Team recommends that portage users install"
 		elog "${K_KERNEL_SOURCES_PKG} if you want"
 		elog "to build any packages that install kernel modules"
 		elog "(such as ati-drivers, nvidia-drivers, virtualbox, etc...)."
