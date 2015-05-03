@@ -9,7 +9,6 @@ inherit eutils mount-boot argent-artwork
 DESCRIPTION="Official Argent Linux Core Artwork"
 HOMEPAGE="http://www.argentlinux.io/"
 SRC_URI="bpr.bluepink.ro/~rogentos/argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
-echo $SRC_URI
 
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
