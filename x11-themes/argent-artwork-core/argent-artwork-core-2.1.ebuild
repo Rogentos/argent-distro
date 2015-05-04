@@ -22,9 +22,9 @@ S="${WORKDIR}/${PN}"
 
 src_install() {
 	# Fbsplash theme
-	cd "${S}"/fbsplash || die
-	dodir /etc/splash/argent
-	cp -r "${S}"/fbsplash/argent/* "${D}"/etc/splash/argent
+	#cd "${S}"/fbsplash || die
+	#dodir /etc/splash/argent
+	#cp -r "${S}"/fbsplash/argent/* "${D}"/etc/splash/argent
 
 	# Cursors
 	cd "${S}"/mouse/entis/cursors || die
