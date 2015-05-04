@@ -27,9 +27,9 @@ src_install() {
 	#cp -r "${S}"/fbsplash/argent/* "${D}"/etc/splash/argent
 
 	# Cursors
-	cd "${S}"/mouse/entis/cursors || die
-	dodir /usr/share/cursors/xorg-x11/entis/cursors
-	insinto /usr/share/cursors/xorg-x11/entis/cursors
+	cd "${S}"/mouse/RezoBlue/cursors || die
+	dodir /usr/share/cursors/xorg-x11/RezoBlue/cursors
+	insinto /usr/share/cursors/xorg-x11/RezoBlue/cursors
 	doins -r ./
 
 	# Wallpaper
