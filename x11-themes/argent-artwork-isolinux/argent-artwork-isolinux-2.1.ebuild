@@ -3,7 +3,7 @@
 # Distributed under the terms of the GNU General Public License v2
 #
 
-EAPI=4
+EAPI=5
 
 inherit base
 
@@ -15,7 +15,7 @@ SRC_URI="mirror://argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE=""
 RDEPEND=""
 
