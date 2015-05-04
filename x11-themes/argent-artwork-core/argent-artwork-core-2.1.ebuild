@@ -43,7 +43,7 @@ src_install() {
 	insinto /usr/share/plymouth
 	doins bizcom.png
 	insinto /usr/share/plymouth/themes
-	doins -r argent
+	doins -r argent/
 }
 
 pkg_postinst() {
