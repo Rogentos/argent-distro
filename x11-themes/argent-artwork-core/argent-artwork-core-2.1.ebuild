@@ -8,7 +8,8 @@ inherit eutils mount-boot argent-artwork
 
 DESCRIPTION="Official Argent Linux Core Artwork"
 HOMEPAGE="http://www.argentlinux.io/"
-SRC_URI="bpr.bluepink.ro/~rogentos/argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
+SRC_URI="http://bpr.bluepink.ro/~rogentos/argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz
+	mirror://argent/${CATEGORY}/${PN}/${PN}-${PVR}.tar.xz"
 
 LICENSE="CCPL-Attribution-ShareAlike-3.0"
 SLOT="0"
@@ -21,14 +22,14 @@ S="${WORKDIR}/${PN}"
 
 src_install() {
 	# Fbsplash theme
-	cd "${S}"/fbsplash || die
-	dodir /etc/splash/argent
-	cp -r "${S}"/fbsplash/argent/* "${D}"/etc/splash/argent
+	#cd "${S}"/fbsplash || die
+	#dodir /etc/splash/argent
+	#cp -r "${S}"/fbsplash/argent/* "${D}"/etc/splash/argent
 
 	# Cursors
-	cd "${S}"/mouse/entis/cursors || die
-	dodir /usr/share/cursors/xorg-x11/entis/cursors
-	insinto /usr/share/cursors/xorg-x11/entis/cursors
+	cd "${S}"/mouse/RezoBlue/cursors || die
+	dodir /usr/share/cursors/xorg-x11/RezoBlue/cursors
+	insinto /usr/share/cursors/xorg-x11/RezoBlue/cursors
 	doins -r ./
 
 	# Wallpaper
@@ -42,7 +43,7 @@ src_install() {
 	insinto /usr/share/plymouth
 	doins bizcom.png
 	insinto /usr/share/plymouth/themes
-	doins -r argent
+	doins -r themes/argent
 }
 
 pkg_postinst() {
