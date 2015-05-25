@@ -25,5 +25,5 @@ K_MKIMAGE_KERNEL_ADDRESS="0x80008000"
 inherit argent-kernel
 
 KEYWORDS="~amd64 ~x86"
-DESCRIPTION="Official Kogaion Linux Standard kernel image"
+DESCRIPTION="Official Argent Linux Standard kernel image"
 RESTRICT="mirror"
