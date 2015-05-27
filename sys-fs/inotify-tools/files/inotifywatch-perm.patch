@@ -1,5 +1,5 @@
 --- src/inotifywatch.c_new	2015-05-27 09:13:04.917923981 +0300
-+++ src/inotifywatch.c	2015-05-27 11:22:25.817784998 +0300
++++ src/inotifywatch.c	2015-05-27 12:44:18.428697023 +0300
 @@ -192,6 +192,7 @@
  	inotifytools_initialize_stats();
  	// Now wait till we get event
@@ -8,7 +8,7 @@
  	char * moved_from = 0;
  
  	do {
-@@ -230,6 +231,26 @@
+@@ -230,6 +231,30 @@
  				           inotifytools_filename_from_wd( event->wd ),
  				           event->name );
  
@@ -18,7 +18,11 @@
 +					//printf("Error, does not exist, it was probably deleted\n");
 +					printf("Mode:                     %lo (octal)\n",(unsigned long) sb.st_mode);
 +                                } else {
-+ 					printf("File named %s has been created\n", new_file);
++ 					if ( isdir(new_file)) {
++						printf("Directory named %s has been created\n", new_file);
++					} else {
++						printf("File named %s has been created\n", new_file);
++					}
 +					printf("I-node number:            %ld\n", (long) sb.st_ino);
 +					printf("Mode:                     %lo (octal)\n",(unsigned long) sb.st_mode);
 +					printf("Link count:               %ld\n", (long) sb.st_nlink);
