@@ -14,7 +14,7 @@ SLOT="0"
 DEPEND=""
 RDEPEND="app-admin/system-config-date
 	app-admin/system-config-users
-	>=app-misc/argent-live-2.1.1
+	>=app-misc/argent-live-1
 	>=app-misc/argent-version-1-r1
 	app-text/xmlto
 	dev-libs/elfutils
