@@ -19,7 +19,7 @@ KEYWORDS="~amd64 ~x86"
 IUSE="X"
 
 # python.eclass checks dev-lang/python[tk] dependency during build time
-# adding a dev-lang/python-tk dependency for Sabayon
+# adding a dev-lang/python-tk dependency for Argent
 DEPEND=""
 RDEPEND="${DEPEND}
 	>=dev-lang/python-tk-2.5

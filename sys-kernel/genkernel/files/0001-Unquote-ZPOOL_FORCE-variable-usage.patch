@@ -1,5 +1,5 @@
 From ceb1acd1ed72958895e40d131c0e6ee74464bb77 Mon Sep 17 00:00:00 2001
-From: Fabio Erculiani <lxnay@sabayon.org>
+From: Fabio Erculiani <lxnay@argentlinux.org>
 Date: Sun, 11 Nov 2012 10:13:03 +0100
 Subject: [PATCH] Unquote ${ZPOOL_FORCE} variable usage.
 

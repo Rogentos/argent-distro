@@ -183,7 +183,7 @@ inherit eutils multilib kernel-2 argent-artwork mount-boot linux-info
 detect_version
 detect_arch
 
-DESCRIPTION="Kogaion, Argent and ArgOS linux kernel functions and phases"
+DESCRIPTION="Argent linux kernel functions and phases"
 
 
 K_LONGTERM_URL_STR=""
@@ -198,8 +198,7 @@ if [ "${K_ARGKERNEL_PATCH_UPSTREAM_TARBALL}" = "1" ]; then
 	UNIPATCH_LIST="${UNIPATCH_LIST} ${DISTDIR}/${_patch_name}"
 	unset _patch_name
 elif [ -n "${K_ARGKERNEL_SELF_TARBALL_NAME}" ]; then
-	#SRC_URI="mirror://argent/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
-	SRC_URI="http://bpr.bluepink.ro/~argent/distro/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
+	SRC_URI="http://bpr.bluepink.ro/~rogentos/argent/${CATEGORY}/linux-${PVR}+${K_ARGKERNEL_SELF_TARBALL_NAME}.tar.${K_TARBALL_EXT}"
 else
 	SRC_URI="${KERNEL_URI}"
 fi
@@ -279,6 +278,8 @@ _is_kernel_lts() {
 	[ "${_ver}" = "3.2" ] && return 0
 	[ "${_ver}" = "3.4" ] && return 0
 	[ "${_ver}" = "3.10" ] && return 0
+	[ "${_ver}" = "3.12" ] && return 0
+	[ "${_ver}" = "3.14" ] && return 0
 	return 1
 }
 
@@ -514,9 +515,9 @@ _kernel_src_compile() {
 
 	cd "${S}" || die
 	local GKARGS=()
-	GKARGS+=( "--no-save-config" "--e2fsprogs" "--udev" )
-	use splash && GKARGS+=( "--splash=argent" )
-	use plymouth && GKARGS+=( "--plymouth" "--plymouth-theme=${PLYMOUTH_THEME}" )
+	GKARGS+=( "--no-menuconfig" "--no-save-config" "--e2fsprogs" "--udev" )
+	# use splash && GKARGS+=( "--splash=argent" ) #NO MORE fbsplash!!!
+	use plymouth && GKARGS+=( "--plymouth" "--plymouth-theme=${PLYMOUTH_THEME}" ) #reverted to use variable (check the eclass)
 	use dmraid && GKARGS+=( "--dmraid" )
 	use iscsi && GKARGS+=( "--iscsi" )
 	use mdadm && GKARGS+=( "--mdadm" )
@@ -783,8 +784,8 @@ argent-kernel_uimage_config() {
 	# 1. /boot/uImage symlink is broken (pkg_postrm)
 	# 2. /boot/uImage symlink doesn't exist (pkg_postinst)
 
-	if ! has_version app-admin/eselect-uimage; then
-		ewarn "app-admin/eselect-uimage not installed"
+	if ! has_version app-eselect/uimage; then
+		ewarn "app-eselect/uimage not installed"
 		ewarn "If you are using this tool, please install it"
 		return 0
 	fi
@@ -818,8 +819,8 @@ argent-kernel_bzimage_config() {
 	use x86 && kern_arch="x86"
 	use amd64 && kern_arch="x86_64"
 
-	if ! has_version app-admin/eselect-bzimage; then
-		ewarn "app-admin/eselect-bzimage not installed"
+	if ! has_version app-eselect/eselect-bzimage; then
+		ewarn "app-eselect/eselect-bzimage not installed"
 		ewarn "If you are using this tool, please install it"
 		return 0
 	fi
@@ -871,7 +872,7 @@ argent-kernel_pkg_postinst() {
 		fi
 
 		# Update kernel initramfs to match user customizations
-		update_argent_kernel_initramfs_splash
+		use splash && update_argent_kernel_initramfs_splash
 
 		# Add kernel to grub.conf
 		if use amd64 || use x86; then

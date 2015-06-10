@@ -105,9 +105,6 @@ pkg_setup() {
 
 ## Just install libgcc stuff
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	cd "${WORKDIR}/build"
 	S="${WORKDIR}"/build \
 		emake -j1 -C "${CTARGET}/libgcc" DESTDIR="${D}" install-shared || die

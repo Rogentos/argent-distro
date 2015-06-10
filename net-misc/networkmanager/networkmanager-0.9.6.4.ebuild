@@ -108,7 +108,7 @@ src_prepare() {
 	# https://bugzilla.gnome.org/show_bug.cgi?id=683932
 	epatch "${FILESDIR}/${PN}-0.9.6.0-daemon-signals.patch"
 
-	# Sabayon patch, require logger, avoid modemmanager or other plugins
+	# Argent patch, require logger, avoid modemmanager or other plugins
 	# output on VT
 	epatch "${FILESDIR}/${PN}-init-need-logger-2.patch"
 	# Restore Klink functionality
@@ -174,7 +174,7 @@ src_install() {
 	# /var/run/NetworkManager is used by some distros, but not by Gentoo
 	rmdir -v "${ED}/var/run/NetworkManager" || die "rmdir failed"
 
-	# Sabayon Live boot support, make possible to turn off networkmanager
+	# Argent Live boot support, make possible to turn off networkmanager
 	# See bug 2400
 	doinitd "${FILESDIR}/NetworkManager-setup"
 

@@ -55,7 +55,7 @@ src_prepare() {
 	epatch "${FILESDIR}"/${P}-keyerror.patch
 	epatch "${FILESDIR}"/${P}-hashlib.patch
 	epatch "${FILESDIR}"/${P}-css-support.patch
-	# Sabayon infrastructure requirement, make the
+	# Argent infrastructure requirement, make the
 	# .torrent file scraping recurse through all the
 	# allowed_dir subdirs
 	epatch "${FILESDIR}"/${P}-sabayon-parsedir-recursive.patch

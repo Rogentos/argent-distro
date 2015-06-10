@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Application
+
+Exec=xdg-open https://packages.argent.org
+Icon=argent-weblink
+
+Name=Sabayon Packages
+

@@ -1,10 +1,10 @@
-# Copyright 2004-2011 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="2"
 
-DESCRIPTION="Sabayon Linux Entropy/Portage failure (fooooon't install this)"
-HOMEPAGE="http://www.sabayon.org"
+DESCRIPTION="Argent Linux Entropy/Portage failure (fooooon't install this)"
+HOMEPAGE="http://www.argentlinux.org"
 SRC_URI=""
 
 RESTRICT="nomirror"

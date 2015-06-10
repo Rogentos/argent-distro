@@ -114,7 +114,7 @@ src_prepare() {
 	epatch "${FILESDIR}/input_keybindings.patch"
 	epatch "${FILESDIR}/lspci.patch"
 
-	# Use Sabayon branding
+	# Use Argent branding
 	cp "${FILESDIR}"/start-here.png data/theme/menu.png || die "Could not copy image."
 
 	# Gentoo uses /usr/$(get_libdir), not /usr/lib even for python

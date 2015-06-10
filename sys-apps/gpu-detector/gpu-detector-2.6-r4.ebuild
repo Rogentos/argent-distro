@@ -1,15 +1,16 @@
-# Copyright 2004-2010 Sabayon
+# Copyright 2004-2014 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 
-DESCRIPTION="Sabayon live tool for X.Org video driver configuration"
-HOMEPAGE="http://www.sabayon.org"
+DESCRIPTION="Argent live tool for X.Org video driver configuration"
+HOMEPAGE="http://www.argentlinux.org"
 SRC_URI=""
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="x86 amd64 ppc"
 IUSE="debug_grade_1 "
 
-RDEPEND=">=app-misc/sabayonlive-tools-1.6.0"
+RDEPEND=">=app-misc/rogentoslive-tools-1.6.0"
 DEPEND=""
 
 src_unpack () {

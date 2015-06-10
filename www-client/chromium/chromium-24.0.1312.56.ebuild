@@ -149,8 +149,8 @@ src_prepare() {
 	}
 	EOF
 
-	# Sabayon User-Agent patch
-	epatch "${FILESDIR}"/${PN}-sabayon-user-agent-23.0.x.patch
+	# Argent User-Agent patch
+	epatch "${FILESDIR}"/${PN}-argent-user-agent-23.0.x.patch
 
 	epatch_user
 

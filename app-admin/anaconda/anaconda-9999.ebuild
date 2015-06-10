@@ -1,4 +1,4 @@
-# Copyright 2004-2010 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,7 +6,7 @@ EAPI="3"
 
 if [ "${PV}" = "9999" ]; then
 	EGIT_COMMIT="master"
-	EGIT_REPO_URI="git://sabayon.org/projects/anaconda.git"
+	EGIT_REPO_URI="git://argentlinux.org/projects/anaconda.git"
 	MY_ECLASS="git-2"
 fi
 inherit flag-o-matic base python libtool autotools eutils ${MY_ECLASS}
@@ -18,16 +18,16 @@ SEPOL_VER="2.2"
 LSELINUX_VER="2.0.94"
 LSELINUX_SRC_URI="http://userspace.selinuxproject.org/releases/20100525/devel/libselinux-${LSELINUX_VER}.tar.gz"
 
-DESCRIPTION="Sabayon Redhat Anaconda Installer Port"
-HOMEPAGE="http://gitweb.sabayon.org/?p=anaconda.git;a=summary"
+DESCRIPTION="Argent Redhat Anaconda Installer Port"
+HOMEPAGE="http://gitweb.argentlinux.org/?p=anaconda.git;a=summary"
 if [ "${PV}" = "9999" ]; then
 	SRC_URI="${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"
 	KEYWORDS=""
 	S="${WORKDIR}"/${PN}-${PVR}
 else
-	SRC_URI="mirror://sabayon/${CATEGORY}/${PN}-sabayon-${PVR}.tar.bz2 ${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"
+	SRC_URI="mirror://argent/${CATEGORY}/${PN}-argent-${PVR}.tar.bz2 ${AUDIT_SRC_URI} ${LSELINUX_SRC_URI}"
 	KEYWORDS="~amd64 ~x86"
-	S="${WORKDIR}"/${PN}-sabayon-${PVR}
+	S="${WORKDIR}"/${PN}-argent-${PVR}
 fi
 AUDIT_S="${WORKDIR}/audit-${AUDIT_VER}"
 LSELINUX_S="${WORKDIR}/libselinux-${LSELINUX_VER}"

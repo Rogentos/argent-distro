@@ -46,7 +46,7 @@ unset i
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
 RDEPEND="
-	x11-themes/sabayon-artwork-grub
+	x11-themes/argent-artwork-grub
 	dev-libs/libisoburn
 	dev-libs/lzo
 	sys-boot/os-prober
@@ -265,7 +265,7 @@ src_install() {
 	insinto /etc/default
 	newins "${FILESDIR}"/grub2-default-1.99 grub
 	cat <<-EOF >> "${ED}"/lib*/grub/grub-mkconfig_lib
-	GRUB_DISTRIBUTOR="Sabayon"
+	GRUB_DISTRIBUTOR="Argent"
 EOF
 
 	# Install fonts setup hook
@@ -306,7 +306,7 @@ setup_boot_dir() {
 	fi
 
 	# TODO: drop from here before 2012-06
-	# install Sabayon splash here, cannot touch boot/grub inside
+	# install Argent splash here, cannot touch boot/grub inside
 	# src_install
 	cp "${ROOT}/usr/share/grub/default-splash.png" "${dir}/default-splash.png" || \
 		ewarn "cannot install default splash file!"

@@ -18,7 +18,7 @@ fi
 
 LICENSE="BSD-2"
 SLOT="0"
-IUSE="debug_grade_1 debug elibc_glibc ncurses pam selinux static-libs unicode kernel_linux kernel_FreeBSD"
+IUSE="debug elibc_glibc ncurses pam selinux static-libs unicode kernel_linux kernel_FreeBSD"
 
 RDEPEND="virtual/init
 	kernel_FreeBSD? ( || ( >=sys-freebsd/freebsd-ubin-9.0_rc sys-process/fuser-bsd ) )
@@ -51,7 +51,7 @@ make_args() {
 	if use selinux; then
 			MAKE_ARGS="${MAKE_ARGS} MKSELINUX=yes"
 	fi
-	export BRANDING="Sabayon ${brand}"
+	export BRANDING="Argent ${brand}"
 	if ! use static-libs; then
 			MAKE_ARGS="${MAKE_ARGS} MKSTATICLIBS=no"
 	fi
@@ -75,8 +75,8 @@ src_prepare() {
 	# Allow user patches to be applied without modifying the ebuild
 	epatch_user
 
-	# Sabayon custom config
-	epatch "${FILESDIR}/${PN}-sabayon-config.patch"
+	# Argent custom config
+	epatch "${FILESDIR}/${PN}-argent-config.patch"
 	epatch "${FILESDIR}/${PN}-enable-interactive-2.patch"
 	epatch "${FILESDIR}"/${PN}-0.5.3-disable_warns_until_migrated.patch
 	epatch "${FILESDIR}/${PN}-netmount-fix.patch"
@@ -105,9 +105,6 @@ set_config_yes_no() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	make_args
 	emake ${MAKE_ARGS} DESTDIR="${D}" install
 
@@ -144,7 +141,7 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/openrc.logrotate openrc
 
-	# Sabayon customization, do not bug user with annoying updates (for now)
+	# Argent customization, do not bug user with annoying updates (for now)
 	mv "${D}"/etc/conf.d/keymaps "${D}"/etc/conf.d/keymaps.example || \
 		die "cannot move keymaps"
 	mv "${D}"/etc/conf.d/hwclock "${D}"/etc/conf.d/hwclock.example || \
@@ -183,7 +180,7 @@ add_boot_init_mit_config() {
 }
 
 pkg_preinst() {
-	# Sabayon customization, still protect conf files from being removed
+	# Argent customization, still protect conf files from being removed
 	# as no longer owned by package
 	for conf_file in "${ROOT}/etc/conf.d/keymaps" "${ROOT}/etc/conf.d/hwclock"; do
 		if [ -e "${conf_file}" ]; then
@@ -367,7 +364,7 @@ migrate_from_baselayout_1() {
 pkg_postinst() {
 	local LIBDIR=$(get_libdir)
 
-	# Sabayon customization, do not bug user with tedious, useless config file updates
+	# Argent customization, do not bug user with tedious, useless config file updates
 	for conf_file in "${ROOT}/etc/conf.d/keymaps" "${ROOT}/etc/conf.d/hwclock"; do
 		if [ -e "${conf_file}.ebuild_preserved" ]; then
 			cp -p "${conf_file}.ebuild_preserved" "${conf_file}" # don't die

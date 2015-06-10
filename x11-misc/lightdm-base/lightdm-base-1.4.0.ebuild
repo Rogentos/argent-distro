@@ -34,7 +34,7 @@ DEPEND="${COMMON_DEPEND}
 	dev-util/intltool
 	sys-devel/gettext
 	virtual/pkgconfig"
-PDEPEND="app-admin/eselect-lightdm"
+PDEPEND="app-eselect/eselect-lightdm"
 
 DOCS=( NEWS )
 
@@ -59,7 +59,7 @@ src_configure() {
 	local _user
 	_user=${LIGHTDM_USER:=root}
 	# Let user know how lightdm is configured
-	einfo "Sabayon configuration"
+	einfo "Argent configuration"
 	einfo "Greeter user: ${_user}"
 
 	econf \

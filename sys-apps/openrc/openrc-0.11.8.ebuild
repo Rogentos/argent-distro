@@ -19,7 +19,7 @@ fi
 
 LICENSE="BSD-2"
 SLOT="0"
-IUSE="debug_grade_1 debug elibc_glibc ncurses pam newnet prefix selinux static-libs unicode
+IUSE="debug elibc_glibc ncurses pam newnet prefix selinux static-libs unicode
 	kernel_linux kernel_FreeBSD"
 
 RDEPEND="virtual/init
@@ -48,13 +48,13 @@ src_prepare() {
 	# Allow user patches to be applied without modifying the ebuild
 	epatch_user
 
-	# Sabayon custom config
-	epatch "${FILESDIR}/${PN}-sabayon-config-2.patch"
+	# Argent custom config
+	epatch "${FILESDIR}/${PN}-argent-config-2.patch"
 	epatch "${FILESDIR}"/${PN}-0.5.3-disable_warns_until_migrated.patch
 	epatch "${FILESDIR}/${PN}-netmount-fix.patch"
 	epatch "${FILESDIR}/${PN}-0.6.1-fix-clockskew-error-handling.patch"
 	
-	# Sabayon bug fixes
+	# Argent bug fixes
 	epatch "${FILESDIR}/${PN}-0.9.9.3-do-not-print-error-if-tmplog-cannot-be-read.patch"
 }
 
@@ -76,7 +76,7 @@ src_compile() {
 	if use selinux; then
 			MAKE_ARGS="${MAKE_ARGS} MKSELINUX=yes"
 	fi
-	export BRANDING="Sabayon ${brand}"
+	export BRANDING="Argent ${brand}"
 	if ! use static-libs; then
 			MAKE_ARGS="${MAKE_ARGS} MKSTATICLIBS=no"
 	fi
@@ -104,9 +104,6 @@ set_config_yes_no() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	emake ${MAKE_ARGS} DESTDIR="${D}" install
 
 	# move the shared libs back to /usr so ldscript can install
@@ -145,7 +142,7 @@ src_install() {
 	insinto /etc/logrotate.d
 	newins "${FILESDIR}"/openrc.logrotate openrc
 
-	# Sabayon customization, do not bug user with annoying updates (for now)
+	# Argent customization, do not bug user with annoying updates (for now)
 	mv "${ED}"/etc/conf.d/keymaps "${ED}"/etc/conf.d/keymaps.example || \
 		die "cannot move keymaps"
 	mv "${ED}"/etc/conf.d/hwclock "${ED}"/etc/conf.d/hwclock.example || \
@@ -185,7 +182,7 @@ add_boot_init_mit_config() {
 
 pkg_preinst() {
 	local conf_file
-	# Sabayon customization, still protect conf files from being removed
+	# Argent customization, still protect conf files from being removed
 	# as no longer owned by package
 	for conf_file in "${EROOT}/etc/conf.d/keymaps" "${EROOT}/etc/conf.d/hwclock"; do
 		if [ -e "${conf_file}" ]; then
@@ -201,7 +198,7 @@ pkg_preinst() {
 	# too late to prevent that.  this behavior also lets us keep the
 	# file in the CONTENTS for binary packages.
 	[[ -e "${EROOT}"etc/conf.d/net ]] && \
-		cp "${EROOT}"etc/conf.d/net "${ED}"/etc/conf.d/
+		cp -d "${EROOT}"etc/conf.d/net "${ED}"/etc/conf.d/
 
 	# avoid default thrashing in conf.d files when possible #295406
 	if [[ -e "${EROOT}"etc/conf.d/hostname ]] ; then
@@ -389,7 +386,7 @@ migrate_from_baselayout_1() {
 
 pkg_postinst() {
 	local conf_file
-	# Sabayon customization, do not bug user with tedious, useless config file updates
+	# Argent customization, do not bug user with tedious, useless config file updates
 	for conf_file in "${EROOT}/etc/conf.d/keymaps" "${EROOT}/etc/conf.d/hwclock"; do
 		if [ -e "${conf_file}.ebuild_preserved" ]; then
 			cp -p "${conf_file}.ebuild_preserved" "${conf_file}" # don't die

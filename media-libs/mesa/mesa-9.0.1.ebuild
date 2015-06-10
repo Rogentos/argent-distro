@@ -78,13 +78,13 @@ LIBDRM_DEPSTRING=">=x11-libs/libdrm-2.4.39"
 # keep correct libdrm and dri2proto dep
 # keep blocks in rdepend for binpkg
 # gtest file collision bug #411825
-# ~virtual/glu-9.0 is as per Sabayon bug #3848
+# ~virtual/glu-9.0 is as per Argent bug #3848
 RDEPEND="~virtual/glu-9.0
 	!<x11-base/xorg-server-1.7
 	!<=x11-proto/xf86driproto-2.0.3
-	classic? ( app-admin/eselect-mesa )
-	gallium? ( app-admin/eselect-mesa )
-	>=app-admin/eselect-opengl-1.2.6
+	classic? ( app-eselect/eselect-mesa )
+	gallium? ( app-eselect/eselect-mesa )
+	>=app-eselect/eselect-opengl-1.2.6
 	dev-libs/expat
 	gbm? (
 		virtual/udev

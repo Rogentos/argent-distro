@@ -20,7 +20,7 @@ HOMEPAGE="http://www.gentoo.org/proj/en/base/openrc/"
 
 LICENSE="BSD-2"
 SLOT="0"
-IUSE="debug_grade_1 debug elibc_glibc ncurses pam selinux unicode kernel_linux kernel_FreeBSD"
+IUSE="debug elibc_glibc ncurses pam selinux unicode kernel_linux kernel_FreeBSD"
 
 RDEPEND="virtual/init
 	kernel_FreeBSD? ( sys-process/fuser-bsd )
@@ -51,7 +51,7 @@ make_args() {
 	if use selinux; then
 			MAKE_ARGS="${MAKE_ARGS} MKSELINUX=yes"
 	fi
-	export BRANDING="Sabayon ${brand}"
+	export BRANDING="Argent ${brand}"
 }
 
 pkg_setup() {
@@ -73,8 +73,8 @@ src_unpack() {
 	# Allow user patches to be applied without modifying the ebuild
 	epatch_user
 
-	# Sabayon custom config
-	epatch "${FILESDIR}/${PN}-sabayon-config.patch"
+	# Argent custom config
+	epatch "${FILESDIR}/${PN}-argent-config.patch"
 	epatch "${FILESDIR}/${PN}-enable-interactive.patch"
 	epatch "${FILESDIR}"/${PN}-0.5.3-disable_warns_until_migrated.patch
 	epatch "${FILESDIR}/${PN}-netmount-fix.patch"
@@ -107,9 +107,6 @@ set_config_yes_no() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	make_args
 	emake ${MAKE_ARGS} DESTDIR="${D}" install || die
 

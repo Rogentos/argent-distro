@@ -1,0 +1,41 @@
+--- src/inotifywatch.c_new	2015-05-27 09:13:04.917923981 +0300
++++ src/inotifywatch.c	2015-05-27 12:44:18.428697023 +0300
+@@ -192,6 +192,7 @@
+ 	inotifytools_initialize_stats();
+ 	// Now wait till we get event
+ 	struct inotify_event * event;
++	struct stat sb;
+ 	char * moved_from = 0;
+ 
+ 	do {
+@@ -230,6 +231,30 @@
+ 				           inotifytools_filename_from_wd( event->wd ),
+ 				           event->name );
+ 
++                                if (stat(new_file, &sb) == -1) {
++                                        //perror("stat");
++                                        //exit(EXIT_FAILURE);
++					//printf("Error, does not exist, it was probably deleted\n");
++					printf("Mode:                     %lo (octal)\n",(unsigned long) sb.st_mode);
++                                } else {
++ 					if ( isdir(new_file)) {
++						printf("Directory named %s has been created\n", new_file);
++					} else {
++						printf("File named %s has been created\n", new_file);
++					}
++					printf("I-node number:            %ld\n", (long) sb.st_ino);
++					printf("Mode:                     %lo (octal)\n",(unsigned long) sb.st_mode);
++					printf("Link count:               %ld\n", (long) sb.st_nlink);
++					printf("Ownership:                UID=%ld   GID=%ld\n", (long) sb.st_uid, (long) sb.st_gid);
++					printf("Preferred I/O block size: %ld bytes\n",(long) sb.st_blksize);
++					printf("File size:                %lld bytes\n",(long long) sb.st_size);
++					printf("Blocks allocated:         %lld\n",(long long) sb.st_blocks);
++					printf("Last status change:       %d\n", ctime(&sb.st_ctime));
++					printf("Last file access:         %d\n", ctime(&sb.st_atime)); 	//bucata asta e pentru 
++					printf("Last file modification:   %d\n", ctime(&sb.st_mtime));	//fisiere existente
++					printf("\n");
++                                }
++
+ 				if ( isdir(new_file) &&
+ 				    !inotifytools_watch_recursively( new_file, events ) ) {
+ 					fprintf( stderr, "Couldn't watch new directory %s: %s\n",

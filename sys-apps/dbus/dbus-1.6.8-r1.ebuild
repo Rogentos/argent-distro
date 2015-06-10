@@ -57,7 +57,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Sabayon specific, riduce dbus default timeout to 10 seconds, from 25
+	# Argent specific, riduce dbus default timeout to 10 seconds, from 25
 	# This is also a workaround against broken GNOME apps (namely: gdm) that
 	# need to be fixed.
 	epatch "${FILESDIR}/reduce-dbus-default-timeout.patch"

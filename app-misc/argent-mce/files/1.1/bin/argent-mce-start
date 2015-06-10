@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# setup
+myxinitrc="/usr/bin/argent-mce-session"
+myuser="argentmce"
+mcepid="/var/argentmce/.mcepid"
+
+# make sure samba is started
+[[ -f "/etc/init.d/samba" ]] && /etc/init.d/samba start &> /dev/null
+
+# Kill previous instance running since
+# /etc/init.d/xdm does not support PIDFILE for
+# custom DISPLAYMANAGER
+[[ -f "$mcepid" ]] && kill $(cat $mcepid) &> /dev/null
+
+# spawn!
+echo $$ > /var/run/argent-mce-start.pid
+su - ${myuser} -c "source /etc/profile && /usr/bin/argent-mce-startx ${myxinitrc} &> /dev/null" &

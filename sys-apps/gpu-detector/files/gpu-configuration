@@ -16,7 +16,7 @@ xorgfile = "/etc/X11/xorg.conf"
 lspci = '/usr/sbin/lspci'
 nvidia_settings = "/usr/share/applications/nvidia-settings.desktop"
 
-device_id_prefix = "SabayonVga"
+device_id_prefix = "ArgentVga"
 nvidia_option_prefix = "--nvidia-opt--"
 screen_layout_sections = []
 device_sections = []
@@ -390,7 +390,7 @@ Section "Device"
     # UseEvents is causing segmentation faults with
     # NVIDIA 6xxx, 7xxx and >=275.xx.xx drivers
     #Option "UseEvents" "True"
-    Option "LogoPath" "/usr/share/backgrounds/sabayonlinux-nvidia.png"
+    Option "LogoPath" "/usr/share/backgrounds/argentlinux-nvidia.png"
 
 EndSection
     """ % (device_id_prefix, cardnum, xdriver, bus_id_mark, bus_id,))

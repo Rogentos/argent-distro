@@ -359,7 +359,7 @@ src_install()
 		sed -i -e "/ExecStart/s:/lib/systemd:$(systemd_get_utildir):" {} +
 
 	# Basically this is the only difference between
-	# Sabayon udev and Gentoo one.
+	# Argent udev and Gentoo one.
 	# I don't know why Gentoo dropped the whole
 	# blacklist thing.
 	insinto /etc/modprobe.d

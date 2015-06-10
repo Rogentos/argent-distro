@@ -1,4 +1,4 @@
-# Copyright 2004-2010 Sabayon
+# Copyright 2004-2014 Sabayon
 # Distributed under the terms of the GNU General Public License v2
 # $
 
@@ -14,8 +14,8 @@ SLOT="0"
 DEPEND=""
 RDEPEND="app-admin/system-config-date
 	app-admin/system-config-users
-	>=app-misc/sabayonlive-tools-2.1.1
-	>=app-misc/sabayon-version-5-r1
+	>=app-misc/argent-live-1
+	>=app-misc/argent-version-1
 	app-text/xmlto
 	dev-libs/elfutils
 	dev-libs/libnl

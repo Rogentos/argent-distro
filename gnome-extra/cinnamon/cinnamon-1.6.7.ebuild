@@ -132,7 +132,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	# Use Sabayon branding
+	# Use Argent branding
 	cp "${FILESDIR}"/start-here.png data/theme/menu.png || die "Could not copy image."
 
 	# Fix automagic gnome-bluetooth dep, bug #398145

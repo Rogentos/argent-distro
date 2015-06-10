@@ -3,7 +3,7 @@
 # /boot/grub/grub.cfg.
 
 GRUB_DEFAULT=saved
-GRUB_DISTRIBUTOR="Sabayon"
+GRUB_DISTRIBUTOR="Argent"
 GRUB_HIDDEN_TIMEOUT=0
 GRUB_HIDDEN_TIMEOUT_QUIET=true
 GRUB_TIMEOUT=5
@@ -41,9 +41,9 @@ GRUB_COLOR_NORMAL="white/black"
 # Boot menu option "highlight" color
 GRUB_COLOR_HIGHLIGHT="magenta/black"
 
-if [ -f "/etc/default/sabayon-grub" ]; then
-	# this file is placed by the Sabayon Installer and contains
+if [ -f "/etc/default/argent-grub" ]; then
+	# this file is placed by the Argent Installer and contains
 	# custom GRUB_CMDLINE_LINUX parameters created at install
 	# time.
-	. /etc/default/sabayon-grub
+	. /etc/default/argent-grub
 fi

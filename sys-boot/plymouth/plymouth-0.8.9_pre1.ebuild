@@ -32,7 +32,7 @@ DEPEND="${CDEPEND}
 "
 RDEPEND="${CDEPEND}
 	virtual/udev
-	>=x11-themes/sabayon-artwork-core-11-r3
+	>=x11-themes/argent-artwork-core-11-r3
 "
 
 DOC_CONTENTS="
@@ -41,8 +41,8 @@ DOC_CONTENTS="
 "
 
 src_prepare() {
-	# Sabayon: setup our default settings
-	epatch "${FILESDIR}/${PN}-sabayon-defaults.patch"
+	# Argent: setup our default settings
+	epatch "${FILESDIR}/${PN}-argent-defaults.patch"
 
 	epatch_user
 
@@ -67,7 +67,7 @@ src_configure() {
 src_install() {
 	autotools-utils_src_install
 
-	# Sabayon: provided by sabayon-artwork-core
+	# Argent: provided by argent-artwork-core
 	rm "${D}/usr/share/plymouth/bizcom.png"
 
 	# Install compatibility symlinks as some rdeps hardcode the paths

@@ -199,7 +199,7 @@ src_install() {
 	echo 'XDG_DATA_DIRS="/usr/share/gdm"' > 99xdg-gdm
 	doenvd 99xdg-gdm
 
-	# Sabayon: install our own script to set the gdm session via dbus
+	# Argent: install our own script to set the gdm session via dbus
 	# AccountServices interface. This is useful for live booting to select
 	# xbmc or fluxbox.
 	exeinto /usr/libexec
@@ -236,6 +236,6 @@ pkg_postinst() {
 		ewarn "${PN} needs Systemd to be *running* for working"
 		ewarn "properly. Please follow the this guide to migrate:"
 		ewarn "http://wiki.gentoo.org/wiki/Systemd"
-		ewarn "https://wiki.sabayon.org/index.php?title=En:HOWTO:_systemd"
+		ewarn "https://wiki.argentlinux.org/index.php?title=En:HOWTO:_systemd"
 	fi
 }

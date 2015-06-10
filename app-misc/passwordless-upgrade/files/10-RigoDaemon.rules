@@ -1,6 +1,6 @@
 /* Allow users in the entropy group to launch system upgrades */
 polkit.addRule(function(action, subject) {
-    if (action.id == "org.sabayon.RigoDaemon.upgrade" &&
+    if (action.id == "org.argent.RigoDaemon.upgrade" &&
         subject.isInGroup("entropy")) {
         return polkit.Result.YES;
     }
