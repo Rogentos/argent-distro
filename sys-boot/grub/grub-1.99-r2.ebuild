@@ -25,7 +25,7 @@ HOMEPAGE="http://www.gnu.org/software/grub/"
 LICENSE="GPL-3"
 SLOT="2"
 [[ ${PV} != "9999" ]] && KEYWORDS="~amd64 ~x86 ~mips ~ppc ~ppc64"
-IUSE="debug_grade_1 custom-cflags debug +device-mapper nls static sdl +truetype"
+IUSE="custom-cflags debug +device-mapper nls static sdl +truetype"
 
 GRUB_PLATFORMS="coreboot efi-32 efi-64 emu ieee1275 multiboot pc yeeloong"
 # everywhere:
@@ -158,9 +158,6 @@ grub_src_compile() {
 }
 
 grub_src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	default_src_install
 }
 
@@ -227,9 +224,6 @@ src_compile() {
 }
 
 src_install() {
-     if use debug_grade_1 ; then
-   set -ex
-       fi
 	local i
 
 	for i in ${GRUB_ENABLED_PLATFORMS}; do
@@ -265,7 +259,7 @@ src_install() {
 	insinto /etc/default
 	newins "${FILESDIR}"/grub2-default-1.99 grub
 	cat <<-EOF >> "${ED}"/lib*/grub/grub-mkconfig_lib
-	GRUB_DISTRIBUTOR="Argent"
+	GRUB_DISTRIBUTOR="Rogentos"
 EOF
 
 	# Install fonts setup hook
@@ -306,7 +300,7 @@ setup_boot_dir() {
 	fi
 
 	# TODO: drop from here before 2012-06
-	# install Argent splash here, cannot touch boot/grub inside
+	# install Sabayon splash here, cannot touch boot/grub inside
 	# src_install
 	cp "${ROOT}/usr/share/grub/default-splash.png" "${dir}/default-splash.png" || \
 		ewarn "cannot install default splash file!"

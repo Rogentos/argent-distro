@@ -15,7 +15,7 @@ if [[ ${PV} != 9999 ]]; then
 		SRC_URI="mirror://gnu/${PN}/${MY_P}.tar.xz
 			mirror://gentoo/${MY_P}.tar.xz"
 	fi
-	KEYWORDS="amd64 ~x86"
+	KEYWORDS="~amd64 ~x86"
 	S=${WORKDIR}/${MY_P}
 	PATCHES=(
 		"${FILESDIR}"/${PN}-1.99-vga-deprecated.patch

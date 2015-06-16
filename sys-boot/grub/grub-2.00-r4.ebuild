@@ -22,7 +22,7 @@ if [[ ${PV} != 9999 ]]; then
 		# vga= not yet deprecated for us
 		"${FILESDIR}"/${PN}-2.00-vga-deprecated-not-yet.patch
 		"${FILESDIR}"/${PN}-1.99-disable-floppies.patch
-		# Genkernel doesn`t support "single" for rescue mode
+		# Genkernel doesn't support "single" for rescue mode
 		# but rather init_opts=single
 		"${FILESDIR}"/${PN}-2.00-genkernel-initramfs-single.patch
 		# Down with SecureBoot
@@ -40,8 +40,6 @@ if [[ ${PV} != 9999 ]]; then
 		"${FILESDIR}/${P}-dmraid.patch" #430748
 		"${FILESDIR}/${P}-texinfo.patch"
 		"${FILESDIR}/${P}-os-prober-efi-system.patch" #477314
-		"${FILESDIR}/${P}-fix-locale-en.mo.gz-not-found-error-message.patch" #408599
-		"${FILESDIR}/101-freetype2_fix_mkfont.patch"
 	)
 else
 	inherit bzr
@@ -74,7 +72,7 @@ REQUIRED_USE="grub_platforms_qemu? ( truetype )
 
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
-# sbsigntool is Sabayon and Kogaion specific
+# sbsigntool is Kogaion specific
 RDEPEND="
 	app-crypt/sbsigntool
 	x11-themes/argent-artwork-grub
@@ -194,6 +192,7 @@ grub_configure() {
 		--disable-werror
 		--program-prefix=
 		--program-transform-name="s,grub,grub2,"
+		--with-grubdir=grub
 		--libdir="${EPREFIX}"/usr/lib
 		--htmldir="${EPREFIX}"/usr/share/doc/${PF}/html
 		$(use_enable debug mm-debug)
@@ -209,11 +208,10 @@ grub_configure() {
 		$(usex efiemu '' --disable-efiemu)
 	)
 
-	# Kogaion: keep --with-grubdir=grub to grub for backward compatibility
 	if use multislot; then
 		myeconfargs+=(
 			--program-transform-name="s,grub,grub2,"
-			--with-grubdir=grub
+			--with-grubdir=grub2
 		)
 	fi
 
