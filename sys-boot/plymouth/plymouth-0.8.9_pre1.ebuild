@@ -32,7 +32,7 @@ DEPEND="${CDEPEND}
 "
 RDEPEND="${CDEPEND}
 	virtual/udev
-	>=x11-themes/argent-artwork-core-11-r3
+	>=x11-themes/argent-artwork-core-1
 "
 
 DOC_CONTENTS="

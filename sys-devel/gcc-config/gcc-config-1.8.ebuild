@@ -21,7 +21,7 @@ DEPEND="
 src_unpack() {
 	unpacker_src_unpack
 	cd "${S}" || die
-	epatch "${FILESDIR}/${PN}-kogaion-base-gcc-support-2.patch"
+	epatch "${FILESDIR}/${PN}-argent-base-gcc-support-2.patch"
 	# systemd-only systems (Argent/Kogaion/Sabayon) support
 	if use systemd; then
 		epatch "${FILESDIR}/${PN}-systemd.patch"

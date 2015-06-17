@@ -50,7 +50,9 @@ REQUIRED_USE="grub_platforms_qemu? ( truetype )"
 
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
+# sbsigntool is Sabayon and Rogentos specific
 RDEPEND="
+	app-crypt/sbsigntool
 	x11-themes/argent-artwork-grub
 	app-arch/xz-utils
 	>=sys-libs/ncurses-5.2-r5
@@ -58,7 +60,7 @@ RDEPEND="
 		sdl? ( media-libs/libsdl )
 	)
 	device-mapper? ( >=sys-fs/lvm2-2.02.45 )
-	libzfs? ( sys-fs/zfs-userspace )
+	libzfs? ( sys-fs/zfs )
 	mount? ( sys-fs/fuse )
 	truetype? (
 		media-libs/freetype
@@ -84,7 +86,7 @@ DEPEND="${RDEPEND}
 "
 RDEPEND+="
 	grub_platforms_efi-32? ( sys-boot/efibootmgr )
-	grub_platforms_efi-64? ( sys-boot/efibootmgr )
+	grub_platforms_efi-64? ( app-crypt/shim-signed sys-boot/efibootmgr )
 "
 if [[ -n ${DO_AUTORECONF} ]] ; then
 	DEPEND+=" >=sys-devel/autogen-5.10"
@@ -175,7 +177,7 @@ grub_src_configure() {
 			;;
 	esac
 
-	# Rogentos: backward compatibility, do not change --with-grubdir
+	# Sabayon and Rogentos: backward compatibility, do not change --with-grubdir
 	ECONF_SOURCE="${S}" \
 	econf \
 		--htmldir="${EPREFIX}/usr/share/doc/${PF}/html" \
@@ -228,14 +230,19 @@ src_prepare() {
 	# Genkernel doesn't support "single" for rescue mode
 	# but rather init_opts=single
 	epatch "${FILESDIR}"/${PN}-2.00-genkernel-initramfs-single.patch
-
-	# Rogentos patch for customization
-	epatch "${FILESDIR}"/${P}-argent-patch.patch	
+	# Down with SecureBoot
+	epatch "${FILESDIR}"/${PN}-2.00-secureboot-user-sign-2.patch
 
 	if [[ ${PV} != 9999 ]]; then
 		epatch "${FILESDIR}/${P}-parallel-make.patch" #424231
 		epatch "${FILESDIR}/${P}-no-gets.patch" #424703
 		epatch "${FILESDIR}/${P}-config-quoting.patch" #426364
+		epatch "${FILESDIR}/${P}-tftp-endian.patch" # 438612
+		epatch "${FILESDIR}/${P}-hardcoded-awk.patch" #424137
+		epatch "${FILESDIR}/${P}-freebsd.patch" #442050
+		epatch "${FILESDIR}/${P}-compression.patch" #424527
+		epatch "${FILESDIR}/${P}-zfs-feature-flag-support.patch" #455358
+		epatch "${FILESDIR}/${P}-20_linux_xen.patch" #463992
 	fi
 
 	# fix texinfo file name, bug 416035
@@ -347,7 +354,7 @@ EOF
 }
 
 pkg_postinst() {
-	# install Sabayon splash here, cannot touch boot/grub inside
+	# install Rogentos splash here, cannot touch boot/grub inside
 	# src_install
 	cp "${ROOT}/usr/share/grub/default-splash.png" "${ROOT}boot/grub/default-splash.png" || \
 		ewarn "cannot install default splash file!"
