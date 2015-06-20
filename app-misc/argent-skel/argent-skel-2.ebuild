@@ -3,11 +3,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=4
+EAPI=5
+inherit eutils git-2 fdo-mime
+
 EGIT_COMMIT="${PVR}"
 EGIT_REPO_URI="git://github.com/Rogentos/arskel.git"
-
-inherit eutils git-2 fdo-mime
 
 DESCRIPTION="Argent Linux skel tree"
 HOMEPAGE="http://www.argentlinux.org"
@@ -15,7 +15,7 @@ LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
 IUSE=""
-RDEPEND="!<=app-misc/argentlinux-skel-3.5-r6"
+RDEPEND="!<=app-misc/argentlinux-skel-1"
 
 src_install () {
 	dodir /etc/xdg/menus
