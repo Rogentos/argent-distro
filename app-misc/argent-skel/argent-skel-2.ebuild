@@ -10,7 +10,7 @@ EGIT_COMMIT="${PVR}"
 EGIT_REPO_URI="git://github.com/Rogentos/arskel.git"
 
 DESCRIPTION="Argent Linux skel tree"
-HOMEPAGE="http://www.argentlinux.org"
+HOMEPAGE="http://www.argentlinux.io"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
