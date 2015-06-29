@@ -6,11 +6,10 @@
 EAPI=5
 inherit eutils git-2 fdo-mime
 
-EGIT_COMMIT="${PVR}"
 EGIT_REPO_URI="git://github.com/Rogentos/arskel.git"
 
 DESCRIPTION="Argent Linux skel tree"
-HOMEPAGE="http://www.argentlinux.org"
+HOMEPAGE="http://www.argentlinux.io"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~x86"
@@ -20,6 +19,7 @@ RDEPEND="!<=app-misc/argentlinux-skel-1"
 src_install () {
 	dodir /etc/xdg/menus
 	cp "${S}"/* "${D}"/etc/ -Ra
+	chown root:root "${D}"/etc/skel -R
 
 	# Argent Menu
 	dodir /usr/share/desktop-directories
