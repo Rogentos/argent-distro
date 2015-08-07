@@ -18,20 +18,20 @@
 # one than necessary.
 # The eclass does not define any phase function.
 
-# @ECLASS-VARIABLE: SAB_PATCHES_SRC
+# @ECLASS-VARIABLE: ARG_PATCHES_SRC
 # @DEFAULT_UNSET
 # @DESCRIPTION:
 # Array that contains URIs of patches to be added to SRC_URI. Mandatory!
 
-# @ECLASS-VARIABLE: SAB_PATCHES_SKIP
+# @ECLASS-VARIABLE: ARG_PATCHES_SKIP
 # @DESCRIPTION:
 # Array that contains patterns of patch names to be skipped.
 # It does not need to be a global variable.
 
 inherit eutils
 
-if [[ ${#SAB_PATCHES_SRC[@]} -eq 0 ]]; then
-	die "SAB_PATCHES_SRC is not set"
+if [[ ${#ARG_PATCHES_SRC[@]} -eq 0 ]]; then
+	die "ARG_PATCHES_SRC is not set"
 fi
 
 # @FUNCTION: arg-patches_update_SRC_URI
@@ -40,15 +40,15 @@ fi
 # occur later on.
 arg-patches_update_SRC_URI() {
 	local p
-	for p in "${SAB_PATCHES_SRC[@]}"; do
+	for p in "${ARG_PATCHES_SRC[@]}"; do
 		SRC_URI+=${SRC_URI:+ }${p}
 	done
 }
 
 # @FUNCTION: arg-patches_apply_all
 # @DESCRIPTION:
-# Applies patches specified using SAB_PATCHES_SRC, skipping patches
-# with names matched in SAB_PATCHES_SKIP.
+# Applies patches specified using ARG_PATCHES_SRC, skipping patches
+# with names matched in ARG_PATCHES_SKIP.
 # Two possible cases are supported.
 # 1. A patch path which is a tarball (assumed file name: *.tar*).
 # Such a tarball must unpack to ${WORKDIR}/<tarball name without *.tar*>
@@ -58,7 +58,7 @@ arg-patches_update_SRC_URI() {
 # it is not skipped).
 arg-patches_apply_all() {
 	local p
-	for p in "${SAB_PATCHES_SRC[@]}"; do
+	for p in "${ARG_PATCHES_SRC[@]}"; do
 		if [[ ${p} = *.tar* ]]; then
 			local dir=${p##*/}
 			dir=${dir%.tar*}
@@ -86,12 +86,12 @@ arg-patches_apply() {
 
 # @FUNCTION: arg-patches_unpack
 # @DESCRIPTION:
-# Unpack every file provided in SAB_PATCHES_SRC.
+# Unpack every file provided in ARG_PATCHES_SRC.
 arg-patches_unpack() {
 	local p
 	pushd "${WORKDIR}" > /dev/null || die
 
-	for p in "${SAB_PATCHES_SRC[@]}"; do
+	for p in "${ARG_PATCHES_SRC[@]}"; do
 		local name=${p##*/}
 		unpack "${name}"
 	done
@@ -132,7 +132,7 @@ _arg-patches_apply_nonskipped() {
 # @FUNCTION: _arg-patches_apply_from_dir
 # @INTERNAL
 # @DESCRIPTION:
-# Apply all patches from a directory in order. Obeys SAB_PATCHES_SKIP.
+# Apply all patches from a directory in order. Obeys ARG_PATCHES_SKIP.
 _arg-patches_apply_from_dir() {
 	local dir=$1
 	local order_file=${dir}/order
@@ -164,7 +164,7 @@ _arg-patches_apply_from_dir() {
 _arg-patches_is_skipped() {
 	local arg=$1
 	local p
-	for p in "${SAB_PATCHES_SKIP[@]}"; do
+	for p in "${ARG_PATCHES_SKIP[@]}"; do
 		[[ ${arg} = ${p} ]] && return 0
 	done
 	return 1
