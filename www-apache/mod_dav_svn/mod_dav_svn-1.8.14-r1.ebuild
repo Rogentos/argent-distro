@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -10,13 +10,15 @@ MY_SVN_PN="subversion"
 MY_SVN_P="${MY_SVN_PN}-${PV}"
 MY_SVN_PF="${MY_SVN_PN}-${PVR}"
 
-ARG_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.5-Gentoo-patches.tar.gz )
+ARG_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.9-Gentoo-patches.tar.gz )
 inherit arg-patches autotools db-use depend.apache flag-o-matic libtool multilib eutils
 
 DESCRIPTION="Subversion WebDAV support"
 HOMEPAGE="http://subversion.apache.org/"
-SRC_URI+=" mirror://apache/${MY_SVN_PN}/${MY_SVN_P}.tar.bz2"
+SRC_URI="mirror://apache/${MY_SVN_PN}/${MY_SVN_P}.tar.bz2"
 S="${WORKDIR}/${MY_SVN_P}"
+
+arg-patches_update_SRC_URI
 
 LICENSE="Subversion"
 SLOT="0"
@@ -46,9 +48,10 @@ MY_CDEPS="
 	>=dev-libs/apr-1.3:1
 	>=dev-libs/apr-util-1.3:1
 	dev-libs/expat
+	sys-apps/file
 	sys-libs/zlib
 	app-arch/bzip2
-	berkdb? ( >=sys-libs/db-4.0.14 )
+	berkdb? ( >=sys-libs/db-4.0.14:= )
 "
 
 DEPEND="${MY_CDEPS}
@@ -68,13 +71,13 @@ RDEPEND="${MY_CDEPS}
 need_apache # was: want_apache
 
 pkg_setup() {
-	if use berkdb; then
+	if use berkdb ; then
 		local apu_bdb_version="$(${EPREFIX}/usr/bin/apu-1-config --includes \
 			| grep -Eoe '-I${EPREFIX}/usr/include/db[[:digit:]]\.[[:digit:]]' \
 			| sed 's:.*b::')"
 		einfo
-		if [[ -z "${SVN_BDB_VERSION}" ]]; then
-			if [[ -n "${apu_bdb_version}" ]]; then
+		if [[ -z "${SVN_BDB_VERSION}" ]] ; then
+			if [[ -n "${apu_bdb_version}" ]] ; then
 				SVN_BDB_VERSION="${apu_bdb_version}"
 				einfo "Matching db version to apr-util"
 			else
@@ -96,7 +99,7 @@ pkg_setup() {
 
 	# depend.apache_pkg_setup
 
-	if use debug; then
+	if use debug ; then
 		append-cppflags -DSVN_DEBUG -DAP_DEBUG
 	fi
 
@@ -108,6 +111,7 @@ pkg_setup() {
 }
 
 src_prepare() {
+	local ARG_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
 	arg-patches_apply_all
 	epatch_user
 
@@ -169,9 +173,10 @@ src_configure() {
 	#check newer versions, if this is still/again needed
 	myconf+=" --disable-disallowing-of-undefined-references"
 
-	#force ruby-1.8 for bug 399105
-	#allow overriding Python include directory
-	ac_cv_path_RUBY="${EPREFIX}"/usr/bin/ruby19 ac_cv_path_RDOC="${EPREFIX}"/usr/bin/rdoc19 \
+	# force ruby-2.1
+	# allow overriding Python include directory
+	#ac_cv_path_RUBY=$(usex ruby "${EPREFIX}/usr/bin/ruby21" "none")
+	#ac_cv_path_RDOC=$(usex ruby "${EPREFIX}/usr/bin/rdoc21" "none")
 	ac_cv_python_includes='-I$(PYTHON_INCLUDEDIR)' \
 	econf --libdir="${EPREFIX}/usr/$(get_libdir)" \
 		--with-apache-libexecdir \
@@ -211,17 +216,17 @@ src_install() {
 
 pkg_preinst() {
 	# Compare versions of Berkeley DB, bug 122877.
-	if use berkdb && [[ -f "${EROOT}usr/bin/svn" ]]; then
+	if use berkdb && [[ -f "${EROOT}usr/bin/svn" ]] ; then
 		OLD_BDB_VERSION="$(scanelf -nq "${EROOT}usr/$(get_libdir)/libsvn_subr-1$(get_libname 0)" | grep -Eo "libdb-[[:digit:]]+\.[[:digit:]]+" | sed -e "s/libdb-\(.*\)/\1/")"
 		NEW_BDB_VERSION="$(scanelf -nq "${ED}usr/$(get_libdir)/libsvn_subr-1$(get_libname 0)" | grep -Eo "libdb-[[:digit:]]+\.[[:digit:]]+" | sed -e "s/libdb-\(.*\)/\1/")"
-		if [[ "${OLD_BDB_VERSION}" != "${NEW_BDB_VERSION}" ]]; then
+		if [[ "${OLD_BDB_VERSION}" != "${NEW_BDB_VERSION}" ]] ; then
 			CHANGED_BDB_VERSION="1"
 		fi
 	fi
 }
 
 pkg_postinst() {
-	if [[ -n "${CHANGED_BDB_VERSION}" ]]; then
+	if [[ -n "${CHANGED_BDB_VERSION}" ]] ; then
 		ewarn "You upgraded from an older version of Berkeley DB and may experience"
 		ewarn "problems with your repository. Run the following commands as root to fix it:"
 		ewarn "    db4_recover -h ${SVN_REPOS_LOC}/repos"
@@ -254,7 +259,7 @@ pkg_config() {
 	# Remember: Don't use ${EROOT}${SVN_REPOS_LOC} since ${SVN_REPOS_LOC}
 	# already has EPREFIX in it
 	einfo "Initializing the database in ${SVN_REPOS_LOC}..."
-	if [[ -e "${SVN_REPOS_LOC}/repos" ]]; then
+	if [[ -e "${SVN_REPOS_LOC}/repos" ]] ; then
 		echo "A Subversion repository already exists and I will not overwrite it."
 		echo "Delete \"${SVN_REPOS_LOC}/repos\" first if you're sure you want to have a clean version."
 	else

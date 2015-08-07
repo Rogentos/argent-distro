@@ -10,7 +10,7 @@ MY_SVN_PN="subversion"
 MY_SVN_P="${MY_SVN_PN}-${PV}"
 MY_SVN_PF="${MY_SVN_PN}-${PVR}"
 
-SAB_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.5-Gentoo-patches.tar.gz )
+ARG_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.5-Gentoo-patches.tar.gz )
 inherit arg-patches autotools db-use depend.apache flag-o-matic libtool multilib eutils
 
 DESCRIPTION="Subversion WebDAV support"
