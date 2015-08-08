@@ -10,8 +10,8 @@ PYTHON_COMPAT=( python2_{6,7} )
 [[ ${PV} == *9999 ]] && SCM="git-2"
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
 
-SAB_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-1.9.0_rc3-optional-cvs.patch.gz" )
-inherit sab-patches toolchain-funcs eutils multilib python-single-r1 ${SCM}
+ARG_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-1.9.0_rc3-optional-cvs.patch.gz" )
+inherit arg-patches toolchain-funcs eutils multilib python-single-r1 ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
 MY_PN="${PN/-cvs}"
@@ -120,7 +120,7 @@ src_unpack() {
 
 src_prepare() {
 	# bug #350330 - automagic CVS when we don't want it is bad.
-	sab-patches_apply_all
+	arg-patches_apply_all
 
 	epatch_user
 

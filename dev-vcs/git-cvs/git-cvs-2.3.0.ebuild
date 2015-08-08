@@ -11,8 +11,8 @@ PYTHON_COMPAT=( python2_{6,7} )
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
 EGIT_MASTER=pu
 
-SAB_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
-inherit sab-patches toolchain-funcs eutils multilib python-single-r1 ${SCM}
+ARG_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
+inherit arg-patches toolchain-funcs eutils multilib python-single-r1 ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
 MY_PN="${PN/-cvs}"
@@ -115,12 +115,12 @@ src_unpack() {
 		git-2_src_unpack
 	fi
 
-	sab-patches_unpack
+	arg-patches_unpack
 }
 
 src_prepare() {
 	# see the git ebuild for the list of patches
-	sab-patches_apply_all
+	arg-patches_apply_all
 
 	epatch_user
 

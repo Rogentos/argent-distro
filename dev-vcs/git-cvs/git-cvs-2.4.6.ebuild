@@ -6,12 +6,12 @@ EAPI=5
 
 GENTOO_DEPEND_ON_PERL=no
 
-PYTHON_COMPAT=( python2_{6,7} )
+PYTHON_COMPAT=( python2_7 )
 [[ ${PV} == *9999 ]] && SCM="git-2"
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
 EGIT_MASTER=pu
 
-ARG_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
+ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/distro/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
 inherit arg-patches toolchain-funcs eutils multilib python-single-r1 ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
@@ -26,7 +26,7 @@ if [[ ${PV} != *9999 ]]; then
 	SRC_URI_SUFFIX="xz"
 	SRC_URI_GOOG="http://git-core.googlecode.com/files"
 	SRC_URI_KORG="mirror://kernel/software/scm/git"
-	SRC_URI+=" ${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
+	SRC_URI="${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_GOOG}/${MY_PN}-manpages-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_PN}-manpages-${DOC_VER}.tar.${SRC_URI_SUFFIX}
@@ -36,6 +36,8 @@ if [[ ${PV} != *9999 ]]; then
 			)"
 	KEYWORDS="~amd64 ~x86"
 fi
+
+arg-patches_update_SRC_URI
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -47,8 +49,7 @@ RDEPEND="~dev-vcs/git-${PV}[-cvs,perl]
 	dev-perl/Authen-SASL
 	>=dev-vcs/cvsps-2.1:0 dev-perl/DBI dev-perl/DBD-SQLite
 	${PYTHON_DEPS}"
-DEPEND="app-arch/cpio
-	dev-lang/perl:=[-build(-)]
+DEPEND="dev-lang/perl:=[-build(-)]
 	doc? (
 		app-text/asciidoc
 		app-text/docbook2X
