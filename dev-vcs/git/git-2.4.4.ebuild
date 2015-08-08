@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -7,11 +7,12 @@ EAPI=5
 GENTOO_DEPEND_ON_PERL=no
 
 # bug #329479: git-remote-testgit is not multiple-version aware
-PYTHON_COMPAT=( python2_{6,7} )
+PYTHON_COMPAT=( python2_7 )
 [[ ${PV} == *9999 ]] && SCM="git-2"
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
+EGIT_MASTER=pu
 
-ARG_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-1.9.0_rc3-optional-cvs.patch.gz" )
+ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/distro/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
 inherit arg-patches toolchain-funcs eutils elisp-common perl-module bash-completion-r1 python-single-r1 systemd ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
@@ -22,10 +23,10 @@ DOC_VER=${MY_PV}
 DESCRIPTION="GIT - the stupid content tracker, the revision control system heavily used by the Linux kernel team"
 HOMEPAGE="http://www.git-scm.com/"
 if [[ ${PV} != *9999 ]]; then
-	SRC_URI_SUFFIX="gz"
+	SRC_URI_SUFFIX="xz"
 	SRC_URI_GOOG="http://git-core.googlecode.com/files"
 	SRC_URI_KORG="mirror://kernel/software/scm/git"
-	SRC_URI+=" ${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
+	SRC_URI="${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_GOOG}/${PN}-manpages-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${PN}-manpages-${DOC_VER}.tar.${SRC_URI_SUFFIX}
@@ -33,11 +34,10 @@ if [[ ${PV} != *9999 ]]; then
 			${SRC_URI_KORG}/${PN}-htmldocs-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_GOOG}/${PN}-htmldocs-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			)"
-	KEYWORDS="~amd64 ~x86"
-else
-	#SRC_URI=""
-	KEYWORDS=""
+	KEYWORDS="amd64 x86"
 fi
+
+arg-patches_update_SRC_URI
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -45,17 +45,17 @@ IUSE="+blksha1 +curl cgi doc emacs gnome-keyring +gpg gtk highlight +iconv media
 
 # Common to both DEPEND and RDEPEND
 CDEPEND="
-	dev-libs/openssl
+	dev-libs/openssl:0=
 	sys-libs/zlib
 	pcre? ( dev-libs/libpcre )
 	perl? ( dev-lang/perl:=[-build(-)] )
-	tk? ( dev-lang/tk )
+	tk? ( dev-lang/tk:= )
 	curl? (
 		net-misc/curl
 		webdav? ( dev-libs/expat )
 	)
 	emacs? ( virtual/emacs )
-	gnome-keyring? ( gnome-base/gnome-keyring )"
+	gnome-keyring? ( gnome-base/libgnome-keyring )"
 
 RDEPEND="${CDEPEND}
 	gpg? ( app-crypt/gnupg )
@@ -66,8 +66,8 @@ RDEPEND="${CDEPEND}
 	perl? ( dev-perl/Error
 			dev-perl/Net-SMTP-SSL
 			dev-perl/Authen-SASL
-			cgi? ( virtual/perl-CGI highlight? ( app-text/highlight ) )
-			cvs? ( >=dev-vcs/cvsps-2.1 dev-perl/DBI dev-perl/DBD-SQLite )
+			cgi? ( dev-perl/CGI highlight? ( app-text/highlight ) )
+			cvs? ( >=dev-vcs/cvsps-2.1:0 dev-perl/DBI dev-perl/DBD-SQLite )
 			subversion? ( dev-vcs/subversion[-dso,perl] dev-perl/libwww-perl dev-perl/TermReadKey )
 			)
 	python? ( gtk?
@@ -82,7 +82,6 @@ RDEPEND="${CDEPEND}
 #   .xml/docbook  --(docbook2texi.pl)--> .texi
 #   .texi         --(makeinfo)---------> .info
 DEPEND="${CDEPEND}
-	app-arch/cpio
 	doc? (
 		app-text/asciidoc
 		app-text/docbook2X
@@ -90,7 +89,7 @@ DEPEND="${CDEPEND}
 		app-text/xmlto
 	)
 	nls? ( sys-devel/gettext )
-	test? (	app-crypt/gnupg )"
+	test? (	app-crypt/gnupg	)"
 
 # Live ebuild builds man pages and HTML docs, additionally
 if [[ ${PV} == *9999 ]]; then
@@ -128,24 +127,24 @@ exportmakeopts() {
 	local myopts
 
 	if use blksha1 ; then
-		myopts="${myopts} BLK_SHA1=YesPlease"
+		myopts+=" BLK_SHA1=YesPlease"
 	elif use ppcsha1 ; then
-		myopts="${myopts} PPC_SHA1=YesPlease"
+		myopts+=" PPC_SHA1=YesPlease"
 	fi
 
 	if use curl ; then
-		use webdav || myopts="${myopts} NO_EXPAT=YesPlease"
+		use webdav || myopts+=" NO_EXPAT=YesPlease"
 	else
-		myopts="${myopts} NO_CURL=YesPlease"
+		myopts+=" NO_CURL=YesPlease"
 	fi
 
 	# broken assumptions, because of broken build system ...
-	myopts="${myopts} NO_FINK=YesPlease NO_DARWIN_PORTS=YesPlease"
-	myopts="${myopts} INSTALL=install TAR=tar"
-	myopts="${myopts} SHELL_PATH=${EPREFIX}/bin/sh"
-	myopts="${myopts} SANE_TOOL_PATH="
-	myopts="${myopts} OLD_ICONV="
-	myopts="${myopts} NO_EXTERNAL_GREP="
+	myopts+=" NO_FINK=YesPlease NO_DARWIN_PORTS=YesPlease"
+	myopts+=" INSTALL=install TAR=tar"
+	myopts+=" SHELL_PATH=${EPREFIX}/bin/sh"
+	myopts+=" SANE_TOOL_PATH="
+	myopts+=" OLD_ICONV="
+	myopts+=" NO_EXTERNAL_GREP="
 
 	# For svn-fe
 	extlibs="-lz -lssl ${S}/xdiff/lib.a $(usex threads -lpthread '')"
@@ -154,53 +153,53 @@ exportmakeopts() {
 	sed -i -e '/\/usr\/local/s/BASIC_/#BASIC_/' Makefile
 
 	use iconv \
-		|| myopts="${myopts} NO_ICONV=YesPlease"
+		|| myopts+=" NO_ICONV=YesPlease"
 	use nls \
-		|| myopts="${myopts} NO_GETTEXT=YesPlease"
+		|| myopts+=" NO_GETTEXT=YesPlease"
 	use tk \
-		|| myopts="${myopts} NO_TCLTK=YesPlease"
+		|| myopts+=" NO_TCLTK=YesPlease"
 	use pcre \
-		&& myopts="${myopts} USE_LIBPCRE=yes" \
-		&& extlibs="${extlibs} -lpcre"
+		&& myopts+=" USE_LIBPCRE=yes" \
+		&& extlibs+=" -lpcre"
 	use perl \
-		&& myopts="${myopts} INSTALLDIRS=vendor" \
-		|| myopts="${myopts} NO_PERL=YesPlease"
+		&& myopts+=" INSTALLDIRS=vendor" \
+		|| myopts+=" NO_PERL=YesPlease"
 	use python \
-		|| myopts="${myopts} NO_PYTHON=YesPlease"
+		|| myopts+=" NO_PYTHON=YesPlease"
 	use subversion \
-		|| myopts="${myopts} NO_SVN_TESTS=YesPlease"
+		|| myopts+=" NO_SVN_TESTS=YesPlease"
 	use threads \
-		&& myopts="${myopts} THREADED_DELTA_SEARCH=YesPlease" \
-		|| myopts="${myopts} NO_PTHREADS=YesPlease"
+		&& myopts+=" THREADED_DELTA_SEARCH=YesPlease" \
+		|| myopts+=" NO_PTHREADS=YesPlease"
 	use cvs \
-		|| myopts="${myopts} NO_CVS=YesPlease"
+		|| myopts+=" NO_CVS=YesPlease"
 # Disabled until ~m68k-mint can be keyworded again
 #	if [[ ${CHOST} == *-mint* ]] ; then
-#		myopts="${myopts} NO_MMAP=YesPlease"
-#		myopts="${myopts} NO_IPV6=YesPlease"
-#		myopts="${myopts} NO_STRLCPY=YesPlease"
-#		myopts="${myopts} NO_MEMMEM=YesPlease"
-#		myopts="${myopts} NO_MKDTEMP=YesPlease"
-#		myopts="${myopts} NO_MKSTEMPS=YesPlease"
+#		myopts+=" NO_MMAP=YesPlease"
+#		myopts+=" NO_IPV6=YesPlease"
+#		myopts+=" NO_STRLCPY=YesPlease"
+#		myopts+=" NO_MEMMEM=YesPlease"
+#		myopts+=" NO_MKDTEMP=YesPlease"
+#		myopts+=" NO_MKSTEMPS=YesPlease"
 #	fi
 	if [[ ${CHOST} == ia64-*-hpux* ]]; then
-		myopts="${myopts} NO_NSEC=YesPlease"
+		myopts+=" NO_NSEC=YesPlease"
 	fi
 	if [[ ${CHOST} == *-*-aix* ]]; then
-		myopts="${myopts} NO_FNMATCH_CASEFOLD=YesPlease"
+		myopts+=" NO_FNMATCH_CASEFOLD=YesPlease"
 	fi
 	if [[ ${CHOST} == *-solaris* ]]; then
-		myopts="${myopts} NEEDS_LIBICONV=YesPlease"
+		myopts+=" NEEDS_LIBICONV=YesPlease"
 	fi
 
 	has_version '>=app-text/asciidoc-8.0' \
-		&& myopts="${myopts} ASCIIDOC8=YesPlease"
-	myopts="${myopts} ASCIIDOC_NO_ROFF=YesPlease"
+		&& myopts+=" ASCIIDOC8=YesPlease"
+	myopts+=" ASCIIDOC_NO_ROFF=YesPlease"
 
 	# Bug 290465:
 	# builtin-fetch-pack.c:816: error: 'struct stat' has no member named 'st_mtim'
 	[[ "${CHOST}" == *-uclibc* ]] && \
-		myopts="${myopts} NO_NSEC=YesPlease"
+		myopts+=" NO_NSEC=YesPlease"
 
 	export MY_MAKEOPTS="${myopts}"
 	export EXTLIBS="${extlibs}"
@@ -220,20 +219,17 @@ src_unpack() {
 		cd "${S}"
 		#cp "${FILESDIR}"/GIT-VERSION-GEN .
 	fi
+
+	arg-patches_unpack
 }
 
 src_prepare() {
 	# bug #350330 - automagic CVS when we don't want it is bad.
 	# git-...-optional-cvs.patch
+
+	# git-...-mw-vendor.patch
+	# git-...-svn-fe-linking.patch
 	arg-patches_apply_all
-
-	# we won't be using it (at least for now), so I don't see the reason
-	# to carry the patches (they are mediawiki specific)
-	use mediawiki && die "USE=mediawiki not supported, use Portage ebuild"
-
-	# install mediawiki perl modules also in vendor_dir
-	# hack, needs better upstream solution
-	#epatch "${FILESDIR}"/git-1.8.5-mw-vendor.patch
 
 	epatch_user
 
@@ -329,7 +325,12 @@ src_compile() {
 
 	if use subversion ; then
 		cd "${S}"/contrib/svn-fe
-		git_emake EXTLIBS="${EXTLIBS}" || die "emake svn-fe failed"
+		# by defining EXTLIBS we override the detection for libintl and
+		# libiconv, bug #516168
+		local nlsiconv=
+		use nls && use !elibc_glibc && nlsiconv+=" -lintl"
+		use iconv && use !elibc_glibc && nlsiconv+=" -liconv"
+		git_emake EXTLIBS="${EXTLIBS} ${nlsiconv}" || die "emake svn-fe failed"
 		if use doc ; then
 			git_emake svn-fe.{1,html} || die "emake svn-fe.1 svn-fe.html failed"
 		fi
@@ -380,8 +381,11 @@ src_install() {
 	use doc && doinfo Documentation/{git,gitman}.info
 
 	newbashcomp contrib/completion/git-completion.bash ${PN}
+	bashcomp_alias git gitk
 	# Not really a bash-completion file (bug #477920)
-	dodoc contrib/completion/git-prompt.sh
+	# but still needed uncompressed (bug #507480)
+	insinto /usr/share/${PN}
+	doins contrib/completion/git-prompt.sh
 
 	if use emacs ; then
 		elisp-install ${PN} contrib/emacs/git.{el,elc}
@@ -420,10 +424,6 @@ src_install() {
 		cd "${S}"
 	fi
 
-	# git-diffall
-	dobin contrib/diffall/git-diffall
-	newdoc contrib/diffall/README git-diffall.txt
-
 	# diff-highlight
 	dobin contrib/diff-highlight/diff-highlight
 	newdoc contrib/diff-highlight/README README.diff-highlight
@@ -451,19 +451,11 @@ src_install() {
 		cd "${S}"
 	fi
 
-	# remote-helpers
-	if use python ; then
-		python_scriptinto /usr/libexec/git-core/
-		python_doscript "${S}"/contrib/remote-helpers/git-remote-{bzr,hg}
-		python_optimize
-	fi
-
 	dodir /usr/share/${PN}/contrib
 	# The following are excluded:
 	# completion - installed above
 	# credential/gnome-keyring TODO
 	# diff-highlight - done above
-	# diffall - done above
 	# emacs - installed above
 	# examples - these are stuff that is not used in Git anymore actually
 	# git-jump - done above
@@ -478,7 +470,7 @@ src_install() {
 	for i in \
 		buildsystems convert-objects fast-import \
 		hg-to-git hooks remotes2config.sh rerere-train.sh \
-		stats vim workdir \
+		stats workdir \
 		; do
 		cp -rf \
 			"${S}"/contrib/${i} \
@@ -515,14 +507,14 @@ src_install() {
 		newins "${FILESDIR}"/git-daemon.xinetd git-daemon
 	fi
 
-	if use !prefix; then
+	if use !prefix ; then
 		newinitd "${FILESDIR}"/git-daemon-r1.initd git-daemon
 		newconfd "${FILESDIR}"/git-daemon.confd git-daemon
 		systemd_newunit "${FILESDIR}/git-daemon_at.service" "git-daemon@.service"
 		systemd_dounit "${FILESDIR}/git-daemon.socket"
 	fi
 
-	fixlocalpod
+	perl_delete_localpod
 
 	# burn CVS with fire, see #373439
 	if ! use cvs; then
@@ -532,7 +524,7 @@ src_install() {
 }
 
 src_test() {
-	local disabled=""
+	local disabled="" #t7004-tag.sh" #520270
 	local tests_cvs="t9200-git-cvsexportcommit.sh \
 					t9400-git-cvsserver-server.sh \
 					t9401-git-cvsserver-crlf.sh \
@@ -640,8 +632,8 @@ showpkgdeps() {
 pkg_postinst() {
 	use emacs && elisp-site-regen
 	einfo "Please read /usr/share/bash-completion/git for Git bash command completion"
-	einfo "Please read /usr/share/bash-completion/git-prompt for Git bash prompt"
-	einfo "Note that the prompt bash code is now in the seperate script"
+	einfo "Please read /usr/share/git/git-prompt.sh for Git bash prompt"
+	einfo "Note that the prompt bash code is now in that separate script"
 	elog "These additional scripts need some dependencies:"
 	echo
 	showpkgdeps git-quiltimport "dev-util/quilt"
