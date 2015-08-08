@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,11 +6,12 @@ EAPI=5
 
 GENTOO_DEPEND_ON_PERL=no
 
-PYTHON_COMPAT=( python2_{6,7} )
+PYTHON_COMPAT=( python2_7 )
 [[ ${PV} == *9999 ]] && SCM="git-2"
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
+EGIT_MASTER=pu
 
-ARG_PATCHES_SRC=( "mirror://argent/dev-vcs/git/git-1.9.0_rc3-optional-cvs.patch.gz" )
+ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/distro/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
 inherit arg-patches toolchain-funcs eutils multilib python-single-r1 ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
@@ -22,10 +23,10 @@ DOC_VER=${MY_PV}
 DESCRIPTION="Subversion module for GIT, the stupid content tracker"
 HOMEPAGE="http://www.git-scm.com/"
 if [[ ${PV} != *9999 ]]; then
-	SRC_URI_SUFFIX="gz"
+	SRC_URI_SUFFIX="xz"
 	SRC_URI_GOOG="http://git-core.googlecode.com/files"
 	SRC_URI_KORG="mirror://kernel/software/scm/git"
-	SRC_URI+=" ${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
+	SRC_URI="${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_GOOG}/${MY_PN}-manpages-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_PN}-manpages-${DOC_VER}.tar.${SRC_URI_SUFFIX}
@@ -34,14 +35,13 @@ if [[ ${PV} != *9999 ]]; then
 			${SRC_URI_GOOG}/${MY_PN}-htmldocs-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			)"
 	KEYWORDS="~amd64 ~x86"
-else
-	#SRC_URI=""
-	KEYWORDS=""
 fi
+
+arg-patches_update_SRC_URI
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="doc +threads"
+IUSE="doc iconv nls +threads"
 
 RDEPEND="~dev-vcs/git-${PV}[-subversion,perl]
 	dev-perl/Error
@@ -49,8 +49,7 @@ RDEPEND="~dev-vcs/git-${PV}[-subversion,perl]
 	dev-perl/Authen-SASL
 	dev-vcs/subversion[-dso,perl] dev-perl/libwww-perl dev-perl/TermReadKey
 	${PYTHON_DEPS}"
-DEPEND="app-arch/cpio
-	dev-lang/perl:=[-build(-)]
+DEPEND="dev-lang/perl:=[-build(-)]
 	doc? (
 		app-text/asciidoc
 		app-text/docbook2X
@@ -76,15 +75,15 @@ exportmakeopts() {
 	local myopts
 
 	# broken assumptions, because of broken build system ...
-	myopts="${myopts} NO_FINK=YesPlease NO_DARWIN_PORTS=YesPlease"
-	myopts="${myopts} INSTALL=install TAR=tar"
-	myopts="${myopts} SHELL_PATH=${EPREFIX}/bin/sh"
-	myopts="${myopts} SANE_TOOL_PATH="
-	myopts="${myopts} OLD_ICONV="
-	myopts="${myopts} NO_EXTERNAL_GREP="
+	myopts+=" NO_FINK=YesPlease NO_DARWIN_PORTS=YesPlease"
+	myopts+=" INSTALL=install TAR=tar"
+	myopts+=" SHELL_PATH=${EPREFIX}/bin/sh"
+	myopts+=" SANE_TOOL_PATH="
+	myopts+=" OLD_ICONV="
+	myopts+=" NO_EXTERNAL_GREP="
 
 	# split ebuild: avoid collisions with dev-vcs/git's .mo files
-	myopts="${myopts} NO_GETTEXT=YesPlease"
+	myopts+=" NO_GETTEXT=YesPlease"
 
 	# For svn-fe
 	#extlibs="-lz -lssl ${S}/xdiff/lib.a $(usex threads -lpthread '')"
@@ -93,18 +92,18 @@ exportmakeopts() {
 	# can't define this to null, since the entire makefile depends on it
 	sed -i -e '/\/usr\/local/s/BASIC_/#BASIC_/' Makefile
 
-	myopts="${myopts} INSTALLDIRS=vendor"
-	myopts="${myopts} NO_SVN_TESTS=YesPlease"
-	myopts="${myopts} NO_CVS=YesPlease"
+	myopts+=" INSTALLDIRS=vendor"
+	myopts+=" NO_SVN_TESTS=YesPlease"
+	myopts+=" NO_CVS=YesPlease"
 
 	has_version '>=app-text/asciidoc-8.0' \
-		&& myopts="${myopts} ASCIIDOC8=YesPlease"
-	myopts="${myopts} ASCIIDOC_NO_ROFF=YesPlease"
+		&& myopts+=" ASCIIDOC8=YesPlease"
+	myopts+=" ASCIIDOC_NO_ROFF=YesPlease"
 
 	# Bug 290465:
 	# builtin-fetch-pack.c:816: error: 'struct stat' has no member named 'st_mtim'
 	[[ "${CHOST}" == *-uclibc* ]] && \
-		myopts="${myopts} NO_NSEC=YesPlease"
+		myopts+=" NO_NSEC=YesPlease"
 
 	export MY_MAKEOPTS="${myopts}"
 	export EXTLIBS="${extlibs}"
@@ -123,10 +122,12 @@ src_unpack() {
 		git-2_src_unpack
 	fi
 
+	arg-patches_unpack
+
 }
 
 src_prepare() {
-	# bug #350330 - automagic CVS when we don't want it is bad.
+	# see the git ebuild for the list of patches
 	arg-patches_apply_all
 
 	epatch_user
@@ -201,7 +202,12 @@ src_compile() {
 	fi
 
 	cd "${S}"/contrib/svn-fe
-	git_emake EXTLIBS="${EXTLIBS}" || die "emake svn-fe failed"
+	# by defining EXTLIBS we override the detection for libintl and
+	# libiconv, bug #516168
+	local nlsiconv=
+	use nls && use !elibc_glibc && nlsiconv+=" -lintl"
+	use iconv && use !elibc_glibc && nlsiconv+=" -liconv"
+	git_emake EXTLIBS="${EXTLIBS} ${nlsiconv}" || die "emake svn-fe failed"
 	if use doc ; then
 		git_emake svn-fe.{1,html} || die "emake svn-fe.1 svn-fe.html failed"
 	fi
@@ -221,7 +227,7 @@ src_install() {
 	# avoid conflict with dev-vcs/git
 	# it looks weird but this binary is installed by git ebuild
 	# so removing in git-subversion
-	rm "${ED}"usr/libexec/git-core/git-remote-testsvn
+	rm "${ED}"usr/libexec/git-core/git-remote-testsvn || die
 
 	for myfile in "${ED}"usr/libexec/git-core/* "${ED}"usr/$(get_libdir)/* "${ED}"usr/share/man/*/*; do
 		case "$myfile" in
@@ -232,8 +238,8 @@ src_install() {
 		esac
 	done
 
-	local libdir="${ED}"usr/$(get_libdir)
-	if [ -d "${libdir}" ]; then
+	local libdir=${ED}usr/$(get_libdir)
+	if [[ -d ${libdir} ]]; then
 		# must be empty
 		rmdir "${libdir}" || die
 	fi
