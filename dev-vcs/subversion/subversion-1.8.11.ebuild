@@ -8,8 +8,8 @@ DISTUTILS_OPTIONAL=1
 WANT_AUTOMAKE="none"
 GENTOO_DEPEND_ON_PERL="no"
 
-SAB_PATCHES_SRC=( mirror://argent/dev-vcs/${PN}-1.8.9-Gentoo-patches.tar.gz )
-inherit sab-patches autotools bash-completion-r1 db-use depend.apache distutils-r1 elisp-common flag-o-matic libtool multilib perl-module eutils
+ARG_PATCHES_SRC=( mirror://argent/dev-vcs/${PN}-1.8.9-Gentoo-patches.tar.gz )
+inherit arg-patches autotools bash-completion-r1 db-use depend.apache distutils-r1 elisp-common flag-o-matic libtool multilib perl-module eutils
 
 MY_P="${P/_/-}"
 DESCRIPTION="Advanced version control system"
@@ -113,8 +113,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	local SAB_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
-	sab-patches_apply_all
+	local ARG_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
+	arg-patches_apply_all
 	epatch_user
 
 	fperms +x build/transform_libtool_scripts.sh
