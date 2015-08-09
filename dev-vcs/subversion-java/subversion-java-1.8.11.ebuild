@@ -12,8 +12,8 @@ MY_SVN_PF="${MY_SVN_PN}-${PVR}"
 MY_SVN_CATEGORY="${CATEGORY}"
 
 # note: java-pkg-2, not java-pkt-opt-2
-SAB_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.9-Gentoo-patches.tar.gz )
-inherit sab-patches autotools eutils flag-o-matic java-pkg-2 libtool multilib
+ARG_PATCHES_SRC=( mirror://argent/dev-vcs/${MY_SVN_PN}-1.8.9-Gentoo-patches.tar.gz )
+inherit arg-patches autotools eutils flag-o-matic java-pkg-2 libtool multilib
 
 DESCRIPTION="Java bindings for Subversion"
 HOMEPAGE="http://subversion.apache.org/"
@@ -47,8 +47,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	local SAB_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
-	sab-patches_apply_all
+	local ARG_PATCHES_SKIP=( subversion-1.8.9-po_fixes.patch )
+	arg-patches_apply_all
 	epatch_user
 
 	fperms +x build/transform_libtool_scripts.sh
