@@ -13,16 +13,15 @@ SRC_URI="mirror://gentoo/${P}.tar.xz
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
-IUSE="openrc +systemd"
+IUSE="+systemd"
 DEPEND="
-	openrc? ( >=sys-apps/openrc-0.12.4 )
 	systemd? ( >=sys-apps/gentoo-functions-0.7 )"
 
-src_unpack() {
+src_prepare() {
 	unpacker_src_unpack
 	cd "${S}" || die
-	epatch "${FILESDIR}/${PN}-argent-base-gcc-support-2.patch"
-	# systemd-only systems (Argent/Kogaion/Sabayon) support
+	epatch "${FILESDIR}/${PN}-kogaion-base-gcc-support-2.patch"
+	# systemd-only systems (Kogaion/Sabayon) support
 	if use systemd; then
 		epatch "${FILESDIR}/${PN}-systemd.patch"
 	fi
