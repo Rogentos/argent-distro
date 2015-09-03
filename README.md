@@ -1,7 +1,7 @@
-argent-distro
+argent-server
 =============
 
-Argent Distro Graphic Overlay
+Argent Distro Server Graphic and Split Overlay
 In order to add it in a Gentoo-based:
 
-layman -f -a argent-distro -o https://raw.github.com/Rogentos/argent-distro/master/overlay.xml
+layman -f -a argent-server -o https://gitlab.com/argent/argent-server/raw/master/overlay.xml
