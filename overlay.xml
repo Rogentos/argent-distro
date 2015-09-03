@@ -2,14 +2,14 @@
 <!DOCTYPE repositories SYSTEM "repositories.dtd">
 <repositories xmlns="" version="1.0">
   <repo quality="experimental" status="unofficial">
-    <name>argent-distro</name>
-    <description>Romanian enterprise and servers oriented overlay of ebuilds</description>
-    <homepage>https://github.com/Rogentos/argent-distro</homepage>
+    <name>argent-server</name>
+    <description>Argent enterprise and servers oriented overlay of ebuilds</description>
+    <homepage>https://gitlab.com/argent/argent-server.git</homepage>
     <owner type="project">
       <email>stefan.cristian at rogentos.ro</email>
-      <name>Rogentos</name>
+      <name>Argent</name>
     </owner>
-    <source type="git">https://github.com/Rogentos/argent-distro.git</source>
-    <feed>https://github.com/Rogentos/argent-distro/commits/master.atom</feed>
+    <source type="git">https://gitlab.com/argent/argent-server.git</source>
+    <feed>https://gitlab.com/argent/argent-server/commits/master.atom</feed>
   </repo>
 </repositories>
