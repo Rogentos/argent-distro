@@ -5,17 +5,16 @@
 EAPI=5
 PYTHON_COMPAT=( python3_3 )
 
-inherit eutils cmake-utils python-r1 git-2
+inherit eutils cmake-utils python-r1
 
-EGIT_BRANCH="master"
-EGIT_REPO_URI="https://github.com/Rogentos/calamares.git"
+SRC_URI="https://github.com/calamares/calamares/releases/download/v1.1/calamares-1.1.tar.gz"
 
 DESCRIPTION="Distribution-independent installer framework"
 HOMEPAGE="http://calamares.io"
 
 LICENSE="GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 IUSE="+python"
 
 S="${WORKDIR}/${PN}-${PV}"
@@ -48,12 +47,11 @@ DEPEND="
 RDEPEND=">=app-misc/calamares-runtime-2.0[branding]"
 
 src_prepare() {
+	# replace calamares installer desktop icon
+	sed -i "s/Icon=calamares/Icon=start-here/g" "${S}/calamares.desktop"
 	# If qtchooser is installed, it may break the build, because moc,rcc and uic binaries for wrong qt version may be used.
 	# Setting QT_SELECT environment variable will enforce correct binaries (fix taken from vlc ebuild)
 	export QT_SELECT=qt5
-	
-	git submodule init
-	git submodule update
 }
 
 src_configure() {
