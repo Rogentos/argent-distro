@@ -14,7 +14,7 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
 IUSE="build kernel_linux"
 
-PDEPEND="sys-apps/openrc"
+PDEPEND="sys-apps/systemd"
 
 pkg_setup() {
 	multilib_layout
@@ -189,7 +189,7 @@ src_install() {
 	echo "LDPATH='${ldpaths#:}'" >> "${D}"/etc/env.d/00basic
 
 	# rc-scripts version for testing of features that *should* be present
-	echo "Gentoo Base System release ${PV}" > "${D}"/etc/gentoo-release
+	echo "Argent Gentoo-based System release ${PV}" > "${D}"/etc/gentoo-release
 
 	# Argent customization, install /etc/hosts separately (to .example)
 	mv "${D}"/etc/hosts "${D}"/etc/hosts.example || die "cannot move /etc/hosts"
