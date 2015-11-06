@@ -18,7 +18,7 @@ IUSE=""
 
 DEPEND=""
 RDEPEND="!app-misc/livecd-tools
-	!sys-apps/gpu-detector
+	sys-apps/gpu-detector
 	app-eselect/eselect-opengl
 	dev-util/dialog
 	sys-apps/gawk
