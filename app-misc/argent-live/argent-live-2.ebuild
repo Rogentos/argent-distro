@@ -4,7 +4,7 @@
 EAPI=5
 
 EGIT_REPO_URI="https://gitlab.com/argent/argent-live.git"
-EGIT_COMMIT="v${PV}"
+#EGIT_COMMIT="v${PV}"
 
 inherit eutils systemd git-2
 
