@@ -3,7 +3,7 @@
 
 EAPI=5
 
-EGIT_REPO_URI="git://github.com/Rogentos/argent-live.git"
+EGIT_REPO_URI="git://gitlab.com/argent/argent-live.git"
 EGIT_COMMIT="v${PV}"
 
 inherit eutils systemd git-2
