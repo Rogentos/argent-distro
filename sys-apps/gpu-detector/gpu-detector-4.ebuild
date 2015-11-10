@@ -10,7 +10,7 @@ SLOT="0"
 KEYWORDS="x86 amd64 ppc"
 IUSE=""
 
-RDEPEND="!<app-misc/argent-live-0.9"
+RDEPEND=">=app-misc/argent-live-0.9"
 DEPEND="${RDEPEND}"
 
 src_unpack () {
