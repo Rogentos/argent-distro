@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 AUTOTOOLS_AUTO_DEPEND=yes
@@ -15,14 +15,14 @@ if [[ ${PV} != 9999 ]]; then
 		SRC_URI="mirror://gnu/${PN}/${MY_P}.tar.xz
 			mirror://gentoo/${MY_P}.tar.xz"
 	fi
-	KEYWORDS="amd64 x86"
+	KEYWORDS="~amd64 ~x86"
 	S=${WORKDIR}/${MY_P}
 	PATCHES=(
 		"${FILESDIR}"/${PN}-1.99-vga-deprecated.patch
 		# vga= not yet deprecated for us
 		"${FILESDIR}"/${PN}-2.00-vga-deprecated-not-yet.patch
 		"${FILESDIR}"/${PN}-1.99-disable-floppies.patch
-		# Genkernel doesn`t support "single" for rescue mode
+		# Genkernel doesn't support "single" for rescue mode
 		# but rather init_opts=single
 		"${FILESDIR}"/${PN}-2.00-genkernel-initramfs-single.patch
 		# Down with SecureBoot
@@ -74,10 +74,9 @@ REQUIRED_USE="grub_platforms_qemu? ( truetype )
 
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
-# sbsigntool is Sabayon and Argent specific
+# sbsigntool is Sabayon & Argent specific
 RDEPEND="
 	app-crypt/sbsigntool
-	x11-themes/argent-artwork-grub
 	app-arch/xz-utils
 	>=sys-libs/ncurses-5.2-r5
 	debug? (
@@ -189,7 +188,7 @@ grub_configure() {
 		*)	platform=${MULTIBUILD_VARIANT} ;;
 	esac
 
-	# Argent: backward compatibility, do not change --with-grubdir
+	# backward compatibility, do not change --with-grubdir
 	local myeconfargs=(
 		--disable-werror
 		--program-prefix=
@@ -209,7 +208,7 @@ grub_configure() {
 		$(usex efiemu '' --disable-efiemu)
 	)
 
-	# Argent: keep --with-grubdir=grub to grub for backward compatibility
+	# keep --with-grubdir=grub to grub for backward compatibility
 	if use multislot; then
 		myeconfargs+=(
 			--program-transform-name="s,grub,grub2,"
