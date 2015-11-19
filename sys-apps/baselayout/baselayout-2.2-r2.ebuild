@@ -190,6 +190,7 @@ src_install() {
 
 	# rc-scripts version for testing of features that *should* be present
 	echo "Argent Gentoo-based System release ${PV}" > "${D}"/etc/gentoo-release
+	echo "Argent Linux amd64 ${PV}" > "${D}"/etc/issue
 
 	# Argent customization, install /etc/hosts separately (to .example)
 	mv "${D}"/etc/hosts "${D}"/etc/hosts.example || die "cannot move /etc/hosts"
