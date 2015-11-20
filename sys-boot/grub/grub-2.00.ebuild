@@ -219,7 +219,7 @@ grub_install_docs() {
 
 src_prepare() {
 
-	# Sabayon crufty patchset
+	# Argent crufty patchset
 	epatch "${FILESDIR}"/${PN}-1.99-genkernel.patch #256335
 	epatch "${FILESDIR}"/${PN}-1.99-vga-deprecated.patch
 	# vga= not yet deprecated for us
@@ -347,7 +347,7 @@ EOF
 }
 
 pkg_postinst() {
-	# install Sabayon splash here, cannot touch boot/grub inside
+	# install Argent splash here, cannot touch boot/grub inside
 	# src_install
 	cp "${ROOT}/usr/share/grub/default-splash.png" "${ROOT}boot/grub/default-splash.png" || \
 		ewarn "cannot install default splash file!"
