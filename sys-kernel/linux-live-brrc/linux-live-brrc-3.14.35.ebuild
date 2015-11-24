@@ -25,6 +25,6 @@ K_MKIMAGE_KERNEL_ADDRESS="0x80008000"
 
 inherit live-kernel
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="amd64 x86"
 DESCRIPTION="Official Kogaion and Argent Live Linux Standard kernel image"
 RESTRICT="mirror"
