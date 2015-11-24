@@ -50,7 +50,7 @@ REQUIRED_USE="grub_platforms_qemu? ( truetype )"
 
 # os-prober: Used on runtime to detect other OSes
 # xorriso (dev-libs/libisoburn): Used on runtime for mkrescue
-# sbsigntool is Sabayon and Rogentos specific
+# sbsigntool is Argent specific
 RDEPEND="
 	app-crypt/sbsigntool
 	x11-themes/argent-artwork-grub
@@ -177,7 +177,7 @@ grub_src_configure() {
 			;;
 	esac
 
-	# Sabayon and Rogentos: backward compatibility, do not change --with-grubdir
+	# Argent: backward compatibility, do not change --with-grubdir
 	ECONF_SOURCE="${S}" \
 	econf \
 		--htmldir="${EPREFIX}/usr/share/doc/${PF}/html" \
@@ -221,7 +221,7 @@ grub_install_docs() {
 
 src_prepare() {
 
-	# Sabayon crufty patchset
+	# Argent crufty patchset
 	epatch "${FILESDIR}"/${PN}-1.99-genkernel.patch #256335
 	epatch "${FILESDIR}"/${PN}-1.99-vga-deprecated.patch
 	# vga= not yet deprecated for us
@@ -342,7 +342,7 @@ src_install() {
 
 	# TODO: still needed?
 	cat <<-EOF >> "${ED}"/lib*/grub/grub-mkconfig_lib
-	GRUB_DISTRIBUTOR="Rogentos"
+	GRUB_DISTRIBUTOR="Argent"
 EOF
 
 	insinto /etc/default
@@ -354,7 +354,7 @@ EOF
 }
 
 pkg_postinst() {
-	# install Rogentos splash here, cannot touch boot/grub inside
+	# install Argent splash here, cannot touch boot/grub inside
 	# src_install
 	cp "${ROOT}/usr/share/grub/default-splash.png" "${ROOT}boot/grub/default-splash.png" || \
 		ewarn "cannot install default splash file!"
