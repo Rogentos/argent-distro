@@ -40,7 +40,7 @@ src_prepare() {
 	use consolekit && epatch "${FILESDIR}/${P}-consolekit.patch"
 	use upower && epatch "${FILESDIR}/${PN}-0.10.0-upower.patch"
 
-	# Sabayon, fixes autologin due to kogaion-live
+	# Argent fixes autologin due to kogaion-live
 	use systemd && epatch "${FILESDIR}/systemd_service.patch"
 
 	# fix bug 552318
