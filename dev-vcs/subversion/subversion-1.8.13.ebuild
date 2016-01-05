@@ -8,7 +8,7 @@ DISTUTILS_OPTIONAL=1
 WANT_AUTOMAKE="none"
 GENTOO_DEPEND_ON_PERL="no"
 
-ARG_PATCHES_SRC=( mirror://sabayon/dev-vcs/${PN}-1.8.9-Gentoo-patches.tar.gz )
+ARG_PATCHES_SRC=( mirror://argent/dev-vcs/${PN}-1.8.9-Gentoo-patches.tar.gz )
 inherit arg-patches autotools bash-completion-r1 db-use depend.apache distutils-r1 elisp-common flag-o-matic libtool multilib perl-module eutils
 
 MY_P="${P/_/-}"

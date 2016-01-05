@@ -58,7 +58,7 @@ src_prepare() {
 	# Argent infrastructure requirement, make the
 	# .torrent file scraping recurse through all the
 	# allowed_dir subdirs
-	epatch "${FILESDIR}"/${P}-sabayon-parsedir-recursive.patch
+	epatch "${FILESDIR}"/${P}-argent-parsedir-recursive.patch
 
 	# fix doc path #109743
 	sed -i -e "/dp.*appdir/ s:appdir:'${PF}':" BitTorrent/platform.py
