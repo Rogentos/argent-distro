@@ -1,4 +1,3 @@
-
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
@@ -103,7 +102,6 @@ src_install() {
         pamd_mimic system-local-login ${REAL_PN} auth account session #372229
         dopamd "${FILESDIR}"/${REAL_PN}-autologin #390863, #423163
 
-        readme.gentoo_create_doc
 
         systemd_dounit "${FILESDIR}/${REAL_PN}.service"
 }
