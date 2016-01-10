@@ -146,6 +146,8 @@ src_prepare() {
 
 	[[ ${PATCHES} ]] && epatch "${PATCHES[@]}"
 
+	epatch "${FILESDIR}"/CVE-2015-8370.patch
+
 	sed -i -e /autoreconf/d autogen.sh || die
 
 	if use multislot; then
