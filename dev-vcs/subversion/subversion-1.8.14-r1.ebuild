@@ -43,19 +43,19 @@ COMMON_DEPEND=">=dev-db/sqlite-3.7.12
 	http? ( >=net-libs/serf-1.2.1 )"
 RDEPEND="${COMMON_DEPEND}
 	apache2? ( www-servers/apache[apache2_modules_dav] )
-	kde? ( || ( kde-apps/kwalletd:4 kde-base/kwalletd ) )
+	kde? ( kde-apps/kwalletd:4 )
 	nls? ( virtual/libintl )
 	perl? ( dev-perl/URI )"
 # Note: ctypesgen doesn't need PYTHON_USEDEP, it's used once
 DEPEND="${COMMON_DEPEND}
-	test? ( ${PYTHON_DEPS} )
 	!!<sys-apps/sandbox-1.6
 	ctypes-python? ( dev-python/ctypesgen )
 	doc? ( app-doc/doxygen )
 	gnome-keyring? ( virtual/pkgconfig )
+	http? ( virtual/pkgconfig )
 	kde? ( virtual/pkgconfig )
 	nls? ( sys-devel/gettext )
-	http? ( virtual/pkgconfig )"
+	test? ( ${PYTHON_DEPS} )"
 PDEPEND="java? ( ~dev-vcs/subversion-java-${PV} )"
 
 REQUIRED_USE="
@@ -202,7 +202,8 @@ src_configure() {
 
 	# force ruby-2.1
 	# allow overriding Python include directory
-	ac_cv_path_RUBY="${EPREFIX}"/usr/bin/ruby21 ac_cv_path_RDOC="${EPREFIX}"/usr/bin/rdoc21 \
+	ac_cv_path_RUBY=$(usex ruby "${EPREFIX}/usr/bin/ruby21" "none") \
+	ac_cv_path_RDOC=$(usex ruby "${EPREFIX}/usr/bin/rdoc21" "none") \
 	ac_cv_python_includes='-I$(PYTHON_INCLUDEDIR)' \
 	econf --libdir="${EPREFIX}/usr/$(get_libdir)" \
 		$(use_with apache2 apache-libexecdir) \
