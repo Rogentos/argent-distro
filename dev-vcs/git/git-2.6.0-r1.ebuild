@@ -12,7 +12,7 @@ PYTHON_COMPAT=( python2_7 )
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
 EGIT_MASTER=pu
 
-ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/argent/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
+ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/argent/dev-vcs/git/git-2.6.0-Gentoo-patches.tar.gz" )
 inherit arg-patches toolchain-funcs eutils elisp-common perl-module bash-completion-r1 python-single-r1 systemd ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
@@ -24,7 +24,7 @@ DESCRIPTION="GIT - the stupid content tracker, the revision control system heavi
 HOMEPAGE="http://www.git-scm.com/"
 if [[ ${PV} != *9999 ]]; then
 	SRC_URI_SUFFIX="xz"
-	SRC_URI_GOOG="http://git-core.googlecode.com/files"
+	SRC_URI_GOOG="https://git-core.googlecode.com/files"
 	SRC_URI_KORG="mirror://kernel/software/scm/git"
 	SRC_URI="${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_P}.tar.${SRC_URI_SUFFIX}
@@ -34,22 +34,23 @@ if [[ ${PV} != *9999 ]]; then
 			${SRC_URI_KORG}/${PN}-htmldocs-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_GOOG}/${PN}-htmldocs-${DOC_VER}.tar.${SRC_URI_SUFFIX}
 			)"
-	KEYWORDS="amd64 x86"
+	KEYWORDS="~amd64 ~x86"
 fi
 
 arg-patches_update_SRC_URI
 
 LICENSE="GPL-2"
 SLOT="0"
-IUSE="+blksha1 +curl cgi doc emacs gnome-keyring +gpg gtk highlight +iconv mediawiki +nls +pcre +perl +python ppcsha1 tk +threads +webdav xinetd cvs subversion test"
+IUSE="+blksha1 +curl cgi doc emacs gnome-keyring +gpg gtk highlight +iconv libressl mediawiki +nls +pcre +perl +python ppcsha1 tk +threads +webdav xinetd cvs subversion test"
 
 # Common to both DEPEND and RDEPEND
 CDEPEND="
-	dev-libs/openssl:0=
+	!libressl? ( dev-libs/openssl:0= )
+	libressl? ( dev-libs/libressl:= )
 	sys-libs/zlib
 	pcre? ( dev-libs/libpcre )
 	perl? ( dev-lang/perl:=[-build(-)] )
-	tk? ( dev-lang/tk:= )
+	tk? ( dev-lang/tk:0= )
 	curl? (
 		net-misc/curl
 		webdav? ( dev-libs/expat )
@@ -229,6 +230,8 @@ src_prepare() {
 
 	# git-...-mw-vendor.patch
 	# git-...-svn-fe-linking.patch
+	# ...freebsd-...-iconv.path
+	# ...send-email-...
 	arg-patches_apply_all
 
 	epatch_user

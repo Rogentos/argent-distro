@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -14,7 +14,7 @@ PYTHON_COMPAT=( python2_7 )
 EGIT_REPO_URI="git://git.kernel.org/pub/scm/git/git.git"
 EGIT_MASTER=pu
 
-ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/distro/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
+ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/aregnt/dev-vcs/git/git-2.2.2-Gentoo-patches.tar.gz" )
 inherit arg-patches toolchain-funcs eutils python-single-r1 ${SCM}
 
 MY_PV="${PV/_rc/.rc}"
@@ -30,7 +30,7 @@ if [[ ${PV} != *9999 ]]; then
 	SRC_URI_KORG="mirror://kernel/software/scm/git"
 	SRC_URI="${SRC_URI_GOOG}/${MY_P}.tar.${SRC_URI_SUFFIX}
 			${SRC_URI_KORG}/${MY_P}.tar.${SRC_URI_SUFFIX}"
-	KEYWORDS="~amd64 ~x86"
+	KEYWORDS="amd64 x86"
 fi
 
 arg-patches_update_SRC_URI
