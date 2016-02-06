@@ -223,6 +223,10 @@ _get_real_kv_full() {
 		# Linux 3.x support, KV_FULL is set to: 3.0-argent
 		# need to add another final .0 to the version part
 		echo "${ORIGINAL_KV_FULL/-/.0-}"
+    elif [[ "${OKV/.*}" = "4" ]]; then
+	    # Linux 3.x support, KV_FULL is set to: 3.0-argent
+		# need to add another final .0 to the version part
+		echo "${ORIGINAL_KV_FULL/-/.0-}"
 	else
 		echo "${ORIGINAL_KV_FULL}"
 	fi
@@ -776,6 +780,10 @@ _get_release_level() {
 		echo "${KV_FULL}"
 	elif [[ "${OKV/.*}" = "3" ]] && [[ "${KV_PATCH}" = "0" ]]; then
 		# Linux 3.x support, KV_FULL is set to: 3.0-argent
+		# need to add another final .0 to the version part
+		echo "${KV_FULL/-/.0-}"
+    elif [[ "${OKV/.*}" = "4" ]] && [[ "${KV_PATCH}" = "0" ]]; then
+	    # Linux 4.x support, KV_FULL is set to: 4.0-argent
 		# need to add another final .0 to the version part
 		echo "${KV_FULL/-/.0-}"
 	else
