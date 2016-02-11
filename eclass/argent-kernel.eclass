@@ -250,8 +250,6 @@ fi
 # rewrite it
 ORIGINAL_KV_FULL="${KV_FULL}"
 KV_FULL="$(_get_real_kv_full)"
-echo $KV_FULL
-_get_real_kv_full
 
 # Starting from linux-3.0, we still have to install
 # sources stuff into /usr/src/linux-3.0.0-argent (example)
