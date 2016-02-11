@@ -20,7 +20,7 @@ SRC_URI="x86? ( ftp://download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_PACKA
 LICENSE="NVIDIA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
-IUSE="multilib kernel_linux"
+IUSE="multilib kernel_linux X"
 RESTRICT="strip"
 EMULTILIB_PKG="true"
 
@@ -132,20 +132,19 @@ QA_DT_HASH_x86="usr/lib/libcuda.so.${PV}
 	usr/bin/nvidia-smi
 	usr/bin/nvidia-xconfig"
 
-if use x86; then
-	PKG_V="-pkg0"
-	NV_PACKAGE="${X86_NV_PACKAGE}"
-elif use amd64; then
-	PKG_V="-pkg2"
-	NV_PACKAGE="${AMD64_NV_PACKAGE}"
-elif use x86-fbsd; then
-	PKG_V=""
-	NV_PACKAGE="${X86_FBSD_NV_PACKAGE}"
-fi
-
 S="${WORKDIR}/${NV_PACKAGE}${PKG_V}"
 
 pkg_setup() {
+	if use x86; then
+    		PKG_V="-pkg0"
+    		NV_PACKAGE="${X86_NV_PACKAGE}"
+	elif use amd64; then
+    		PKG_V="-pkg2"
+    		NV_PACKAGE="${AMD64_NV_PACKAGE}"
+	elif use x86-fbsd; then
+    		PKG_V=""
+    		NV_PACKAGE="${X86_FBSD_NV_PACKAGE}"
+	fi
 	# try to turn off distcc and ccache for people that have a problem with it
 	export DISTCC_DISABLE=1
 	export CCACHE_DISABLE=1
