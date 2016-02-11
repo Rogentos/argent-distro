@@ -2,6 +2,8 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sys-power/acpid/acpid-1.0.6-r1.ebuild,v 1.4 2007/11/14 22:50:56 dang Exp $
 
+EAPI=3
+
 inherit eutils toolchain-funcs
 
 DESCRIPTION="Daemon for Advanced Configuration and Power Interface"

@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-crypt/truecrypt/truecrypt-6.3a.ebuild,v 1.2 2009/12/27 08:54:08 josejx Exp $
 
-EAPI="2"
+EAPI="5"
 
 inherit flag-o-matic linux-info multilib toolchain-funcs wxwidgets
 
