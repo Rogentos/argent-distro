@@ -2,12 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="2"
+EAPI="3"
 
 inherit eutils
 
 if [[ ${PV} == "9999" ]] ; then
-    inherit git
+    inherit git-2
     EGIT_REPO_URI="git://github.com/andoma/tvheadend.git"
     KEYWORDS="~x86"
 else
