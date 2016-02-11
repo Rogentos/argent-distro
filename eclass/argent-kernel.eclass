@@ -799,7 +799,6 @@ _get_release_level() {
 	fi
 }
 
-_get_release_level
 
 argent-kernel_uimage_config() {
 	# Two cases here:
