@@ -1,9 +1,10 @@
-# Copyright 1999-2010 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
+MULTILIB_COMPAT=( abi_x86_{32,64} )
 inherit eutils unpacker multilib portability versionator flag-o-matic
 
 X86_NV_PACKAGE="NVIDIA-Linux-x86-${PV}"
@@ -19,14 +20,26 @@ SRC_URI="x86? ( ftp://download.nvidia.com/XFree86/Linux-x86/${PV}/${X86_NV_PACKA
 LICENSE="NVIDIA"
 SLOT="0"
 KEYWORDS="-* ~amd64 ~x86 ~x86-fbsd"
-IUSE="multilib kernel_linux"
+IUSE="multilib kernel_linux X"
 RESTRICT="strip"
 EMULTILIB_PKG="true"
 
-COMMON="x11-base/xorg-server
+COMMON="app-eselect/eselect-opencl
 	kernel_linux? ( >=sys-libs/glibc-2.6.1 )
-	multilib? ( app-emulation/emul-linux-x86-opengl )
-	>=app-eselect/eselect-opengl-1.0.9"
+
+	X? (
+		>=app-eselect/eselect-opengl-1.0.9
+	        multilib? (
+	                || (
+	                         (
+	                                >=x11-libs/libX11-1.6.2[abi_x86_32]
+	                                >=x11-libs/libXext-1.3.2[abi_x86_32]
+	                         )
+	                        app-emulation/emul-linux-x86-xlibs
+	                )
+	        )
+	)
+"
 DEPEND="${COMMON}
 	kernel_linux? ( virtual/linux-sources )"
 # Note: do not add !>nvidia-userspace-ver or !<nvidia-userspace-ver
@@ -119,20 +132,19 @@ QA_DT_HASH_x86="usr/lib/libcuda.so.${PV}
 	usr/bin/nvidia-smi
 	usr/bin/nvidia-xconfig"
 
-if use x86; then
-	PKG_V="-pkg0"
-	NV_PACKAGE="${X86_NV_PACKAGE}"
-elif use amd64; then
-	PKG_V="-pkg2"
-	NV_PACKAGE="${AMD64_NV_PACKAGE}"
-elif use x86-fbsd; then
-	PKG_V=""
-	NV_PACKAGE="${X86_FBSD_NV_PACKAGE}"
-fi
-
 S="${WORKDIR}/${NV_PACKAGE}${PKG_V}"
 
 pkg_setup() {
+	if use x86; then
+    		PKG_V="-pkg0"
+    		NV_PACKAGE="${X86_NV_PACKAGE}"
+	elif use amd64; then
+    		PKG_V="-pkg2"
+    		NV_PACKAGE="${AMD64_NV_PACKAGE}"
+	elif use x86-fbsd; then
+    		PKG_V=""
+    		NV_PACKAGE="${X86_FBSD_NV_PACKAGE}"
+	fi
 	# try to turn off distcc and ccache for people that have a problem with it
 	export DISTCC_DISABLE=1
 	export CCACHE_DISABLE=1
