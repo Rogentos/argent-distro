@@ -9,7 +9,7 @@ PYTHON_COMPAT=( python{2_7,3_4} )
 inherit eutils flag-o-matic linux-info multilib pam prefix python-single-r1 \
 		systemd user versionator
 
-KEYWORDS="amd64"
+KEYWORDS="amd64 x86"
 
 SLOT="$(get_version_component_range 1-2)"
 
