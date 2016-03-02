@@ -12,7 +12,7 @@ SRC_URI="http://www.freedesktop.org/software/plymouth/releases/${P/-extras}.tar.
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc ~x86"
+KEYWORDS="~alpha amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc x86"
 IUSE="debug static-libs"
 
 CDEPEND=">=media-libs/libpng-1.2.16
