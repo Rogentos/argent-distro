@@ -3,6 +3,8 @@
 
 EAPI=5
 
+echo $K_ARGKERNEL_CONFIG_FILES
+
 inherit versionator
 
 K_ARGKERNEL_SELF_TARBALL_NAME="hardened"
