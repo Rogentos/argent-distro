@@ -41,6 +41,9 @@ src_prepare() {
 
 	toolchain_src_prepare
 
+    # use no_instrument_patch against structures that use the instrument function
+	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/"${PN}"-"${PV}"-no_instrument_function.patch
+
 	use vanilla && return 0
 	#Use -r1 for newer piepatchet that use DRIVER_SELF_SPECS for the hardened specs.
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env-r1.patch
