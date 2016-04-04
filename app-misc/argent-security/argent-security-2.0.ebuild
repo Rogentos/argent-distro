@@ -5,8 +5,6 @@
 
 EAPI=5
 
-inherit multilib
-
 DESCRIPTION="Argent OS Security Package"
 HOMEPAGE="http://argentlinux.io"
 SRC_URI=""
@@ -26,6 +24,11 @@ RDEPEND="!app-eselect/eselect-init
 	!sys-auth/consolekit
 	sys-devel/base-gcc:${GCC_VER}
 	sys-devel/gcc-config"
+
+src_unpack () {
+	# we need a working folder
+        mkdir -p "${S}" || die
+}
 
 src_install () {
 	# Bug 3459 - reduce the risk of fork bombs

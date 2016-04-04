@@ -29,46 +29,11 @@ RDEPEND="app-admin/eselect-python
 	sys-devel/gcc-config"
 
 src_unpack () {
-	echo "Argent Linux ${ARCH} ${PV}" > "${T}/argent-release"
 	mkdir -p "${S}" || die
 }
 
 src_install () {
-	insinto /etc
-	doins "${T}"/argent-release
-	dosym /etc/argent-release /etc/system-release
 	# Bug 3459 - reduce the risk of fork bombs
 	insinto /etc/security/limits.d
 	doins "${FILESDIR}/00-argent-anti-fork-bomb.conf"
-}
-
-pkg_postinst() {
-	# Setup Python ${PYTHON_VER}
-	eselect python set python${PYTHON_VER}
-	# No need to set the GCC profile here, since it's done in base-gcc
-
-	# Improve systemd support
-	if [[ ! -L /etc/mtab ]] && [[ -e /proc/self/mounts ]]; then
-		rm -f /etc/mtab
-		einfo "Migrating /etc/mtab to a /proc/self/mounts symlink"
-		ln -sf /proc/self/mounts /etc/mtab
-	fi
-
-	# force kdm back to the default runlevel if added to boot
-	# this is in preparation for the logind migration
-	local xdm_conf="${ROOT}/etc/conf.d/xdm"
-	local xdm_boot_runlevel="${ROOT}/etc/runlevels/boot/xdm"
-	local xdm_default_runlevel="${ROOT}/etc/runlevels/default/xdm"
-	if [ -e "${xdm_conf}" ] && [ -e "${xdm_boot_runlevel}" ]; then
-		DISPLAYMANAGER=""
-		. "${xdm_conf}"
-		if [ "${DISPLAYMANAGER}" = "kdm" ]; then
-			elog "Moving xdm (kdm) from boot runlevel to default"
-			elog "or logind will not work as expected"
-			mv -f "${xdm_boot_runlevel}" "${xdm_default_runlevel}"
-		fi
-	fi
-
-	# remove old hal udev rules.d file, if found. sys-apps/hal is long gone.
-	rm -f "${ROOT}/lib/udev/rules.d/90-hal.rules"
 }
