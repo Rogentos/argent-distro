@@ -27,7 +27,6 @@ RDEPEND="!app-eselect/eselect-init
 	app-eselect/eselect-python
 	dev-lang/python:${PYTHON_VER}
 	sys-apps/systemd
-	sys-apps/systemd-sysv-utils
 	sys-devel/base-gcc:${GCC_VER}
 	sys-devel/gcc-config"
 
