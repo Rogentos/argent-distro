@@ -9,7 +9,7 @@ WANT_AUTOMAKE="none"
 
 inherit autotools eutils flag-o-matic multilib prefix python-single-r1 versionator
 
-KEYWORDS="amd64"
+KEYWORDS="amd64 x86"
 
 MY_PV=${PV/_/}
 SLOT="$(get_version_component_range 1-2)"
