@@ -121,10 +121,6 @@ all_ruby_install() {
 	# install systemd service here
 	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
 
-	# install /etc/default/redmine file
-	insinto /etc/default/
-	doins "${FILESDIR}/redmine"
-
 	# doins a example of database.yml that will start bare-bone redmine
 	insinto "${EPREFIX}${REDMINE_DIR}/config/"
 	doins "${FILESDIR}/database.yml.postgres"
@@ -157,17 +153,19 @@ pkg_postinst() {
 }
 
 pkg_config() {
-	while [ "$correct" != "true" ] ; do
-		einfo "Do you want to prepare postgres for redmine example (y/n)"
-		read answer
+
+	if [ ! -e "${EPREFIX}${REDMINE_DIR}/config/database.yml" ]; then
+		while [ "$correct" != "true" ] ; do
+			einfo "Do you want to prepare postgres for redmine example (y/n)"
+			read answer
 		if [[ $answer =~ ^[Yy]([Ee][Ss])?$ ]] ; then
-		correct="true"
-		cd "${REDMINE_DIR}/config/" || die
-		echo "" > database.yml || die
-		cp database.yml.postgres database.yml || die
-		chown redmine:redmine database.yml || die
+			correct="true"
+			cd "${REDMINE_DIR}/config/" || die
+			echo "" > database.yml || die
+			cp database.yml.postgres database.yml || die
+			chown redmine:redmine database.yml || die
 		elif [[ $answer =~ ^[Nn]([Oo])?$ ]] ; then
-		einfo "Please configure your own database.yml"
+			einfo "Please configure your own database.yml"
 		if [ -e "${REDMINE_DIR}/config/database.yml" ] ; then
 			cp "${REDMINE_DIR}/config/database.yml" \
 			"${REDMINE_DIR}/config/database.yml.backup.$(date +"%m%d%y-%H%M")" || die
@@ -178,11 +176,15 @@ pkg_config() {
 			einfo "The database.yml does not exist"
 			einfo "Proceeding with the next step"
 		fi
-		break
+			break
 		else
-		echo "Answer not recognized"
+			echo "Answer not recognized"
 		fi
-	done
+		done
+	else
+		einfo "A database.yml already exists"
+		einfo "Skipping first-run replacement"
+	fi
 
 	if [ ! -e "${EPREFIX}${REDMINE_DIR}/config/database.yml" ]; then
 		eerror "Copy ${EPREFIX}${REDMINE_DIR}/config/database.yml.example to ${EPREFIX}${REDMINE_DIR}/config/database.yml"
