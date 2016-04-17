@@ -4,7 +4,7 @@
 
 EAPI=5
 USE_RUBY="ruby20"
-inherit eutils depend.apache ruby-ng user
+inherit eutils depend.apache ruby-ng user systemd
 
 DESCRIPTION="Flexible project management web application using the Ruby on Rails framework"
 HOMEPAGE="http://www.redmine.org/"
@@ -117,6 +117,7 @@ all_ruby_install() {
 		newinitd "${FILESDIR}/${PN}-2.initd" ${PN}
 	fi
 	doenvd "${T}/50${PN}"
+	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
 }
 
 pkg_postinst() {

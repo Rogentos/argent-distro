@@ -1,0 +1,17 @@
+Description=Redmine server
+After=syslog.target
+After=network.target
+
+[Service]
+Type=forking
+User=redmine
+Group=redmine
+REDMINE_PIDFile=/var/run/redmine/server.pid
+EnvironmentFile=/etc/default/redmine
+ExecStart=/usr/bin/ruby /var/lib/redmine/script/rails server --pid=$REDMINE_PIDFile $REDMINE_OPTS
+
+# Reasonable ammount of time
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target
