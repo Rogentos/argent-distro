@@ -117,7 +117,15 @@ all_ruby_install() {
 		newinitd "${FILESDIR}/${PN}-2.initd" ${PN}
 	fi
 	doenvd "${T}/50${PN}"
+	
+	# install systemd service here
 	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
+
+	# doins a example of database.yml that will start bare-bone redmine
+	insinto "${EPREFIX}${REDMINE_DIR}/config/"
+	doins "${FILESDIR}/database.yml"
+	fowners redmine:redmine database.yml
+
 }
 
 pkg_postinst() {
