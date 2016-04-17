@@ -25,7 +25,7 @@ HOMEPAGE="http://www.postgresql.org/"
 RESTRICT="test"
 
 LINGUAS="af cs de en es fa fr hr hu it ko nb pl pt_BR ro ru sk sl sv tr zh_CN zh_TW"
-IUSE="doc kerberos ldap nls pam pg_legacytimestamp python readline ssl threads zlib"
+IUSE="doc kerberos ldap libressl nls pam perl pg_legacytimestamp python readline ssl static_libs tcl threads uuid xml zlib"
 
 for lingua in ${LINGUAS} ; do
 	IUSE+=" linguas_${lingua}"
@@ -48,9 +48,15 @@ virtual/libintl
 kerberos? ( virtual/krb5 )
 ldap? ( net-nds/openldap )
 pam? ( virtual/pam )
+perl? ( >=dev-lang/perl-5.8 )
 python? ( ${PYTHON_DEPS} )
 readline? ( sys-libs/readline )
-ssl? ( >=dev-libs/openssl-0.9.6-r1 )
+ssl? (
+	!libressl? ( >=dev-libs/openssl-0.9.6-r1:0 )
+	libressl? ( dev-libs/libressl )
+)
+tcl? ( >=dev-lang/tcl-8:0 )
+xml? ( dev-libs/libxml2 dev-libs/libxslt )
 zlib? ( sys-libs/zlib )
 "
 
@@ -80,6 +86,11 @@ src_prepare() {
 
 	# because psql/help.c includes the file
 	ln -s "${S}/src/include/libpq/pqsignal.h" "${S}/src/bin/psql/" || die
+	
+	# Fix bug 486556 where the server would crash at start up because of
+	# an infinite loop caused by a self-referencing symlink.
+	epatch "${FILESDIR}/postgresql-9.2-9.4-tz-dir-overflow.patch"
+
 
 	if use pam ; then
 		sed -e "s/\(#define PGSQL_PAM_SERVICE \"postgresql\)/\1-${SLOT}/" \
@@ -102,6 +113,16 @@ src_configure() {
 
 	local PO="${EPREFIX%/}"
 
+	local i uuid_config=""
+	if use uuid; then
+		for i in ${UTIL_LINUX_LIBC[@]}; do
+			use ${i} && uuid_config="--with-uuid=e2fs"
+		done
+		for i in ${BSD_LIBC[@]}; do
+			use ${i} && uuid_config="--with-uuid=bsd"
+		done
+		[[ -z $uuid_config ]] && uuid_config="--with-uuid=ossp"
+	fi
 	econf \
 		--prefix="${PO}/usr/$(get_libdir)/postgresql-${SLOT}" \
 		--datadir="${PO}/usr/share/postgresql-${SLOT}" \
@@ -118,7 +139,11 @@ src_configure() {
 		$(use_enable !pg_legacytimestamp integer-datetimes) \
 		$(use_with python) \
 		$(use_with ssl openssl) \
+		$(use_with tcl) \
 		$(use_enable threads thread-safety) \
+		${uuid_config} \
+		$(use_with xml libxml) \
+		$(use_with xml libxslt) \
 		$(use_with zlib) \
 		$(use_with ldap)
 }
