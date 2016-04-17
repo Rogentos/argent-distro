@@ -106,7 +106,7 @@ pkg_setup() {
 	enewgroup postgres 70
 	enewuser postgres 70 /bin/bash /var/lib/postgresql postgres
 	dodir /var/run/postgresql
-	fperms postgres:postgres /var/run/postgresql
+	fowners postgres:postgres /var/run/postgresql
 
 	use python && python-single-r1_pkg_setup
 }
