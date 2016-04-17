@@ -56,6 +56,8 @@ REDMINE_DIR="/var/lib/${PN}"
 pkg_setup() {
 	enewgroup redmine
 	enewuser redmine -1 -1 "${REDMINE_DIR}" redmine
+	dodir /var/run/redmine
+	fowners redmine:redmine /var/run/redmine
 }
 
 all_ruby_prepare() {
