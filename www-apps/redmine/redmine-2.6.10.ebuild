@@ -118,6 +118,10 @@ all_ruby_install() {
 	fi
 	doenvd "${T}/50${PN}"
 
+	# install /etc/default/redmine file
+	insinto /etc/default/  	  
+	doins "${FILESDIR}/redmine"
+	
 	# install systemd service here
 	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
 
