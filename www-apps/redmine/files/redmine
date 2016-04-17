@@ -10,4 +10,4 @@
 #RAILS_ENV=production
 
 # additional opts
-REDMINE_OPTS=""
+REDMINE_OPTS=" -e production "
