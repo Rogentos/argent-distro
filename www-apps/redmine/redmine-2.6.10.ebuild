@@ -121,6 +121,10 @@ all_ruby_install() {
 	# install systemd service here
 	systemd_newunit "${FILESDIR}/${PN}.service" "${PN}.service"
 
+	# install /etc/default/redmine file
+	insinto /etc/default/
+	doins "${FILESDIR}/redmine"
+
 	# doins a example of database.yml that will start bare-bone redmine
 	insinto "${EPREFIX}${REDMINE_DIR}/config/"
 	doins "${FILESDIR}/database.yml.postgres"
