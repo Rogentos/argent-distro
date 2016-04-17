@@ -1,6 +1,6 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-db/postgresql-server/postgresql-server-9.4.0.ebuild,v 1.1 2014/12/19 00:13:31 patrick Exp $
+# $Id$
 
 EAPI="5"
 
@@ -27,7 +27,8 @@ DESCRIPTION="PostgreSQL server"
 HOMEPAGE="http://www.postgresql.org/"
 
 LINGUAS="af cs de en es fa fr hr hu it ko nb pl pt_BR ro ru sk sl sv tr zh_CN zh_TW"
-IUSE="doc kerberos kernel_linux nls pam perl -pg_legacytimestamp python selinux tcl test uuid xml"
+IUSE="doc kerberos kernel_linux ldap libressl nls pam perl -pg_legacytimestamp python 
++readline selinux ssl static-libs tcl test threads uuid xml zlib"
 
 for lingua in ${LINGUAS}; do
 	IUSE+=" linguas_${lingua}"
@@ -45,15 +46,53 @@ wanted_languages() {
 
 CDEPEND="
 ~dev-db/postgresql-base-${PV}[kerberos?,pam?,pg_legacytimestamp=,python=,nls=]
+>=app-eselect/eselect-postgresql-1.2.0
+sys-apps/less
+virtual/libintl
+kerberos? ( virtual/krb5 )
+ldap? ( net-nds/openldap )
+pam? ( virtual/pam )
 perl? ( >=dev-lang/perl-5.8 )
 python? ( ${PYTHON_DEPS} )
-tcl? ( >=dev-lang/tcl-8 )
 uuid? ( dev-libs/ossp-uuid )
+readline? ( sys-libs/readline:0= )
+ssl? (
+	!libressl? ( >=dev-libs/openssl-0.9.6-r1:0= )
+	libressl? ( dev-libs/libressl:= )
+)
+tcl? ( >=dev-lang/tcl-8 )
 xml? ( dev-libs/libxml2 dev-libs/libxslt )
+zlib? ( sys-libs/zlib )
 "
 
+# uuid flags -- depend on sys-apps/util-linux for Linux libcs, or if no
+# supported libc in use depend on dev-libs/ossp-uuid. For BSD systems,
+# the libc includes UUID functions.
+UTIL_LINUX_LIBC=( elibc_{glibc,uclibc,musl} )
+BSD_LIBC=( elibc_{Free,Net,Open}BSD )
+
+nest_usedep() {
+	local front back
+	while [[ ${#} -gt 1 ]]; do
+		front+="${1}? ( "
+		back+=" )"
+		shift
+	done
+	echo "${front}${1}${back}"
+}
+
+IUSE+=" ${UTIL_LINUX_LIBC[@]} ${BSD_LIBC[@]}"
+CDEPEND+="
+uuid? (
+	${UTIL_LINUX_LIBC[@]/%/? ( sys-apps/util-linux )}
+	$(nest_usedep ${UTIL_LINUX_LIBC[@]/#/!} ${BSD_LIBC[@]/#/!} dev-libs/ossp-uuid)
+)"
+
 DEPEND="${CDEPEND}
+!!<sys-apps/sandbox-2.0
+sys-devel/bison
 sys-devel/flex
+nls? ( sys-devel/gettext )
 xml? ( virtual/pkgconfig )
 "
 
@@ -78,7 +117,18 @@ src_prepare() {
 		"${WORKDIR}/server.patch" \
 		"${WORKDIR}/run-dir.patch"
 
-	eprefixify src/include/pg_config_manual.h
+	# Set proper run directory
+	sed "s|\(PGSOCKET_DIR\s\+\)\"/tmp\"|\1\"${EPREFIX}/run/postgresql\"|" \
+		-i src/include/pg_config_manual.h || die
+	
+	# Rely on $PATH being in the proper order so that the correct
+	# install program is used for modules utilizing PGXS in both
+	# hardened and non-hardened environments. (Bug #528786)
+	sed 's/@install_bin@/install -c/' -i src/Makefile.global.in || die
+
+	# Fix bug 486556 where the server would crash at start up because of
+	# an infinite loop caused by a self-referencing symlink.
+	epatch "${FILESDIR}/postgresql-9.2-9.4-tz-dir-overflow.patch"
 
 	if use pam ; then
 		sed -e "s/\(#define PGSQL_PAM_SERVICE \"postgresql\)/\1-${SLOT}/" \
@@ -116,10 +166,20 @@ src_configure() {
 
 	# eval is needed to get along with pg_config quotation of space-rich entities.
 	eval econf "$(${PO}/usr/$(get_libdir)/postgresql-${SLOT}/bin/pg_config --configure)" \
+		$(use_enable !pg_legacytimestamp integer-datetimes) \
+		$(use_enable threads thread-safety) \
+		$(use_with kerberos gssapi) \
+		$(use_with ldap) \
+		$(use_with pam) \
 		$(use_with perl) \
+		$(use_with python) \
+		$(use_with readline) \
+		$(use_with ssl openssl) \
 		$(use_with tcl) \
+		${uuid_config} \
 		$(use_with xml libxml) \
 		$(use_with xml libxslt) \
+		$(use_with zlib) \
 		$(use_with uuid ossp-uuid) \
 		--with-system-tzdata="${PO}/usr/share/zoneinfo" \
 		--with-includes="${PO}/usr/include/postgresql-${SLOT}/" \
