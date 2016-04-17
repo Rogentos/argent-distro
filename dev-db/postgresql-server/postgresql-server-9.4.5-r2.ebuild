@@ -171,7 +171,6 @@ src_configure() {
 		$(use_with kerberos gssapi) \
 		$(use_with ldap) \
 		$(use_with pam) \
-		$(use_with perl) \
 		$(use_with python) \
 		$(use_with readline) \
 		$(use_with ssl openssl) \
@@ -184,6 +183,7 @@ src_configure() {
 		--with-system-tzdata="${PO}/usr/share/zoneinfo" \
 		--with-includes="${PO}/usr/include/postgresql-${SLOT}/" \
 		--with-libraries="${PO}/usr/$(get_libdir)/postgresql-${SLOT}/$(get_libdir)" \
+		--without-perl \
 		"$(use_enable nls nls "$(wanted_languages)")"
 }
 
