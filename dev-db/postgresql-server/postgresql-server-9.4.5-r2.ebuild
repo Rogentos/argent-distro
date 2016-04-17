@@ -119,10 +119,8 @@ src_prepare() {
 		"${WORKDIR}/server.patch" \
 		"${WORKDIR}/run-dir.patch"
 
-	# Set proper run directory
-	sed "s|\(PGSOCKET_DIR\s\+\)\"/tmp\"|\1\"${EPREFIX}/run/postgresql\"|" \
-		-i src/include/pg_config_manual.h || die
-	
+	eprefixify src/include/pg_config_manual.h
+
 	# Rely on $PATH being in the proper order so that the correct
 	# install program is used for modules utilizing PGXS in both
 	# hardened and non-hardened environments. (Bug #528786)
