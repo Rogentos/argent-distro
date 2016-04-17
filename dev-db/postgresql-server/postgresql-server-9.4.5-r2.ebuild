@@ -107,6 +107,8 @@ pkg_setup() {
 	enewuser postgres 70 /bin/bash /var/lib/postgresql postgres
 	dodir /var/run/postgresql
 	fowners postgres:postgres /var/run/postgresql
+	dodir /run/postgresql
+	fowners postgres:postgres /run/postgresql
 
 	use python && python-single-r1_pkg_setup
 }
