@@ -12,7 +12,7 @@ MY_SVN_PF="${MY_SVN_PN}-${PVR}"
 MY_SVN_CATEGORY="${CATEGORY}"
 
 # note: java-pkg-2, not java-pkt-opt-2
-ARG_PATCHES_SRC=( mirror://sabayon/dev-vcs/${MY_SVN_PN}-1.8.9-Gentoo-patches.tar.gz )
+ARG_PATCHES_SRC=( "http://bpr.bluepink.ro/~rogentos/argent/dev-vcs/${MY_SVN_PN}-1.8.9-Gentoo-patches.tar.gz" )
 inherit arg-patches autotools eutils flag-o-matic java-pkg-2 libtool multilib
 
 DESCRIPTION="Java bindings for Subversion"
